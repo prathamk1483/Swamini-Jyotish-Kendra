@@ -38,15 +38,22 @@
             display: flex;
             flex-direction: column;
             z-index: 10;
+            overflow-y: auto;
         }
 
         .sidebar h2 { margin-top: 0; font-size: 20px; border-bottom: 1px solid #455A64; padding-bottom: 10px; }
-        .form-group { margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #B0BEC5; }
         .form-group input { width: 100%; padding: 12px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 16px; box-sizing: border-box; }
         
+        /* Time input specific fix for some mobile browsers to ensure text is white */
+        .form-group input[type="time"]::-webkit-calendar-picker-indicator,
+        .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+
         .print-btn {
-            margin-top: auto;
+            margin-top: 20px;
             background-color: #F47A20;
             color: white;
             border: none;
@@ -122,78 +129,30 @@
            MOBILE RESPONSIVE STYLES
            ========================================= */
         @media (max-width: 850px) {
-            body {
-                flex-direction: column;
-                height: auto;
-                overflow: auto; /* Allow scrolling on mobile */
-            }
-            .sidebar {
-                width: 100%;
-                box-sizing: border-box;
-                padding: 15px;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            }
-            .print-btn {
-                margin-top: 10px; /* Adjust spacing for stacked view */
-            }
-            .main-workspace {
-                padding: 10px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-            .page-container {
-                width: 100%;
-                padding: 15px;
-            }
-            
-            /* Stack elements vertically for small screens */
+            body { flex-direction: column; height: auto; overflow: auto; }
+            .sidebar { width: 100%; box-sizing: border-box; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+            .print-btn { margin-top: 10px; }
+            .main-workspace { padding: 10px; width: 100%; box-sizing: border-box; }
+            .page-container { width: 100%; padding: 15px; }
             .header { flex-direction: column; text-align: center; gap: 10px; }
             .details-grid { grid-template-columns: 1fr; }
             .main-content { grid-template-columns: 1fr; }
             .summary-box { flex-direction: column; gap: 15px; }
-            
             .detail-table td:first-child { text-align: left; }
         }
 
         /* =========================================
-           PRINT STYLES (Forces A4 layout on Print)
+           PRINT STYLES
            ========================================= */
         @media print {
-            body { 
-                background: white; 
-                display: block; 
-                height: auto;
-                overflow: visible;
-            }
-            .sidebar { 
-                display: none !important; 
-            }
-            .main-workspace { 
-                padding: 0; 
-                display: block;
-            }
-            .page-container { 
-                box-shadow: none; 
-                padding: 0 !important; 
-                width: 100% !important; 
-                max-width: 100% !important; 
-                border: none; 
-            }
+            body { background: white; display: block; height: auto; overflow: visible; }
+            .sidebar { display: none !important; }
+            .main-workspace { padding: 0; display: block; }
+            .page-container { box-shadow: none; padding: 0 !important; width: 100% !important; max-width: 100% !important; border: none; }
             .box { border-color: #000; }
-            
-            /* Force the 2-column grids back on, even if printed from mobile */
-            .details-grid, .main-content {
-                grid-template-columns: 1fr 1fr !important;
-                display: grid !important;
-            }
-            .summary-box {
-                flex-direction: row !important;
-                display: flex !important;
-            }
-            .header {
-                flex-direction: row !important;
-                text-align: left !important;
-            }
+            .details-grid, .main-content { grid-template-columns: 1fr 1fr !important; display: grid !important; }
+            .summary-box { flex-direction: row !important; display: flex !important; }
+            .header { flex-direction: row !important; text-align: left !important; }
             .detail-table td:first-child { text-align: right !important; }
         }
     </style>
@@ -206,6 +165,21 @@
         <div class="form-group">
             <label for="clientNameInput">पूर्ण नाव (Full Name)</label>
             <input type="text" id="clientNameInput" value="Amey Hatekar" placeholder="नाव प्रविष्ट करा">
+        </div>
+
+        <div class="form-group">
+            <label for="clientPlaceInput">जन्मस्थान (Birthplace)</label>
+            <input type="text" id="clientPlaceInput" value="Amravati, India" placeholder="स्थान प्रविष्ट करा">
+        </div>
+
+        <div class="form-group">
+            <label for="clientDateInput">जन्म तारीख (Date of Birth)</label>
+            <input type="date" id="clientDateInput" value="1998-04-25">
+        </div>
+
+        <div class="form-group">
+            <label for="clientTimeInput">जन्म वेळ (Time of Birth)</label>
+            <input type="time" id="clientTimeInput" value="09:09">
         </div>
 
         <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
@@ -224,10 +198,10 @@
             <div class="box info-box">
                 <div class="info-row-1">
                     नाम: <strong id="infoNameDisplay">Amey Hatekar</strong> 
-                    स्थान: <strong>Amravati, India</strong> (Lat: 20.93 , Lon: 77.75)
+                    स्थान: <strong id="infoPlaceDisplay">Amravati, India</strong> (Lat: 20.93 , Lon: 77.75)
                 </div>
-                <div class="info-row-2">
-                    25 एप्रि 1998, शनिवार, 09:09
+                <div class="info-row-2" id="infoDateTimeDisplay">
+                    २५ एप्रि १९९८, शनिवार, ०९:०९ AM
                 </div>
             </div>
 
@@ -327,15 +301,73 @@
     </main>
 
     <script>
+        // DOM Elements
         const nameInput = document.getElementById('clientNameInput');
         const headerNameDisplay = document.getElementById('headerNameDisplay');
         const infoNameDisplay = document.getElementById('infoNameDisplay');
+        
+        const placeInput = document.getElementById('clientPlaceInput');
+        const infoPlaceDisplay = document.getElementById('infoPlaceDisplay');
 
-        nameInput.addEventListener('input', function(e) {
-            const newName = e.target.value || '______________';
-            headerNameDisplay.textContent = newName;
-            infoNameDisplay.textContent = newName;
+        const dateInput = document.getElementById('clientDateInput');
+        const timeInput = document.getElementById('clientTimeInput');
+        const infoDateTimeDisplay = document.getElementById('infoDateTimeDisplay');
+
+        // Simple text updates
+        nameInput.addEventListener('input', e => {
+            const val = e.target.value || '______________';
+            headerNameDisplay.textContent = val;
+            infoNameDisplay.textContent = val;
         });
+
+        placeInput.addEventListener('input', e => {
+            infoPlaceDisplay.textContent = e.target.value || '______________';
+        });
+
+        // Date and Time Update Logic
+        function updateDateTime() {
+            const dateVal = dateInput.value;
+            const timeVal = timeInput.value;
+
+            if (!dateVal) {
+                infoDateTimeDisplay.textContent = "तारीख निवडा";
+                return;
+            }
+
+            // 1. Format Date in Marathi (e.g., २५ एप्रि १९९८, शनिवार)
+            const dateObj = new Date(dateVal);
+            const dateOptions = { day: 'numeric', month: 'short', year: 'numeric', weekday: 'long' };
+            let formattedDate = new Intl.DateTimeFormat('mr-IN', dateOptions).format(dateObj);
+
+            // 2. Format Time in 12-hour format
+            let formattedTime = "";
+            if (timeVal) {
+                let [hours, minutes] = timeVal.split(':');
+                let ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // Handle midnight (0 hours)
+                
+                // Convert English numbers to Marathi numbers for consistency
+                const marathiDigits = ['०','१','२','३','४','५','६','७','८','९'];
+                const convertToMarathiNum = (numStr) => String(numStr).split('').map(d => marathiDigits[d] || d).join('');
+                
+                // Keep time formatted exactly like original design, but converted to 12h
+                let mHours = convertToMarathiNum(hours.toString().padStart(2, '0'));
+                let mMins = convertToMarathiNum(minutes);
+                
+                formattedTime = `, ${mHours}:${mMins} ${ampm}`;
+            }
+
+            // Update the display
+            infoDateTimeDisplay.textContent = `${formattedDate}${formattedTime}`;
+        }
+
+        // Listen for changes on both date and time inputs
+        dateInput.addEventListener('input', updateDateTime);
+        timeInput.addEventListener('input', updateDateTime);
+
+        // Run once on load to format the default values properly
+        updateDateTime();
     </script>
 </body>
 </html>
