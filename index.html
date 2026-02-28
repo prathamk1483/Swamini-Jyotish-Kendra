@@ -2,8 +2,8 @@
 <html lang="mr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kundali - Amey Hatekar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jyotish Karyalay - Document Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,87 +12,84 @@
             --border-color: #D3D9DE;
             --bg-color: #F8F9FA;
             --text-dark: #212529;
-            --text-muted: #6C757D;
+            --sidebar-bg: #2C3E50;
         }
 
         body {
             font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif;
-            background-color: #e9ecef;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            background-color: #e9ecef;
             color: var(--text-dark);
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
         }
 
+        /* --- App Layout (Sidebar + Main) --- */
+        .sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            color: white;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .sidebar h2 { margin-top: 0; font-size: 20px; border-bottom: 1px solid #455A64; padding-bottom: 10px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #B0BEC5; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 16px; box-sizing: border-box; }
+        
+        .print-btn {
+            margin-top: auto;
+            background-color: #F47A20;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        .main-workspace {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* --- Kundali Document Styles --- */
         .page-container {
-            max-width: 850px;
-            margin: 0 auto;
+            width: 850px;
             background: white;
-            padding: 30px;
+            padding: 40px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border-radius: 8px;
+            box-sizing: border-box;
         }
 
-        /* --- Header --- */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 0 10px;
-        }
-        .header h1 {
-            font-size: 24px;
-            color: var(--primary-blue);
-            margin: 0;
-        }
-        .logo-area {
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-blue);
-        }
-        .logo-area span.swastik {
-            color: #F47A20; /* Orange swastika */
-            font-size: 30px;
-            margin-right: 10px;
-        }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 10px; }
+        .header h1 { font-size: 24px; color: var(--primary-blue); margin: 0; }
+        .logo-area { display: flex; align-items: center; font-size: 24px; font-weight: 700; color: var(--primary-blue); }
+        .logo-area span.swastik { color: #F47A20; font-size: 30px; margin-right: 10px; }
 
-        /* --- Cards/Boxes --- */
-        .box {
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-            margin-bottom: 15px;
-            padding: 15px;
-        }
-
-        /* --- Top Info Box --- */
-        .info-box {
-            text-align: center;
-            background-color: #fafbfc;
-        }
-        .info-row-1 {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
+        .box { border: 1px solid var(--border-color); border-radius: 6px; background: white; margin-bottom: 15px; padding: 15px; }
+        .info-box { text-align: center; background-color: #fafbfc; }
+        .info-row-1 { font-size: 18px; margin-bottom: 5px; }
         .info-row-1 strong { color: var(--primary-blue); }
-        .info-row-2 {
-            font-size: 18px;
-            color: var(--primary-blue);
-        }
+        .info-row-2 { font-size: 18px; color: var(--primary-blue); }
 
-        /* --- Summary Box --- */
-        .summary-box {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            background-color: #fafbfc;
-        }
+        .summary-box { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: #fafbfc; }
         .summary-item { text-align: center; }
         .rashi-title { font-size: 20px; font-weight: bold; color: var(--accent-green); }
         .lagna-title { font-size: 16px; color: var(--accent-green); margin-top: 5px; }
@@ -100,268 +97,245 @@
         .summary-center p { margin: 0; font-size: 14px; color: var(--accent-green); }
         .mangal-dosh { text-decoration: line-through; color: var(--text-dark); }
 
-        /* --- Details Grid --- */
-        .details-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        .detail-card {
-            padding: 15px;
-            background-color: #fafbfc;
-            display: flex;
-            justify-content: center;
-        }
-        .detail-table {
-            border-collapse: collapse;
-        }
-        .detail-table td {
-            padding: 3px 8px;
-            font-size: 15px;
-        }
-        .detail-table td:first-child {
-            text-align: right;
-            color: var(--text-dark);
-        }
-        .detail-table td:last-child {
-            color: var(--accent-green);
-            font-weight: 500;
-        }
+        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .detail-card { padding: 15px; background-color: #fafbfc; display: flex; justify-content: center; }
+        .detail-table { border-collapse: collapse; width: 100%; }
+        .detail-table td { padding: 3px 8px; font-size: 15px; }
+        .detail-table td:first-child { text-align: right; color: var(--text-dark); width: 50%; }
+        .detail-table td:last-child { color: var(--accent-green); font-weight: 500; }
 
-        /* --- Main Chart Section --- */
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            padding: 20px;
-            background-color: #fafbfc;
-        }
-
-        /* --- SVG Chart Styles --- */
-        .svg-chart {
-            width: 100%;
-            height: auto;
-        }
+        .main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; background-color: #fafbfc; }
+        .svg-chart { width: 100%; height: auto; max-width: 350px; margin: 0 auto; display: block; }
         .chart-lines { stroke: #a0aab5; stroke-width: 1; fill: none; }
         .chart-num { font-size: 10px; fill: var(--text-dark); }
-        .chart-planet { font-size: 12px; fill: #4A90E2; font-weight: 600; } /* Lighter blue for chart planets */
+        .chart-planet { font-size: 12px; fill: #4A90E2; font-weight: 600; }
 
-        /* --- Right Planet Table --- */
-        .planet-table-section h3 {
-            margin-top: 0;
-            color: var(--primary-blue);
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-        .planet-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-        .planet-table th {
-            text-align: left;
-            padding-bottom: 10px;
-            color: var(--text-dark);
-            font-weight: 600;
-        }
-        .planet-table td {
-            padding: 6px 0;
-            color: var(--text-dark);
-        }
-        .planet-dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 5px;
-            vertical-align: middle;
-        }
-        .dot-sun { background: #F47A20; }
-        .dot-moon { background: #95A5A6; }
-        .dot-merc { background: #7F8C8D; }
-        .dot-ven { background: #F1C40F; }
-        .dot-mars { background: #E74C3C; }
-        .dot-jup { background: #A0522D; }
-        .dot-sat { background: #7A8498; }
-        .dot-node { background: transparent; }
+        .planet-table-section h3 { margin-top: 0; color: var(--primary-blue); font-size: 18px; margin-bottom: 15px; }
+        .planet-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .planet-table th { text-align: left; padding-bottom: 10px; color: var(--text-dark); font-weight: 600; }
+        .planet-table td { padding: 6px 0; color: var(--text-dark); }
+        .planet-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+        .dot-sun { background: #F47A20; } .dot-moon { background: #95A5A6; } .dot-merc { background: #7F8C8D; } .dot-ven { background: #F1C40F; } .dot-mars { background: #E74C3C; } .dot-jup { background: #A0522D; } .dot-sat { background: #7A8498; } .dot-node { background: transparent; }
+        .footer-note { margin-top: 15px; font-size: 12px; color: var(--primary-blue); }
 
-        .footer-note {
-            margin-top: 15px;
-            font-size: 12px;
-            color: var(--primary-blue);
+        /* =========================================
+           MOBILE RESPONSIVE STYLES
+           ========================================= */
+        @media (max-width: 850px) {
+            body {
+                flex-direction: column;
+                height: auto;
+                overflow: auto; /* Allow scrolling on mobile */
+            }
+            .sidebar {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 15px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            .print-btn {
+                margin-top: 10px; /* Adjust spacing for stacked view */
+            }
+            .main-workspace {
+                padding: 10px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .page-container {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            /* Stack elements vertically for small screens */
+            .header { flex-direction: column; text-align: center; gap: 10px; }
+            .details-grid { grid-template-columns: 1fr; }
+            .main-content { grid-template-columns: 1fr; }
+            .summary-box { flex-direction: column; gap: 15px; }
+            
+            .detail-table td:first-child { text-align: left; }
         }
 
-        /* --- Print Styles --- */
+        /* =========================================
+           PRINT STYLES (Forces A4 layout on Print)
+           ========================================= */
         @media print {
-            body { background: none; padding: 0; }
-            .page-container { box-shadow: none; padding: 0; max-width: 100%; border: none; }
+            body { 
+                background: white; 
+                display: block; 
+                height: auto;
+                overflow: visible;
+            }
+            .sidebar { 
+                display: none !important; 
+            }
+            .main-workspace { 
+                padding: 0; 
+                display: block;
+            }
+            .page-container { 
+                box-shadow: none; 
+                padding: 0 !important; 
+                width: 100% !important; 
+                max-width: 100% !important; 
+                border: none; 
+            }
             .box { border-color: #000; }
+            
+            /* Force the 2-column grids back on, even if printed from mobile */
+            .details-grid, .main-content {
+                grid-template-columns: 1fr 1fr !important;
+                display: grid !important;
+            }
+            .summary-box {
+                flex-direction: row !important;
+                display: flex !important;
+            }
+            .header {
+                flex-direction: row !important;
+                text-align: left !important;
+            }
+            .detail-table td:first-child { text-align: right !important; }
         }
     </style>
 </head>
 <body>
 
-<div class="page-container">
-    
-    <header class="header">
-        <h1>कुंडली Amey Hatekar</h1>
-        <div class="logo-area">
-            <span class="swastik">卐</span> हिंदू कॅलेंडर
-        </div>
-    </header>
-
-    <div class="box info-box">
-        <div class="info-row-1">
-            नाम: <strong>Amey Hatekar</strong> स्थान: <strong>Amravati, India</strong> (Lat: 20.93 , Lon: 77.75)
-        </div>
-        <div class="info-row-2">
-            25 एप्रि 1998, शनिवार, 09:09
-        </div>
-    </div>
-
-    <div class="box summary-box">
-        <div class="summary-item">
-            <div class="rashi-title">राशि ♓ मीन</div>
-            <div class="lagna-title">लग्न ♊ मिथुन</div>
-        </div>
-        <div class="summary-item summary-center">
-            <h3>नाम दो..</h3>
-            <p>दशा भोग्य बुध 10y 3m 13d</p>
-        </div>
-        <div class="summary-item">
-            <span class="mangal-dosh">मंगळ दोष</span>
-        </div>
-    </div>
-
-    <div class="details-grid">
-        <div class="box detail-card">
-            <table class="detail-table">
-                <tr><td>राशि स्वामी</td><td>गुरु</td></tr>
-                <tr><td>नक्षत्र स्वामी</td><td>बुध</td></tr>
-                <tr><td>नक्षत्र पाया</td><td>सुवर्ण</td></tr>
-                <tr><td>योनि</td><td>गज</td></tr>
-                <tr><td>गण</td><td>देव</td></tr>
-                <tr><td>नाडी</td><td>अन्त्य (कफ)</td></tr>
-                <tr><td>वर्ण</td><td>ब्राह्मण</td></tr>
-            </table>
-        </div>
-        <div class="box detail-card">
-            <table class="detail-table">
-                <tr><td>तिथि</td><td>चतुर्दशी, कृष्ण</td></tr>
-                <tr><td>नक्षत्र, पद</td><td>रेवती 2 दो</td></tr>
-                <tr><td>योग</td><td>विष्कुम्भ</td></tr>
-                <tr><td>करण</td><td>विष्टि भद्र</td></tr>
-                <tr><td>इष्टकाल</td><td>08:07:05</td></tr>
-                <tr><td>सूर्योदय</td><td>05:54</td></tr>
-                <tr><td></td><td>शनिवार, चैत्र, 2055 विक्रम संवत</td></tr>
-            </table>
-        </div>
-    </div>
-
-    <div class="box main-content">
+    <aside class="sidebar">
+        <h2>ग्राहक तपशील</h2>
         
-        <div class="chart-container">
-            <svg class="svg-chart" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet">
-                <rect x="0" y="0" width="300" height="300" class="chart-lines"/>
-                <line x1="0" y1="0" x2="300" y2="300" class="chart-lines"/>
-                <line x1="300" y1="0" x2="0" y2="300" class="chart-lines"/>
-                <polygon points="150,0 300,150 150,300 0,150" class="chart-lines"/>
-
-                <text x="150" y="15" text-anchor="middle" class="chart-num">3 Gem</text>
-                <text x="60" y="25" text-anchor="middle" class="chart-num">4 Can</text>
-                <text x="15" y="80" text-anchor="middle" class="chart-num">5 Leo</text>
-                <text x="35" y="150" text-anchor="middle" class="chart-num">6 Vir</text>
-                <text x="15" y="225" text-anchor="middle" class="chart-num">7 Lib</text>
-                <text x="60" y="285" text-anchor="middle" class="chart-num">8 Sco</text>
-                <text x="150" y="290" text-anchor="middle" class="chart-num">9 Sag</text>
-                <text x="240" y="285" text-anchor="middle" class="chart-num">10 Cap</text>
-                <text x="285" y="225" text-anchor="middle" class="chart-num">11 Aqu</text>
-                <text x="260" y="150" text-anchor="middle" class="chart-num">12 Pis</text>
-                <text x="285" y="80" text-anchor="middle" class="chart-num">1 Ari</text>
-                <text x="240" y="25" text-anchor="middle" class="chart-num">2 Tau</text>
-
-                <text x="150" y="80" text-anchor="middle" class="chart-planet">लग्न</text>
-                
-                <text x="40" y="110" text-anchor="middle" class="chart-planet">राहू*</text>
-                
-                <text x="60" y="260" text-anchor="middle" class="chart-planet">यम*</text>
-                
-                <text x="240" y="260" text-anchor="middle" class="chart-planet">अरुण वरुण</text>
-                
-                <text x="260" y="200" text-anchor="middle" class="chart-planet">केतू*</text>
-                <text x="260" y="215" text-anchor="middle" class="chart-planet">शुक्र गुरु</text>
-                
-                <text x="210" y="145" text-anchor="middle" class="chart-planet">चन्द्र बुध</text>
-                
-                <text x="260" y="100" text-anchor="middle" class="chart-planet">शनि^</text>
-                <text x="260" y="115" text-anchor="middle" class="chart-planet">सूर्य मंगल^</text>
-            </svg>
+        <div class="form-group">
+            <label for="clientNameInput">पूर्ण नाव (Full Name)</label>
+            <input type="text" id="clientNameInput" value="Amey Hatekar" placeholder="नाव प्रविष्ट करा">
         </div>
 
-        <div class="planet-table-section">
-            <h3>लग्न कुंडली</h3>
-            <table class="planet-table">
-                <tr>
-                    <th>ग्रह</th>
-                    <th>राशि निरायण</th>
-                    <th>नक्षत्र, पद</th>
-                </tr>
-                <tr>
-                    <td><span class="planet-dot dot-sun"></span> सूर्य</td>
-                    <td>♈ मेष</td>
-                    <td>अश्विनी, 4 ला</td>
-                </tr>
-                <tr>
-                    <td><span class="planet-dot dot-moon"></span> चन्द्र</td>
-                    <td>♓ मीन</td>
-                    <td>रेवती, 2 दो</td>
-                </tr>
-                <tr>
-                    <td><span class="planet-dot dot-merc"></span> बुध</td>
-                    <td>♓ मीन</td>
-                    <td>रेवती, 1 दे</td>
-                </tr>
-                <tr>
-                    <td><span class="planet-dot dot-ven"></span> शुक्र</td>
-                    <td>♒ कुम्भ</td>
-                    <td>पूर्वाभाद्रपदा, 2 सो</td>
-                </tr>
-                <tr>
-                    <td><span class="planet-dot dot-mars"></span> मंगल</td>
-                    <td>♈ मेष</td>
-                    <td>भरणी, 1 ली</td>
-                </tr>
-                <tr>
-                    <td><span class="planet-dot dot-jup"></span> बृहस्पति</td>
-                    <td>♒ कुम्भ</td>
-                    <td>पूर्वाभाद्रपदा, 2 सो</td>
-                </tr>
-                <tr>
-                    <td><span class="planet-dot dot-sat"></span> शनि</td>
-                    <td>♈ मेष</td>
-                    <td>अश्विनी, 1 चु</td>
-                </tr>
-                <tr>
-                    <td><span class="planet-dot dot-node">☊</span> राहू</td>
-                    <td>♌ सिंह</td>
-                    <td>पूर्व फाल्गुनी, 1 मो</td>
-                </tr>
-                <tr>
-                    <td><span class="planet-dot dot-node">☋</span> केतु</td>
-                    <td>♒ कुम्भ</td>
-                    <td>शतभिष, 3 सी</td>
-                </tr>
-            </table>
+        <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+    </aside>
+
+    <main class="main-workspace">
+        <div class="page-container">
             
-            <div class="footer-note">
-                अयनांश लाहिरी / चित्रपक्ष = 23°50'
+            <header class="header">
+                <h1>कुंडली <span id="headerNameDisplay">Amey Hatekar</span></h1>
+                <div class="logo-area">
+                    <span class="swastik">卐</span> हिंदू कॅलेंडर
+                </div>
+            </header>
+
+            <div class="box info-box">
+                <div class="info-row-1">
+                    नाम: <strong id="infoNameDisplay">Amey Hatekar</strong> 
+                    स्थान: <strong>Amravati, India</strong> (Lat: 20.93 , Lon: 77.75)
+                </div>
+                <div class="info-row-2">
+                    25 एप्रि 1998, शनिवार, 09:09
+                </div>
+            </div>
+
+            <div class="box summary-box">
+                <div class="summary-item">
+                    <div class="rashi-title">राशि ♓ मीन</div>
+                    <div class="lagna-title">लग्न ♊ मिथुन</div>
+                </div>
+                <div class="summary-item summary-center">
+                    <h3>नाम दो..</h3>
+                    <p>दशा भोग्य बुध 10y 3m 13d</p>
+                </div>
+                <div class="summary-item">
+                    <span class="mangal-dosh">मंगळ दोष</span>
+                </div>
+            </div>
+
+            <div class="details-grid">
+                <div class="box detail-card">
+                    <table class="detail-table">
+                        <tr><td>राशि स्वामी</td><td>गुरु</td></tr>
+                        <tr><td>नक्षत्र स्वामी</td><td>बुध</td></tr>
+                        <tr><td>नक्षत्र पाया</td><td>सुवर्ण</td></tr>
+                        <tr><td>योनि</td><td>गज</td></tr>
+                        <tr><td>गण</td><td>देव</td></tr>
+                        <tr><td>नाडी</td><td>अन्त्य (कफ)</td></tr>
+                        <tr><td>वर्ण</td><td>ब्राह्मण</td></tr>
+                    </table>
+                </div>
+                <div class="box detail-card">
+                    <table class="detail-table">
+                        <tr><td>तिथि</td><td>चतुर्दशी, कृष्ण</td></tr>
+                        <tr><td>नक्षत्र, पद</td><td>रेवती 2 दो</td></tr>
+                        <tr><td>योग</td><td>विष्कुम्भ</td></tr>
+                        <tr><td>करण</td><td>विष्टि भद्र</td></tr>
+                        <tr><td>इष्टकाल</td><td>08:07:05</td></tr>
+                        <tr><td>सूर्योदय</td><td>05:54</td></tr>
+                        <tr><td></td><td>शनिवार, चैत्र, 2055 विक्रम संवत</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="box main-content">
+                <div class="chart-container">
+                    <svg class="svg-chart" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet">
+                        <rect x="0" y="0" width="300" height="300" class="chart-lines"/>
+                        <line x1="0" y1="0" x2="300" y2="300" class="chart-lines"/>
+                        <line x1="300" y1="0" x2="0" y2="300" class="chart-lines"/>
+                        <polygon points="150,0 300,150 150,300 0,150" class="chart-lines"/>
+
+                        <text x="150" y="15" text-anchor="middle" class="chart-num">3 Gem</text>
+                        <text x="60" y="25" text-anchor="middle" class="chart-num">4 Can</text>
+                        <text x="15" y="80" text-anchor="middle" class="chart-num">5 Leo</text>
+                        <text x="35" y="150" text-anchor="middle" class="chart-num">6 Vir</text>
+                        <text x="15" y="225" text-anchor="middle" class="chart-num">7 Lib</text>
+                        <text x="60" y="285" text-anchor="middle" class="chart-num">8 Sco</text>
+                        <text x="150" y="290" text-anchor="middle" class="chart-num">9 Sag</text>
+                        <text x="240" y="285" text-anchor="middle" class="chart-num">10 Cap</text>
+                        <text x="285" y="225" text-anchor="middle" class="chart-num">11 Aqu</text>
+                        <text x="260" y="150" text-anchor="middle" class="chart-num">12 Pis</text>
+                        <text x="285" y="80" text-anchor="middle" class="chart-num">1 Ari</text>
+                        <text x="240" y="25" text-anchor="middle" class="chart-num">2 Tau</text>
+
+                        <text x="150" y="80" text-anchor="middle" class="chart-planet">लग्न</text>
+                        <text x="40" y="110" text-anchor="middle" class="chart-planet">राहू*</text>
+                        <text x="60" y="260" text-anchor="middle" class="chart-planet">यम*</text>
+                        <text x="240" y="260" text-anchor="middle" class="chart-planet">अरुण वरुण</text>
+                        <text x="260" y="200" text-anchor="middle" class="chart-planet">केतू*</text>
+                        <text x="260" y="215" text-anchor="middle" class="chart-planet">शुक्र गुरु</text>
+                        <text x="210" y="145" text-anchor="middle" class="chart-planet">चन्द्र बुध</text>
+                        <text x="260" y="100" text-anchor="middle" class="chart-planet">शनि^</text>
+                        <text x="260" y="115" text-anchor="middle" class="chart-planet">सूर्य मंगल^</text>
+                    </svg>
+                </div>
+
+                <div class="planet-table-section">
+                    <h3>लग्न कुंडली</h3>
+                    <table class="planet-table">
+                        <tr><th>ग्रह</th><th>राशि निरायण</th><th>नक्षत्र, पद</th></tr>
+                        <tr><td><span class="planet-dot dot-sun"></span> सूर्य</td><td>♈ मेष</td><td>अश्विनी, 4 ला</td></tr>
+                        <tr><td><span class="planet-dot dot-moon"></span> चन्द्र</td><td>♓ मीन</td><td>रेवती, 2 दो</td></tr>
+                        <tr><td><span class="planet-dot dot-merc"></span> बुध</td><td>♓ मीन</td><td>रेवती, 1 दे</td></tr>
+                        <tr><td><span class="planet-dot dot-ven"></span> शुक्र</td><td>♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 सो</td></tr>
+                        <tr><td><span class="planet-dot dot-mars"></span> मंगल</td><td>♈ मेष</td><td>भरणी, 1 ली</td></tr>
+                        <tr><td><span class="planet-dot dot-jup"></span> बृहस्पति</td><td>♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 सो</td></tr>
+                        <tr><td><span class="planet-dot dot-sat"></span> शनि</td><td>♈ मेष</td><td>अश्विनी, 1 चु</td></tr>
+                        <tr><td><span class="planet-dot dot-node">☊</span> राहू</td><td>♌ सिंह</td><td>पूर्व फाल्गुनी, 1 मो</td></tr>
+                        <tr><td><span class="planet-dot dot-node">☋</span> केतु</td><td>♒ कुम्भ</td><td>शतभिष, 3 सी</td></tr>
+                    </table>
+                    
+                    <div class="footer-note">
+                        अयनांश लाहिरी / चित्रपक्ष = 23°50'
+                    </div>
+                </div>
             </div>
         </div>
+    </main>
 
-    </div>
+    <script>
+        const nameInput = document.getElementById('clientNameInput');
+        const headerNameDisplay = document.getElementById('headerNameDisplay');
+        const infoNameDisplay = document.getElementById('infoNameDisplay');
 
-</div>
-
+        nameInput.addEventListener('input', function(e) {
+            const newName = e.target.value || '______________';
+            headerNameDisplay.textContent = newName;
+            infoNameDisplay.textContent = newName;
+        });
+    </script>
 </body>
 </html>
