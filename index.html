@@ -111,8 +111,7 @@
         .editable-textarea { width: 100%; min-height: 600px; padding: 20px; font-size: 18px; line-height: 1.8; border: none; outline: none; white-space: pre-wrap; color: var(--text-dark); }
         .editable-textarea:empty:before { content: attr(data-placeholder); color: #B0BEC5; font-style: italic; }
 
-        /* CHANGED: Added 'screen and' so mobile styles ONLY apply to screens, not printers! */
-        @media screen and (max-width: 850px) {
+        @media (max-width: 850px) {
             body { flex-direction: column; height: auto; overflow: auto; }
             .sidebar { width: 100%; box-sizing: border-box; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
             .main-workspace { padding: 10px; width: 100%; box-sizing: border-box; gap: 20px; }
@@ -136,7 +135,6 @@
                 box-shadow: none; padding: 5px 20px !important; width: 100% !important; max-width: 100% !important; border: none;
                 transform: scale(0.97); transform-origin: top center; margin-bottom: 0; page-break-after: always;
             }
-            /* Bulletproof print header alignment */
             .page-header { display: flex !important; flex-direction: row !important; text-align: left !important; align-items: flex-end !important; justify-content: space-between !important; }
             .header-contact { text-align: right !important; }
             .logo-area { justify-content: flex-end !important; }
@@ -327,18 +325,18 @@
                         <line x1="0" y1="0" x2="300" y2="300" class="chart-lines"/>
                         <line x1="300" y1="0" x2="0" y2="300" class="chart-lines"/>
                         <polygon points="150,0 300,150 150,300 0,150" class="chart-lines"/>
-                        <text x="150" y="15" text-anchor="middle" class="chart-num">3 Gem</text>
-                        <text x="60" y="25" text-anchor="middle" class="chart-num">4 Can</text>
-                        <text x="15" y="80" text-anchor="middle" class="chart-num">5 Leo</text>
-                        <text x="35" y="150" text-anchor="middle" class="chart-num">6 Vir</text>
-                        <text x="15" y="225" text-anchor="middle" class="chart-num">7 Lib</text>
-                        <text x="60" y="285" text-anchor="middle" class="chart-num">8 Sco</text>
-                        <text x="150" y="290" text-anchor="middle" class="chart-num">9 Sag</text>
-                        <text x="240" y="285" text-anchor="middle" class="chart-num">10 Cap</text>
-                        <text x="285" y="225" text-anchor="middle" class="chart-num">11 Aqu</text>
-                        <text x="260" y="150" text-anchor="middle" class="chart-num">12 Pis</text>
-                        <text x="285" y="80" text-anchor="middle" class="chart-num">1 Ari</text>
-                        <text x="240" y="25" text-anchor="middle" class="chart-num">2 Tau</text>
+                        <text x="150" y="15" text-anchor="middle" class="chart-num">3</text>
+                        <text x="60" y="25" text-anchor="middle" class="chart-num">4</text>
+                        <text x="15" y="80" text-anchor="middle" class="chart-num">5</text>
+                        <text x="35" y="150" text-anchor="middle" class="chart-num">6</text>
+                        <text x="15" y="225" text-anchor="middle" class="chart-num">7</text>
+                        <text x="60" y="285" text-anchor="middle" class="chart-num">8</text>
+                        <text x="150" y="290" text-anchor="middle" class="chart-num">9</text>
+                        <text x="240" y="285" text-anchor="middle" class="chart-num">10</text>
+                        <text x="285" y="225" text-anchor="middle" class="chart-num">11</text>
+                        <text x="260" y="150" text-anchor="middle" class="chart-num">12</text>
+                        <text x="285" y="80" text-anchor="middle" class="chart-num">1</text>
+                        <text x="240" y="25" text-anchor="middle" class="chart-num">2</text>
                         <text x="150" y="80" text-anchor="middle" class="chart-planet">लग्न</text>
                         <text x="40" y="110" text-anchor="middle" class="chart-planet">राहू*</text>
                         <text x="60" y="260" text-anchor="middle" class="chart-planet">यम*</text>
@@ -346,8 +344,8 @@
                         <text x="260" y="200" text-anchor="middle" class="chart-planet">केतू*</text>
                         <text x="260" y="215" text-anchor="middle" class="chart-planet">शुक्र गुरु</text>
                         <text x="210" y="145" text-anchor="middle" class="chart-planet">चन्द्र बुध</text>
-                        <text x="260" y="100" text-anchor="middle" class="chart-planet">शनि^</text>
-                        <text x="260" y="115" text-anchor="middle" class="chart-planet">सूर्य मंगल^</text>
+                        <text x="260" y="75" text-anchor="middle" class="chart-planet">शनि^</text>
+                        <text x="260" y="85" text-anchor="middle" class="chart-planet">सूर्य मंगल^</text>
                     </svg>
                 </div>
 
@@ -557,7 +555,8 @@
             "शुक्र": { name: "♀️ शुक्र", mantra: "ॐ द्रां द्रीं द्रौं सः शुक्राय नमः", count: "64,000" },
             "शनि": { name: "♄ शनि", mantra: "ॐ प्रां प्रीं प्रौं सः शनैश्चराय नमः", count: "92,000" },
             "राहू": { name: "☊ राहू", mantra: "ॐ भ्रां भ्रीं भ्रौं सः राहवे नमः", count: "72,000" },
-            "केतु": { name: "☋ केतु", mantra: "ॐ स्रां स्रीं स्रौं सः केतवे नमः", count: "68,000" }
+            "केतु": { name: "☋ केतु", mantra: "ॐ स्रां स्रीं स्रौं सः केतवे नमः", count: "68,000" },
+            "महामृत्युंजय": { name: "🕉 महा मृत्युंजय मंत्र", mantra: "ॐ त्र्यंबकं यजामहे सुगन्धिं पुष्टिवर्धनम् ।<br>उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय मामृतात् ॥", count: "1,35,000" }
         };
 
         const container = document.getElementById('dynamicControls');
