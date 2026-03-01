@@ -78,8 +78,8 @@
         .chart-container { display: flex; align-items: center; justify-content: center; height: 100%; }
         .svg-chart { width: 100%; height: auto; max-width: 310px; display: block; }
         .chart-lines { stroke: #a0aab5; stroke-width: 1; fill: none; }
-        .chart-num { font-size: 10px; fill: var(--text-dark); }
-        .chart-planet { font-size: 12px; fill: #4A90E2; font-weight: 600; }
+        .chart-num { font-size: 11px; fill: #6C757D; font-weight: bold; }
+        .chart-planet { font-size: 13px; fill: var(--primary-blue); font-weight: 600; }
 
         .planet-table-section h3 { margin-top: 0; color: var(--primary-blue); font-size: 18px; margin-bottom: 8px; }
         .planet-table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -325,27 +325,9 @@
                         <line x1="0" y1="0" x2="300" y2="300" class="chart-lines"/>
                         <line x1="300" y1="0" x2="0" y2="300" class="chart-lines"/>
                         <polygon points="150,0 300,150 150,300 0,150" class="chart-lines"/>
-                        <text x="150" y="15" text-anchor="middle" class="chart-num">3</text>
-                        <text x="130" y="15" text-anchor="middle" class="chart-num">4</text>
-                        <text x="10" y="135" text-anchor="middle" class="chart-num">5</text>
-                        <text x="10" y="155" text-anchor="middle" class="chart-num">6</text>
-                        <text x="10" y="175" text-anchor="middle" class="chart-num">7</text>
-                        <text x="125" y="290" text-anchor="middle" class="chart-num">8</text>
-                        <text x="150" y="290" text-anchor="middle" class="chart-num">9</text>
-                        <text x="175" y="290" text-anchor="middle" class="chart-num">10</text>
-                        <text x="290" y="175" text-anchor="middle" class="chart-num">11</text>
-                        <text x="290" y="155" text-anchor="middle" class="chart-num">12</text>
-                        <text x="290" y="135" text-anchor="middle" class="chart-num">1</text>
-                        <text x="170" y="15" text-anchor="middle" class="chart-num">2</text>
-                        <text x="150" y="80" text-anchor="middle" class="chart-planet">लग्न</text>
-                        <text x="40" y="90" text-anchor="middle" class="chart-planet">राहू*</text>
-                        <text x="60" y="260" text-anchor="middle" class="chart-planet">यम*</text>
-                        <text x="230" y="280" text-anchor="middle" class="chart-planet">अरुण वरुण</text>
-                        <text x="280" y="220" text-anchor="middle" class="chart-planet">केतू*</text>
-                        <text x="280" y="235" text-anchor="middle" class="chart-planet">शुक्र गुरु</text>
-                        <text x="210" y="145" text-anchor="middle" class="chart-planet">चन्द्र बुध</text>
-                        <text x="260" y="75" text-anchor="middle" class="chart-planet">शनि^</text>
-                        <text x="260" y="85" text-anchor="middle" class="chart-planet">सूर्य मंगल^</text>
+                        
+                        <text x="150" y="25" text-anchor="middle" class="chart-num">3</text>  <text x="65" y="25" text-anchor="middle" class="chart-num">4</text>   <text x="25" y="65" text-anchor="middle" class="chart-num">5</text>   <text x="40" y="155" text-anchor="middle" class="chart-num">6</text>  <text x="25" y="245" text-anchor="middle" class="chart-num">7</text>  <text x="65" y="285" text-anchor="middle" class="chart-num">8</text>  <text x="150" y="285" text-anchor="middle" class="chart-num">9</text> <text x="235" y="285" text-anchor="middle" class="chart-num">10</text> <text x="275" y="245" text-anchor="middle" class="chart-num">11</text> <text x="260" y="155" text-anchor="middle" class="chart-num">12</text> <text x="275" y="65" text-anchor="middle" class="chart-num">1</text>  <text x="235" y="25" text-anchor="middle" class="chart-num">2</text>  <g id="chart-planets-container">
+                            </g>
                     </svg>
                 </div>
 
@@ -449,20 +431,92 @@
             return str.replace(/[०-९]/g, m => map[m]);
         };
 
-        // --- Chart Number Rotation Logic ---
-        function updateChartNumbers() {
+        // --- Core Application Data ---
+        const rashiMap = {"मेष": 1, "वृषभ": 2, "मिथुन": 3, "कर्क": 4, "सिंह": 5, "कन्या": 6, "तुला": 7, "वृश्चिक": 8, "धनु": 9, "मकर": 10, "कुंभ": 11, "मीन": 12};
+        const rashiSymbols = ["♈ मेष", "♉ वृषभ", "♊ मिथुन", "♋ कर्क", "♌ सिंह", "♍ कन्या", "♎ तुला", "♏ वृश्चिक", "♐ धनु", "♑ मकर", "♒ कुंभ", "♓ मीन"];
+        const planetsList = [
+            { id: "सूर्य", default: "♈ मेष" }, { id: "चन्द्र", default: "♓ मीन" }, { id: "मंगल", default: "♈ मेष" },
+            { id: "बुध", default: "♓ मीन" }, { id: "गुरु", default: "♒ कुम्भ" }, { id: "शुक्र", default: "♒ कुम्भ" },
+            { id: "शनि", default: "♈ मेष" }, { id: "राहू", default: "♌ सिंह" }, { id: "केतु", default: "♒ कुम्भ" },
+            { id: "हर्शल", default: "♒ कुम्भ" }, { id: "नेपच्यून", default: "♑ मकर" }, { id: "प्लूटो", default: "♐ धनु" }
+        ];
+        const houseCoords = {
+            1: {x: 150, y: 75}, 2: {x: 75, y: 45}, 3: {x: 45, y: 95}, 4: {x: 80, y: 155},
+            5: {x: 45, y: 215}, 6: {x: 75, y: 265}, 7: {x: 150, y: 230}, 8: {x: 225, y: 265},
+            9: {x: 255, y: 215}, 10: {x: 220, y: 155}, 11: {x: 255, y: 95}, 12: {x: 225, y: 45}
+        };
+
+        // --- SVG Chart Master Update Function ---
+        function updateChart() {
             const lagnaSelect = document.querySelector('[data-control="Lagna"]');
             if(!lagnaSelect) return;
-            const rashiNames = ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"];
-            let lagnaNum = rashiNames.indexOf(lagnaSelect.value) + 1;
             
+            // 1. Update House Numbers based on Lagna
+            let lagnaNum = rashiMap[lagnaSelect.value];
             const numElements = document.querySelectorAll('.chart-num');
-            if(numElements.length === 12) {
-                numElements.forEach((el, index) => {
-                    let num = lagnaNum + index;
-                    if(num > 12) num -= 12;
-                    el.textContent = num;
-                });
+            numElements.forEach((el, index) => {
+                let num = lagnaNum + index;
+                if(num > 12) num -= 12;
+                el.textContent = num;
+            });
+
+            // 2. Gather Planets based on Rashi & Calculate House
+            let houses = { 1:[], 2:[], 3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[], 10:[], 11:[], 12:[] };
+            
+            // Always put 'लग्न' at the top of house 1
+            houses[1].push('लग्न');
+
+            planetsList.forEach(p => {
+                const rashiSelect = document.querySelector(`[data-control="Rashi_${p.id}"]`);
+                if(!rashiSelect) return;
+                
+                // Extract pure Rashi name without the Symbol (e.g., "♈ मेष" -> "मेष")
+                let pureRashiName = rashiSelect.value.split(" ")[1] || rashiSelect.value;
+                if(pureRashiName === "कुम्भ") pureRashiName = "कुंभ"; // Standardize spelling
+                
+                const rashiNum = rashiMap[pureRashiName];
+                if(!rashiNum) return;
+
+                let houseNum = (rashiNum - lagnaNum + 12) % 12 + 1;
+                
+                const isVakri = document.querySelector(`input[data-vakri="${p.id}"]`)?.checked || false;
+                const isAsta = document.querySelector(`input[data-asta="${p.id}"]`)?.checked || false;
+                let suffix = "";
+                if(isVakri) suffix += "*";
+                if(isAsta) suffix += "^";
+                
+                houses[houseNum].push(p.id + suffix);
+            });
+
+            // 3. Render Planet Text Elements inside the SVG
+            const container = document.getElementById('chart-planets-container');
+            container.innerHTML = ""; // Clear existing planets
+            
+            for(let h=1; h<=12; h++) {
+                if(houses[h].length > 0) {
+                    // Group planets by 2 per line for neatness
+                    let lines = [];
+                    for(let i=0; i<houses[h].length; i+=2) {
+                        lines.push(houses[h].slice(i, i+2).join(' '));
+                    }
+                    
+                    let textEl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    textEl.setAttribute("x", houseCoords[h].x);
+                    // Shift starting Y up slightly if there are multiple lines
+                    textEl.setAttribute("y", houseCoords[h].y - ((lines.length - 1) * 6)); 
+                    textEl.setAttribute("text-anchor", "middle");
+                    textEl.setAttribute("class", "chart-planet");
+                    
+                    lines.forEach((line, index) => {
+                        let tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+                        tspan.setAttribute("x", houseCoords[h].x);
+                        if(index > 0) tspan.setAttribute("dy", "14"); // Line spacing
+                        tspan.textContent = line;
+                        textEl.appendChild(tspan);
+                    });
+                    
+                    container.appendChild(textEl);
+                }
             }
         }
 
@@ -515,8 +569,8 @@
 
         // --- 2. Dynamic Controls Generator ---
         const jyotishData = {
-            Rashi: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
             Lagna: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
+            Rashi: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
             RashiSwami: ["सूर्य", "चंद्र", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि", "राहू", "केतू"],
             NakshatraSwami: ["सूर्य", "चंद्र", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि", "राहू", "केतू"],
             NakshtraPaya: ["सुवर्ण", "रजत", "ताम्र", "लोह"],
@@ -541,13 +595,6 @@
         };
 
         const extraTimers = { IshtKaal: { label: "इष्टकाल", type: "time", step: "1" }, Suryoday: { label: "सूर्योदय", type: "time" } };
-        const rashiSymbols = ["♈ मेष", "♉ वृषभ", "♊ मिथुन", "♋ कर्क", "♌ सिंह", "♍ कन्या", "♎ तुला", "♏ वृश्चिक", "♐ धनु", "♑ मकर", "♒ कुंभ", "♓ मीन"];
-        const planetsList = [
-            { id: "सूर्य", default: "♈ मेष" }, { id: "चन्द्र", default: "♓ मीन" }, { id: "मंगल", default: "♈ मेष" },
-            { id: "बुध", default: "♓ मीन" }, { id: "गुरु", default: "♒ कुम्भ" }, { id: "शुक्र", default: "♒ कुम्भ" },
-            { id: "शनि", default: "♈ मेष" }, { id: "राहू", default: "♌ सिंह" }, { id: "केतु", default: "♒ कुम्भ" },
-            { id: "हर्शल", default: "♒ कुम्भ" }, { id: "नेपच्यून", default: "♑ मकर" }, { id: "प्लूटो", default: "♐ धनु" }
-        ];
         
         const ratnaOptions = [
             { label: "मेष (Aries)", stone: "मूंगा (Red Coral)" }, { label: "वृषभ (Taurus)", stone: "पुखराज (Yellow Sapphire)" },
@@ -651,15 +698,14 @@
                 const val = e.target.value;
                 document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
                 
-                // Triggers Naam Akshar update when Nakshatra is changed
                 if(e.target.dataset.control === 'NakshatraPada') {
                     const match = val.match(/\(([^)]+)\)/);
                     if (match && match[1]) document.getElementById('naamAksharDisplay').textContent = match[1] + "..";
                 }
                 
-                // Triggers the chart numbers update when Lagna is changed
-                if(e.target.dataset.control === 'Lagna') {
-                    updateChartNumbers();
+                // Triggers the chart rotation on Lagna or Rashi changes
+                if(e.target.dataset.control === 'Lagna' || e.target.dataset.control.startsWith('Rashi_')) {
+                    updateChart();
                 }
             }
         });
@@ -676,11 +722,17 @@
                 if(isAsta) suffix += "^";
                 
                 document.querySelectorAll(`[data-suffix="${pId}"]`).forEach(el => el.textContent = suffix);
+                
+                // Trigger chart update so the * or ^ shows up in the SVG too!
+                updateChart();
             }
         });
 
         // Fire initial inputs to populate bindings & trigger rotation
         document.querySelectorAll('[data-control]').forEach(input => input.dispatchEvent(new Event('input', { bubbles: true })));
+        
+        // Initial chart draw
+        updateChart();
 
         // --- 3. DASHA ROW GENERATOR ---
         function formatDashaDate(dateString) {
