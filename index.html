@@ -19,11 +19,11 @@
         body { font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif; margin: 0; padding: 0; background-color: #e9ecef; color: var(--text-dark); -webkit-print-color-adjust: exact; print-color-adjust: exact; display: flex; height: 100vh; overflow: hidden; }
 
         /* --- SIDEBAR --- */
-        .sidebar { width: 320px; background-color: var(--sidebar-bg); color: white; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; z-index: 10; overflow-y: auto; }
+        .sidebar { width: 340px; background-color: var(--sidebar-bg); color: white; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; z-index: 10; overflow-y: auto; }
         .sidebar h2 { margin-top: 0; font-size: 20px; border-bottom: 1px solid #455A64; padding-bottom: 10px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #B0BEC5; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 15px; box-sizing: border-box; }
+        .form-group input:not([type="checkbox"]), .form-group select { width: 100%; padding: 10px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 15px; box-sizing: border-box; }
         .form-group input[type="time"]::-webkit-calendar-picker-indicator, .form-group input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 
         .print-btn { margin-top: 15px; margin-bottom: 20px; background-color: #F47A20; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; width: 100%; }
@@ -31,6 +31,11 @@
         .btn-add { background-color: #28a745; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 5px; }
         .btn-undo { background-color: #ffc107; color: #212529; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 5px; }
         .btn-clear { background-color: #dc3545; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 20px; }
+
+        /* --- SIMPLE CHECKLIST STYLES --- */
+        .checkbox-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px; }
+        .checkbox-item { display: flex; align-items: center; gap: 10px; font-size: 15px; color: white; cursor: pointer; user-select: none; }
+        .checkbox-item input { cursor: pointer; width: 16px; height: 16px; margin: 0; flex-shrink: 0; accent-color: #28a745; }
 
         /* --- WORKSPACE & GLOBAL PAGE STYLES --- */
         .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 40px;}
@@ -81,20 +86,23 @@
         .footer-note { margin-top: 10px; font-size: 12px; color: var(--primary-blue); }
 
         /* --- PAGE 2 SPECIFIC STYLES --- */
-        .page-2-header { background-color: var(--primary-blue); color: white; margin: 0; padding: 12px; text-align: center; font-size: 20px; border-radius: 4px 4px 0 0; }
+        .page-2-header { background-color: var(--primary-blue); color: white; margin: 0; padding: 8px; text-align: center; font-size: 18px; border-radius: 4px 4px 0 0; }
+        
+        /* Shrunk Dasha Table */
         .dasha-row { border-bottom: 1px solid #eaedf0; }
         .dasha-row:last-child { border-bottom: none; }
-        .dasha-row td { padding: 10px 15px; font-size: 16px; }
+        .dasha-row td { padding: 8px 12px; font-size: 15px; }
         .dasha-row td:first-child { font-weight: bold; color: var(--accent-green); width: 30%; border-right: 1px solid #eaedf0; background: #fafbfc;}
         .dasha-row td:last-child { text-align: center; color: var(--text-dark); font-weight: 600; }
         
-        .pooja-row td { color: var(--text-dark); background: transparent !important; font-weight: 600 !important; text-align: center !important; font-size: 16px !important; border-right: none !important;}
+        /* Shrunk Ratna Box */
+        .ratna-box { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 15px; box-sizing: border-box; background: #fffdf5; border: 2px dashed #f1c40f;}
 
-        .ratna-box { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 25px 20px; box-sizing: border-box; background: #fffdf5; border: 2px dashed #f1c40f;}
-
-        .mantra-row td:first-child { font-weight: bold; color: var(--primary-blue); font-size: 18px; width: 25%; text-align: center; }
-        .mantra-row td:nth-child(2) { text-align: center; font-weight: bold; color: var(--accent-green); font-size: 18px; }
-        .mantra-row td:last-child { text-align: center; font-weight: normal; color: var(--text-dark); font-size: 15px; width: 25%; background: #fafbfc; border-left: 1px solid #eaedf0; }
+        /* More Compact Mantra Box */
+        .mantra-row td { padding: 5px 10px; font-size: 13px; } /* Reduced padding and font-size */
+        .mantra-row td:first-child { font-weight: bold; color: var(--primary-blue); font-size: 15px; width: 22%; text-align: center; }
+        .mantra-row td:nth-child(2) { text-align: center; font-weight: bold; color: var(--accent-green); font-size: 15px; }
+        .mantra-row td:last-child { text-align: center; font-weight: normal; color: var(--text-dark); font-size: 13px; width: 22%; background: #fafbfc; border-left: 1px solid #eaedf0; }
 
         @media (max-width: 850px) {
             body { flex-direction: column; height: auto; overflow: auto; }
@@ -113,7 +121,6 @@
         /* --- PRINT STYLES --- */
         @media print {
             @page { size: A4 portrait; margin: 5mm; }
-            /* Allowed overflow visible so it automatically breaks to page 3 if user adds too many rows */
             body { background: white; display: block; height: auto; overflow: visible; margin: 0; }
             .sidebar { display: none !important; }
             .main-workspace { padding: 0; display: block; height: auto; overflow: visible; gap: 0; }
@@ -160,27 +167,13 @@
         <button class="btn-undo" onclick="removeLastDashaRow()">- शेवटची ओळ काढा</button>
         <button class="btn-clear" onclick="clearDashaRows()">सर्व काढा</button>
 
-        <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">शांती पूजन (Page 2)</h2>
-        <div id="poojaControl"></div>
-        
-        <button class="btn-add" onclick="addPoojaRow()">+ जोडा (Add Pooja)</button>
-        <button class="btn-undo" onclick="removeLastPoojaRow()">- शेवटची ओळ काढा</button>
-        <button class="btn-clear" onclick="clearPoojaRows()">सर्व काढा</button>
+        <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">शांती पूजन</h2>
+        <div class="checkbox-list" id="poojaChecklist">
+            </div>
 
-        <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">मंत्र उपासना (Page 2)</h2>
-        <div class="form-group">
-            <label>ग्रह मंत्र (Mantra)</label>
-            <select id="mantraInput">
-                <option value="सूर्य">☀️ सूर्य</option><option value="चंद्र">🌙 चंद्र</option>
-                <option value="मंगळ">♂️ मंगळ</option><option value="बुध">☿️ बुध</option>
-                <option value="गुरु">♃ गुरु</option><option value="शुक्र">♀️ शुक्र</option>
-                <option value="शनि">♄ शनि</option><option value="राहू">☊ राहू</option>
-                <option value="केतु">☋ केतु</option>
-            </select>
-        </div>
-        <button class="btn-add" onclick="addMantraRow()">+ जोडा (Add Mantra)</button>
-        <button class="btn-undo" onclick="removeLastMantraRow()">- शेवटची ओळ काढा</button>
-        <button class="btn-clear" onclick="clearMantraRows()">सर्व काढा</button>
+        <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">मंत्र उपासना</h2>
+        <div class="checkbox-list" id="mantraChecklist">
+            </div>
 
         <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
     </aside>
@@ -324,27 +317,26 @@
                     </table>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    
                     <div class="box ratna-box">
-                        <h3 style="color: var(--primary-blue); margin-top: 0; margin-bottom: 15px; font-size: 22px;">तुमच्यासाठी उपयुक्त रत्न</h3>
-                        <div style="font-size: 26px; font-weight: bold; color: var(--accent-green); line-height: 1.4;" data-bind="RashiRatna">
+                        <h3 style="color: var(--primary-blue); margin-top: 0; margin-bottom: 8px; font-size: 18px;">तुमच्यासाठी उपयुक्त रत्न</h3>
+                        <div style="font-size: 20px; font-weight: bold; color: var(--accent-green); line-height: 1.3;" data-bind="RashiRatna">
                             मूंगा (Red Coral)
                         </div>
                     </div>
 
-                    <div class="box" style="padding: 0; overflow: hidden;">
+                    <div class="box" id="poojaBox" style="padding: 0; overflow: hidden; display: none;">
                         <h3 class="page-2-header" style="background-color: #F47A20;">आवश्यक शांती पूजन</h3>
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <tbody id="poojaTableBody">
-                                </tbody>
-                        </table>
+                        <div id="poojaGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 15px; padding: 12px 15px;">
+                            </div>
                     </div>
                 </div>
             </div>
 
-            <div class="box" style="padding: 0; overflow: hidden; margin-top: 20px;">
+            <div class="box" id="mantraBox" style="padding: 0; overflow: hidden; margin-top: 15px; display: none;">
                 <h3 class="page-2-header" style="background-color: #187A22;">मंत्र उपासना</h3>
-                <div style="padding: 12px 20px; font-size: 14px; color: var(--text-dark); background: #fdfdfd; border-bottom: 1px solid var(--border-color); line-height: 1.5;">
+                <div style="padding: 8px 15px; font-size: 12px; color: var(--text-dark); background: #fdfdfd; border-bottom: 1px solid var(--border-color); line-height: 1.4;">
                     <strong style="color: var(--primary-blue);">टिप :</strong> खाली दिलेले मंत्र हे कोणत्याही महिन्याच्या अमावश्ये नंतर त्या त्या ग्रहाच्या ठराविक दिवसा पासून सुरु करू शकता, त्याकरिता रुद्राक्ष जपमाळ, तांब्याचा दिवा त्या मध्ये शुद्ध गायचे तूप इत्यादी साहित्य आवश्यक आहे.
                 </div>
                 <table style="width: 100%; border-collapse: collapse;">
@@ -432,12 +424,11 @@
         ];
 
         const poojaList = [
-            "🔴 नवग्रह शांती (हवन)", "📿 गुरु शांती", "🪐 मंगळ दोष शांती", "⚫ शनि शांती", "🌑 राहु-केतु शांती",
-            "🐍 कालसर्प दोष शांती", "👶 पितृ दोष शांती", "⚪ त्रीपिंडी श्राद्ध", "🟡 गुरु- राहू चांडाळ योग शांती",
-            "🌟 नक्षत्र शांती", "💰 लक्ष्मी शांती", "🔱 महामृत्युंजय जप", "🧭 वास्तु शांती", "🏺 अर्क विवाह / कुंभ विवाह", "🔥 नवचंडी विधान"
+            "🔴 नवग्रह शांती", "📿 गुरु शांती", "🪐 मंगळ दोष शांती", "⚫ शनि शांती", "🌑 राहु-केतु शांती",
+            "🐍 कालसर्प दोष", "👶 पितृ दोष शांती", "⚪ त्रीपिंडी श्राद्ध", "🟡 चांडाळ योग शांती",
+            "🌟 नक्षत्र शांती", "💰 लक्ष्मी शांती", "🔱 महामृत्युंजय जप", "🧭 वास्तु शांती", "🏺 कुंभ विवाह", "🔥 नवचंडी विधान"
         ];
 
-        // NEW: MANTRA DATA
         const mantraData = {
             "सूर्य": { name: "☀️ सूर्य", mantra: "ॐ ह्रां ह्रीं ह्रौं सः सूर्याय नमः", count: "२८,०००" },
             "चंद्र": { name: "🌙 चंद्र", mantra: "ॐ श्रां श्रीं श्रौं सः चन्द्राय नमः", count: "४४,०००" },
@@ -476,12 +467,27 @@
         ratnaHtml += `</select></div>`;
         ratnaContainer.innerHTML = ratnaHtml;
 
-        // Insert Pooja Options
-        const poojaContainer = document.getElementById('poojaControl');
-        let poojaHtml = `<div class="form-group"><label>पूजन निवडा (Select Pooja)</label><select id="poojaInput">`;
-        poojaList.forEach(opt => poojaHtml += `<option value="${opt}">${opt}</option>`);
-        poojaHtml += `</select></div>`;
-        poojaContainer.innerHTML = poojaHtml;
+        // INJECT POOJA CHECKLIST
+        const poojaChecklistContainer = document.getElementById('poojaChecklist');
+        poojaList.forEach((pooja, i) => {
+            poojaChecklistContainer.insertAdjacentHTML('beforeend', `
+                <label class="checkbox-item">
+                    <input type="checkbox" value="${pooja}" onchange="renderPoojaTable()">
+                    ${pooja}
+                </label>
+            `);
+        });
+
+        // INJECT MANTRA CHECKLIST
+        const mantraChecklistContainer = document.getElementById('mantraChecklist');
+        Object.keys(mantraData).forEach((key, i) => {
+            mantraChecklistContainer.insertAdjacentHTML('beforeend', `
+                <label class="checkbox-item">
+                    <input type="checkbox" value="${key}" onchange="renderMantraTable()">
+                    ${mantraData[key].name}
+                </label>
+            `);
+        });
 
         document.body.addEventListener('input', (e) => {
             if(e.target.dataset.control) {
@@ -505,78 +511,65 @@
             const planet = document.getElementById('dashaPlanetInput').value;
             const startDate = document.getElementById('dashaStartInput').value;
             const endDate = document.getElementById('dashaEndInput').value;
-            
-            if(!startDate || !endDate) {
-                alert("कृपया सुरुवात आणि शेवटची तारीख निवडा (Please select both start and end dates)");
-                return;
-            }
+            if(!startDate || !endDate) { alert("कृपया सुरुवात आणि शेवटची तारीख निवडा"); return; }
 
-            const formattedStart = formatDashaDate(startDate);
-            const formattedEnd = formatDashaDate(endDate);
-            
             const tbody = document.getElementById('dashaTableBody');
-            const newRow = `
+            tbody.insertAdjacentHTML('beforeend', `
                 <tr class="dasha-row">
                     <td>${planet}</td>
-                    <td>${formattedStart} - ${formattedEnd}</td>
+                    <td>${formatDashaDate(startDate)} - ${formatDashaDate(endDate)}</td>
                 </tr>
-            `;
-            tbody.insertAdjacentHTML('beforeend', newRow);
+            `);
         }
-
         function removeLastDashaRow() {
             const tbody = document.getElementById('dashaTableBody');
             if (tbody.lastElementChild) tbody.removeChild(tbody.lastElementChild);
         }
+        function clearDashaRows() { document.getElementById('dashaTableBody').innerHTML = ""; }
 
-        function clearDashaRows() {
-            document.getElementById('dashaTableBody').innerHTML = "";
-        }
-
-        // --- 4. POOJA ROW GENERATOR ---
-        function addPoojaRow() {
-            const pooja = document.getElementById('poojaInput').value;
-            const tbody = document.getElementById('poojaTableBody');
-            const newRow = `
-                <tr class="dasha-row pooja-row">
-                    <td style="text-align: center; padding: 12px 15px;">${pooja}</td>
-                </tr>
-            `;
-            tbody.insertAdjacentHTML('beforeend', newRow);
-        }
-
-        function removeLastPoojaRow() {
-            const tbody = document.getElementById('poojaTableBody');
-            if (tbody.lastElementChild) tbody.removeChild(tbody.lastElementChild);
-        }
-
-        function clearPoojaRows() {
-            document.getElementById('poojaTableBody').innerHTML = "";
-        }
-
-        // --- 5. MANTRA ROW GENERATOR ---
-        function addMantraRow() {
-            const planetKey = document.getElementById('mantraInput').value;
-            const data = mantraData[planetKey];
-            const tbody = document.getElementById('mantraTableBody');
+        // --- 4. POOJA CHECKLIST RENDERER (Now 2 columns inside) ---
+        function renderPoojaTable() {
+            const poojaGrid = document.getElementById('poojaGrid');
+            const poojaBox = document.getElementById('poojaBox');
+            poojaGrid.innerHTML = "";
+            const checkedBoxes = poojaChecklistContainer.querySelectorAll('input:checked');
             
-            const newRow = `
-                <tr class="dasha-row mantra-row">
-                    <td>${data.name}</td>
-                    <td>${data.mantra}</td>
-                    <td>जप: <strong>${data.count}</strong></td>
-                </tr>
-            `;
-            tbody.insertAdjacentHTML('beforeend', newRow);
+            if(checkedBoxes.length === 0) {
+                poojaBox.style.display = "none";
+            } else {
+                poojaBox.style.display = "block";
+                checkedBoxes.forEach(cb => {
+                    poojaGrid.insertAdjacentHTML('beforeend', `
+                        <div style="font-size: 14px; font-weight: 600; color: var(--text-dark); padding: 4px 0; border-bottom: 1px dashed #D3D9DE;">
+                            ${cb.value}
+                        </div>
+                    `);
+                });
+            }
         }
 
-        function removeLastMantraRow() {
+        // --- 5. MANTRA CHECKLIST RENDERER ---
+        function renderMantraTable() {
             const tbody = document.getElementById('mantraTableBody');
-            if (tbody.lastElementChild) tbody.removeChild(tbody.lastElementChild);
-        }
+            const mantraBox = document.getElementById('mantraBox');
+            tbody.innerHTML = "";
+            const checkedBoxes = mantraChecklistContainer.querySelectorAll('input:checked');
 
-        function clearMantraRows() {
-            document.getElementById('mantraTableBody').innerHTML = "";
+            if(checkedBoxes.length === 0) {
+                mantraBox.style.display = "none";
+            } else {
+                mantraBox.style.display = "block";
+                checkedBoxes.forEach(cb => {
+                    const data = mantraData[cb.value];
+                    tbody.insertAdjacentHTML('beforeend', `
+                        <tr class="dasha-row mantra-row">
+                            <td>${data.name}</td>
+                            <td>${data.mantra}</td>
+                            <td>जप: <strong>${data.count}</strong></td>
+                        </tr>
+                    `);
+                });
+            }
         }
     </script>
 </body>
