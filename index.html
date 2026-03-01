@@ -23,16 +23,16 @@
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #B0BEC5; }
         
         .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 16px; box-sizing: border-box; }
-        
         .form-group input[type="time"]::-webkit-calendar-picker-indicator, .form-group input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 
         .print-btn { margin-top: 20px; margin-bottom: 20px; background-color: #F47A20; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; width: 100%; }
 
-        .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; }
+        .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 40px; }
         
-        /* Adjusted padding slightly to give it more breathing room */
-        .page-container { width: 850px; background: white; padding: 30px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; }
+        /* Page Container Styles */
+        .page-container { width: 850px; background: white; padding: 30px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; flex-shrink: 0; }
         
+        /* Page 1 Specific Styles */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 10px; }
         .header h1 { font-size: 24px; color: var(--primary-blue); margin: 0; }
         .logo-area { display: flex; align-items: center; font-size: 24px; font-weight: 700; color: var(--primary-blue); }
@@ -60,7 +60,6 @@
         .detail-table td:last-child { color: var(--accent-green); font-weight: 500; }
 
         .main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 15px; background-color: #fafbfc; }
-        /* Reduced SVG max-width slightly to ensure it doesn't push table down */
         .svg-chart { width: 100%; height: auto; max-width: 320px; margin: 0 auto; display: block; }
         .chart-lines { stroke: #a0aab5; stroke-width: 1; fill: none; }
         .chart-num { font-size: 10px; fill: var(--text-dark); }
@@ -74,43 +73,36 @@
         .dot-sun { background: #F47A20; } .dot-moon { background: #95A5A6; } .dot-merc { background: #7F8C8D; } .dot-ven { background: #F1C40F; } .dot-mars { background: #E74C3C; } .dot-jup { background: #A0522D; } .dot-sat { background: #7A8498; } .dot-node { background: transparent; }
         .footer-note { margin-top: 10px; font-size: 12px; color: var(--primary-blue); }
 
+        /* Page 2 (Dasha) Specific Styles */
+        .dasha-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
+        .dasha-box { border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; }
+        .dasha-header-row { background-color: var(--primary-blue); color: white; text-align: center; padding: 6px; font-weight: bold; font-size: 15px; }
+        .dasha-table-inner { width: 100%; border-collapse: collapse; font-size: 14px; text-align: center; }
+        .dasha-table-inner td { padding: 4px; border-bottom: 1px solid #eaedf0; }
+        .dasha-table-inner tr:last-child td { border-bottom: none; }
+        .dasha-table-inner td:first-child { border-right: 1px solid #eaedf0; font-weight: 600; width: 40%; background-color: #fafbfc; color: var(--text-dark); }
+        .editable-date { display: inline-block; min-width: 80px; border-bottom: 1px dashed #b0bec5; outline: none; padding: 0 4px; color: var(--accent-green); cursor: text; }
+        .editable-date:focus { background-color: #fff9c4; border-bottom-color: var(--primary-blue); }
+
         @media (max-width: 850px) {
             body { flex-direction: column; height: auto; overflow: auto; }
             .sidebar { width: 100%; box-sizing: border-box; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-            .main-workspace { padding: 10px; width: 100%; box-sizing: border-box; }
+            .main-workspace { padding: 10px; width: 100%; box-sizing: border-box; gap: 20px; }
             .page-container { width: 100%; padding: 15px; }
             .header { flex-direction: column; text-align: center; gap: 10px; }
-            .details-grid { grid-template-columns: 1fr; }
-            .main-content { grid-template-columns: 1fr; }
+            .details-grid, .main-content { grid-template-columns: 1fr; }
+            .dasha-grid { grid-template-columns: 1fr; } /* Stack tables on mobile */
             .summary-box { flex-direction: column; gap: 15px; }
             .detail-table td:first-child { text-align: left; }
         }
 
-        /* =========================================
-           UPDATED PRINT STYLES FOR EXACT 1-PAGE A4
-           ========================================= */
+        /* Print Styles - Forces Two Pages */
         @media print {
-            /* Force exact A4 size and remove default browser margins */
-            @page {
-                size: A4 portrait;
-                margin: 5mm; 
-            }
-            
-            body { 
-                background: white; 
-                display: block; 
-                height: 100%; 
-                overflow: hidden; /* Stop scrolling/spilling */
-                margin: 0;
-            }
-            
+            @page { size: A4 portrait; margin: 5mm; }
+            body { background: white; display: block; height: auto; overflow: visible; margin: 0; }
             .sidebar { display: none !important; }
             
-            .main-workspace { 
-                padding: 0; 
-                display: block;
-                height: 100%;
-            }
+            .main-workspace { padding: 0; display: block; gap: 0; }
             
             .page-container { 
                 box-shadow: none; 
@@ -118,18 +110,22 @@
                 width: 100% !important; 
                 max-width: 100% !important; 
                 border: none;
-                /* Scale slightly to ensure it fits without breaking */
                 transform: scale(0.97); 
                 transform-origin: top center;
-                /* Prevent breaking inside the container */
                 page-break-inside: avoid; 
+                margin-bottom: 0;
             }
+            
+            /* Magic CSS to force Page 2 onto a new sheet */
+            .page-2 { page-break-before: always; }
             
             .box { border-color: #000; }
             .details-grid, .main-content { grid-template-columns: 1fr 1fr !important; display: grid !important; }
+            .dasha-grid { grid-template-columns: repeat(3, 1fr) !important; display: grid !important; }
             .summary-box { flex-direction: row !important; display: flex !important; }
             .header { flex-direction: row !important; text-align: left !important; }
             .detail-table td:first-child { text-align: right !important; }
+            .editable-date { border-bottom: none; } /* Hide dashed lines when printing */
         }
     </style>
 </head>
@@ -150,7 +146,6 @@
 
     <main class="main-workspace">
         <div class="page-container">
-            
             <header class="header">
                 <h1>कुंडली <span id="headerNameDisplay">Amey Hatekar</span></h1>
                 <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष</div>
@@ -254,14 +249,34 @@
                 </div>
             </div>
         </div>
+
+        <div class="page-container page-2">
+            <header class="header">
+                <h1>विंशोत्तरी महादशा व अंतर्दशा</h1>
+                <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष</div>
+            </header>
+            
+            <div class="box info-box" style="padding: 10px;">
+                <div class="info-row-1">
+                    नाम: <strong id="infoNameDisplay2">Amey Hatekar</strong>
+                </div>
+                <div style="font-size: 14px; margin-top: 5px; color: var(--text-muted);">
+                    (तारखेवर क्लिक करून तुम्ही ती थेट बदलू शकता / Click dates to edit)
+                </div>
+            </div>
+
+            <div class="dasha-grid" id="dashaGridContainer"></div>
+        </div>
+
     </main>
 
     <script>
-        // 1. Core Header Listeners
+        // 1. Core Header Listeners (Updates both pages)
         document.getElementById('clientNameInput').addEventListener('input', e => {
             const val = e.target.value || '______________';
             document.getElementById('headerNameDisplay').textContent = val;
             document.getElementById('infoNameDisplay').textContent = val;
+            document.getElementById('infoNameDisplay2').textContent = val; // Page 2 name
         });
         document.getElementById('clientPlaceInput').addEventListener('input', e => {
             document.getElementById('infoPlaceDisplay').textContent = e.target.value || '______________';
@@ -299,104 +314,96 @@
             Varna: ["ब्राह्मण", "क्षत्रिय", "वैश्य", "शूद्र"],
             Tithi: ["प्रतिपदा", "द्वितीया", "तृतीया", "चतुर्थी", "पंचमी", "षष्ठी", "सप्तमी", "अष्टमी", "नवमी", "दशमी", "एकादशी", "द्वादशी", "त्रयोदशी", "चतुर्दशी", "पौर्णिमा", "अमावास्या"].flatMap(t=>[t+', शुक्ल', t+', कृष्ण']),
             NakshatraPada: [
-                ["अश्विनी", ["चू", "चे", "चो", "ला"]],
-                ["भरणी", ["ली", "लू", "ले", "लो"]],
-                ["कृत्तिका", ["अ", "ई", "ऊ", "ए"]],
-                ["रोहिणी", ["ओ", "वा", "वी", "वू"]],
-                ["मृगशीर्ष", ["वे", "वो", "का", "की"]],
-                ["आर्द्रा", ["कू", "घ", "ङ", "छ"]],
-                ["पुनर्वसु", ["के", "को", "हा", "ही"]],
-                ["पुष्य", ["हू", "हे", "हो", "डा"]],
-                ["आश्लेषा", ["डी", "डू", "डे", "डो"]],
-                ["मघा", ["मा", "मी", "मू", "मे"]],
-                ["पूर्वा फाल्गुनी", ["मो", "टा", "टी", "टू"]],
-                ["उत्तरा फाल्गुनी", ["टे", "टो", "पा", "पी"]],
-                ["हस्त", ["पू", "ष", "ण", "ठ"]],
-                ["चित्रा", ["पे", "पो", "रा", "री"]],
-                ["स्वाती", ["रू", "रे", "रो", "ता"]],
-                ["विशाखा", ["ती", "तू", "ते", "तो"]],
-                ["अनुराधा", ["ना", "नी", "नू", "ने"]],
-                ["ज्येष्ठा", ["नो", "या", "यी", "यू"]],
-                ["मूळ", ["ये", "यो", "भा", "भी"]],
-                ["पूर्वाषाढा", ["भू", "धा", "फा", "ढा"]],
-                ["उत्तराषाढा", ["भे", "भो", "जा", "जी"]],
-                ["श्रवण", ["खी", "खू", "खे", "खो"]],
-                ["धनिष्ठा", ["गा", "गी", "गू", "गे"]],
-                ["शततारका", ["गो", "सा", "सी", "सू"]],
-                ["पूर्वा भाद्रपदा", ["से", "सो", "दा", "दी"]],
-                ["उत्तरा भाद्रपदा", ["दू", "थ", "झ", "ञ"]],
-                ["रेवती", ["दे", "दो", "चा", "ची"]]
+                ["अश्विनी", ["चू", "चे", "चो", "ला"]], ["भरणी", ["ली", "लू", "ले", "लो"]], ["कृत्तिका", ["अ", "ई", "ऊ", "ए"]],
+                ["रोहिणी", ["ओ", "वा", "वी", "वू"]], ["मृगशीर्ष", ["वे", "वो", "का", "की"]], ["आर्द्रा", ["कू", "घ", "ङ", "छ"]],
+                ["पुनर्वसु", ["के", "को", "हा", "ही"]], ["पुष्य", ["हू", "हे", "हो", "डा"]], ["आश्लेषा", ["डी", "डू", "डे", "डो"]],
+                ["मघा", ["मा", "मी", "मू", "मे"]], ["पूर्वा फाल्गुनी", ["मो", "टा", "टी", "टू"]], ["उत्तरा फाल्गुनी", ["टे", "टो", "पा", "पी"]],
+                ["हस्त", ["पू", "ष", "ण", "ठ"]], ["चित्रा", ["पे", "पो", "रा", "री"]], ["स्वाती", ["रू", "रे", "रो", "ता"]],
+                ["विशाखा", ["ती", "तू", "ते", "तो"]], ["अनुराधा", ["ना", "नी", "नू", "ने"]], ["ज्येष्ठा", ["नो", "या", "यी", "यू"]],
+                ["मूळ", ["ये", "यो", "भा", "भी"]], ["पूर्वाषाढा", ["भू", "धा", "फा", "ढा"]], ["उत्तराषाढा", ["भे", "भो", "जा", "जी"]],
+                ["श्रवण", ["खी", "खू", "खे", "खो"]], ["धनिष्ठा", ["गा", "गी", "गू", "गे"]], ["शततारका", ["गो", "सा", "सी", "सू"]],
+                ["पूर्वा भाद्रपदा", ["से", "सो", "दा", "दी"]], ["उत्तरा भाद्रपदा", ["दू", "थ", "झ", "ञ"]], ["रेवती", ["दे", "दो", "चा", "ची"]]
             ].flatMap(([n, letters]) => letters.map((l, i) => `${n}, पद ${i + 1} (${l})`)),
             Yog: ["विष्कुंभ", "प्रीति", "आयुष्मान", "सौभाग्य", "शोभन", "अतिगंड", "सुकर्मा", "धृति", "शूल", "गंड", "वृद्धि", "ध्रुव", "व्याघात", "हर्षण", "वज्र", "सिद्धि", "व्यतीपात", "वरीयान", "परिघ", "शिव", "सिद्ध", "साध्य", "शुभ", "शुक्ल", "ब्रह्म", "ऐंद्र", "वैधृति"],
             Karan: ["बव", "बालव", "कौलव", "तैतिल", "गर", "वणिज", "विष्टि (भद्रा)", "शकुनि", "चतुष्पाद", "नाग", "किंस्तुघ्न"]
         };
 
-        const extraTimers = {
-            IshtKaal: { label: "इष्टकाल", type: "time", step: "1" },
-            Suryoday: { label: "सूर्योदय", type: "time" }
-        };
-
+        const extraTimers = { IshtKaal: { label: "इष्टकाल", type: "time", step: "1" }, Suryoday: { label: "सूर्योदय", type: "time" } };
         const rashiSymbols = ["♈ मेष", "♉ वृषभ", "♊ मिथुन", "♋ कर्क", "♌ सिंह", "♍ कन्या", "♎ तुला", "♏ वृश्चिक", "♐ धनु", "♑ मकर", "♒ कुंभ", "♓ मीन"];
-        
-        // CHANGED: Re-ordered in the data array as well so the sidebar matches the document
         const planetsList = [
-            { id: "सूर्य", default: "♈ मेष" },
-            { id: "चन्द्र", default: "♓ मीन" },
-            { id: "मंगल", default: "♈ मेष" },
-            { id: "बुध", default: "♓ मीन" },
-            { id: "गुरु", default: "♒ कुम्भ" },
-            { id: "शुक्र", default: "♒ कुम्भ" },
-            { id: "शनि", default: "♈ मेष" },
-            { id: "राहू", default: "♌ सिंह" },
-            { id: "केतु", default: "♒ कुम्भ" }
+            { id: "सूर्य", default: "♈ मेष" }, { id: "चन्द्र", default: "♓ मीन" }, { id: "मंगल", default: "♈ मेष" },
+            { id: "बुध", default: "♓ मीन" }, { id: "गुरु", default: "♒ कुम्भ" }, { id: "शुक्र", default: "♒ कुम्भ" },
+            { id: "शनि", default: "♈ मेष" }, { id: "राहू", default: "♌ सिंह" }, { id: "केतु", default: "♒ कुम्भ" }
         ];
 
         const container = document.getElementById('dynamicControls');
-        
-        // Build Selects
         for (const [key, options] of Object.entries(jyotishData)) {
             let html = `<div class="form-group"><label>${key}</label><select data-control="${key}">`;
             options.forEach(opt => html += `<option value="${opt}">${opt}</option>`);
             html += `</select></div>`;
             container.insertAdjacentHTML('beforeend', html);
         }
-        
-        // Build Timers
         for (const [key, attrs] of Object.entries(extraTimers)) {
             let stepAttr = attrs.step ? `step="${attrs.step}"` : "";
             container.insertAdjacentHTML('beforeend', `<div class="form-group"><label>${attrs.label}</label><input type="${attrs.type}" data-control="${key}" ${stepAttr} value="00:00${attrs.step ? ':00' : ''}"></div>`);
         }
-
         container.insertAdjacentHTML('beforeend', '<h2 style="margin-top: 25px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">ग्रह स्थिती (Planet Positions)</h2>');
-        
         planetsList.forEach(p => {
             let html = `<div class="form-group"><label>${p.id} राशी</label><select data-control="Rashi_${p.id}">`;
-            rashiSymbols.forEach(opt => {
-                html += `<option value="${opt}" ${opt === p.default ? 'selected' : ''}>${opt}</option>`;
-            });
+            rashiSymbols.forEach(opt => html += `<option value="${opt}" ${opt === p.default ? 'selected' : ''}>${opt}</option>`);
             html += `</select></div>`;
             container.insertAdjacentHTML('beforeend', html);
         });
 
-        // 3. Single Event Delegation for all dynamically generated controls
         container.addEventListener('input', (e) => {
             if(e.target.dataset.control) {
                 const val = e.target.value;
                 document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
-                
-                // Janmakshar specific logic
                 if(e.target.dataset.control === 'NakshatraPada') {
                     const match = val.match(/\(([^)]+)\)/);
-                    if (match && match[1]) {
-                        document.getElementById('naamAksharDisplay').textContent = match[1] + "..";
-                    }
+                    if (match && match[1]) document.getElementById('naamAksharDisplay').textContent = match[1] + "..";
                 }
             }
         });
 
-        // Initialize display to match first values in arrays
-        document.querySelectorAll('[data-control]').forEach(input => {
-            input.dispatchEvent(new Event('input', { bubbles: true }));
+        document.querySelectorAll('[data-control]').forEach(input => input.dispatchEvent(new Event('input', { bubbles: true })));
+
+        // ==========================================
+        // 3. PAGE 2: GENERATE DASHA TABLES MAGIC
+        // ==========================================
+        // The exact Vimshottari Mahadasha sequence and durations (Years)
+        const dashaSequence = [
+            { name: "सूर्य", years: 6 }, { name: "चंद्र", years: 10 }, { name: "मंगळ", years: 7 },
+            { name: "राहू", years: 18 }, { name: "गुरु", years: 16 }, { name: "शनि", years: 19 },
+            { name: "बुध", years: 17 }, { name: "केतू", years: 7 }, { name: "शुक्र", years: 20 }
+        ];
+
+        const dashaContainer = document.getElementById('dashaGridContainer');
+        
+        // Loop through all 9 planets to create 9 Mahadasha boxes
+        dashaSequence.forEach((mahadasha, mIndex) => {
+            let tableHTML = `
+                <div class="dasha-box">
+                    <div class="dasha-header-row">${mahadasha.name} महादशा (${mahadasha.years} वर्षे)</div>
+                    <table class="dasha-table-inner">
+            `;
+            
+            // Generate the 9 Antardashas inside this Mahadasha (always starts with the Mahadasha lord)
+            for (let i = 0; i < 9; i++) {
+                // Calculate the wrapping index to maintain sequence
+                let aIndex = (mIndex + i) % 9;
+                let antardasha = dashaSequence[aIndex];
+                
+                tableHTML += `
+                    <tr>
+                        <td>${antardasha.name} अंतर्दशा</td>
+                        <td><span class="editable-date" contenteditable="true" spellcheck="false">dd-mm-yyyy</span></td>
+                    </tr>
+                `;
+            }
+            
+            tableHTML += `</table></div>`;
+            dashaContainer.insertAdjacentHTML('beforeend', tableHTML);
         });
     </script>
 </body>
