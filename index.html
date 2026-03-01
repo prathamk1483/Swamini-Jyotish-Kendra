@@ -23,8 +23,6 @@
         .sidebar h2 { margin-top: 0; font-size: 20px; border-bottom: 1px solid #455A64; padding-bottom: 10px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #B0BEC5; }
-        
-        /* Updated to include textarea styling */
         .form-group input:not([type="checkbox"]), .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 15px; box-sizing: border-box; font-family: inherit; }
         .form-group textarea { resize: vertical; min-height: 100px; }
         .form-group input[type="time"]::-webkit-calendar-picker-indicator, .form-group input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
@@ -65,7 +63,7 @@
         .lagna-title { font-size: 16px; color: var(--accent-green); margin-top: 5px; }
         .summary-center h3 { margin: 0 0 5px 0; font-size: 20px; color: var(--accent-green); }
         .summary-center p { margin: 0; font-size: 14px; color: var(--accent-green); }
-        .mangal-dosh { text-decoration: line-through; color: var(--text-dark); }
+        .mangal-dosh { font-weight: bold; font-size: 18px; }
 
         .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 12px; }
         .detail-card { padding: 10px; background-color: #fafbfc; display: flex; justify-content: center; }
@@ -91,17 +89,14 @@
         /* --- PAGE 2 SPECIFIC STYLES --- */
         .page-2-header { background-color: var(--primary-blue); color: white; margin: 0; padding: 8px; text-align: center; font-size: 18px; border-radius: 4px 4px 0 0; }
         
-        /* Shrunk Dasha Table */
         .dasha-row { border-bottom: 1px solid #eaedf0; }
         .dasha-row:last-child { border-bottom: none; }
         .dasha-row td { padding: 8px 12px; font-size: 15px; }
         .dasha-row td:first-child { font-weight: bold; color: var(--accent-green); width: 30%; border-right: 1px solid #eaedf0; background: #fafbfc;}
         .dasha-row td:last-child { text-align: center; color: var(--text-dark); font-weight: 600; }
         
-        /* Shrunk Ratna Box */
         .ratna-box { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 15px; box-sizing: border-box; background: #fffdf5; border: 2px dashed #f1c40f;}
 
-        /* More Compact Mantra Box */
         .mantra-row td { padding: 5px 10px; font-size: 13px; }
         .mantra-row td:first-child { font-weight: bold; color: var(--primary-blue); font-size: 15px; width: 22%; text-align: center; }
         .mantra-row td:nth-child(2) { text-align: center; font-weight: bold; color: var(--accent-green); font-size: 15px; }
@@ -135,14 +130,13 @@
                 box-shadow: none; padding: 5px 20px !important; width: 100% !important; max-width: 100% !important; border: none;
                 transform: scale(0.97); transform-origin: top center; margin-bottom: 0; page-break-after: always;
             }
-            /* Ensure Pages 2 and 3 start on new physical sheets of paper */
             .page-2, .page-3 { page-break-before: always; padding-top: 20px !important; page-break-after: auto; }
             .box { border-color: #000; }
             .details-grid, .main-content { grid-template-columns: 1fr 1fr !important; display: grid !important; }
             .summary-box { flex-direction: row !important; display: flex !important; }
             .detail-table td:first-child { text-align: right !important; }
             #page2Grid { grid-template-columns: 1fr 1fr !important; display: grid !important; }
-            .editable-textarea:empty:before { content: ""; } /* Hide placeholder when printing */
+            .editable-textarea:empty:before { content: ""; }
         }
     </style>
 </head>
@@ -151,7 +145,34 @@
     <aside class="sidebar">
         <h2>ग्राहक तपशील</h2>
         <div class="form-group"><label>पूर्ण नाव</label><input type="text" id="clientNameInput" value="Amey Hatekar"></div>
-        <div class="form-group"><label>जन्मस्थान</label><input type="text" id="clientPlaceInput" value="Amravati, India"></div>
+        
+        <div class="form-group" style="margin-bottom: 5px;"><label>जन्मस्थान</label><input type="text" id="clientPlaceInput" value="Amravati, India"></div>
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>अक्षांश (Lat)</label><input type="number" step="0.01" id="clientLatInput" value="20.93"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>रेखांश (Lon)</label><input type="number" step="0.01" id="clientLonInput" value="77.75"></div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 8px;">
+            <label>दशा भोग्य ग्रह व काळ</label>
+            <select id="bhogyaPlanetInput" style="margin-bottom: 10px;">
+                <option value="सूर्य">सूर्य</option><option value="चन्द्र">चन्द्र</option><option value="मंगल">मंगल</option>
+                <option value="बुध" selected>बुध</option><option value="गुरु">गुरु</option><option value="शुक्र">शुक्र</option>
+                <option value="शनि">शनि</option><option value="राहू">राहू</option><option value="केतु">केतु</option>
+            </select>
+        </div>
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>वर्षे (y)</label><input type="number" id="bhogyaYInput" value="10" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>महिने (m)</label><input type="number" id="bhogyaMInput" value="3" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>दिवस (d)</label><input type="number" id="bhogyaDInput" value="13" min="0"></div>
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #455A64;">
+            <label class="checkbox-item" style="font-size: 15px;">
+                <input type="checkbox" id="mangalDoshInput"> मंगळ दोष आहे? (Has Mangal Dosh)
+            </label>
+        </div>
+
         <div class="form-group"><label>जन्म तारीख</label><input type="date" id="clientDateInput" value="1998-04-25"></div>
         <div class="form-group"><label>जन्म वेळ</label><input type="time" id="clientTimeInput" value="09:09"></div>
 
@@ -212,7 +233,7 @@
             <div class="box info-box">
                 <div class="info-row-1">
                     नाम: <strong class="client-name-bind">Amey Hatekar</strong> 
-                    स्थान: <strong id="infoPlaceDisplay">Amravati, India</strong> (Lat: 20.93 , Lon: 77.75)
+                    स्थान: <strong id="infoPlaceDisplay">Amravati, India</strong> (Lat: <span id="latDisplay">20.93</span> , Lon: <span id="lonDisplay">77.75</span>)
                 </div>
                 <div class="info-row-2" id="infoDateTimeDisplay">
                     २५ एप्रि १९९८, शनिवार, ०९:०९ AM
@@ -226,10 +247,10 @@
                 </div>
                 <div class="summary-item summary-center">
                     <h3>नाम <span id="naamAksharDisplay">दो..</span></h3>
-                    <p>दशा भोग्य बुध 10y 3m 13d</p>
+                    <p>दशा भोग्य <span id="bhogyaPlanetDisplay">बुध</span> <span id="bhogyaYDisplay">10</span>y <span id="bhogyaMDisplay">3</span>m <span id="bhogyaDDisplay">13</span>d</p>
                 </div>
                 <div class="summary-item">
-                    <span class="mangal-dosh">मंगळ दोष</span>
+                    <span id="mangalDoshDisplay" class="mangal-dosh" style="color: var(--text-dark);">मंगळ दोष नाही</span>
                 </div>
             </div>
 
@@ -383,15 +404,15 @@
     </main>
 
     <script>
-        // --- 1. Header Binding Logic ---
+        // --- 1. Header & Basic Info Binding ---
         document.getElementById('clientNameInput').addEventListener('input', e => {
             const val = e.target.value || '______________';
             document.querySelectorAll('.client-name-bind').forEach(el => el.textContent = val);
         });
         
-        document.getElementById('clientPlaceInput').addEventListener('input', e => {
-            document.getElementById('infoPlaceDisplay').textContent = e.target.value || '______________';
-        });
+        document.getElementById('clientPlaceInput').addEventListener('input', e => document.getElementById('infoPlaceDisplay').textContent = e.target.value || '______________');
+        document.getElementById('clientLatInput').addEventListener('input', e => document.getElementById('latDisplay').textContent = e.target.value || '0.00');
+        document.getElementById('clientLonInput').addEventListener('input', e => document.getElementById('lonDisplay').textContent = e.target.value || '0.00');
 
         const updateDateTime = () => {
             const d = document.getElementById('clientDateInput').value, t = document.getElementById('clientTimeInput').value;
@@ -411,6 +432,23 @@
         document.getElementById('clientDateInput').addEventListener('input', updateDateTime);
         document.getElementById('clientTimeInput').addEventListener('input', updateDateTime);
         updateDateTime();
+
+        // --- Dasha Bhogya & Mangal Dosh Logic ---
+        document.getElementById('bhogyaPlanetInput').addEventListener('input', e => document.getElementById('bhogyaPlanetDisplay').textContent = e.target.value);
+        document.getElementById('bhogyaYInput').addEventListener('input', e => document.getElementById('bhogyaYDisplay').textContent = e.target.value || '0');
+        document.getElementById('bhogyaMInput').addEventListener('input', e => document.getElementById('bhogyaMDisplay').textContent = e.target.value || '0');
+        document.getElementById('bhogyaDInput').addEventListener('input', e => document.getElementById('bhogyaDDisplay').textContent = e.target.value || '0');
+
+        document.getElementById('mangalDoshInput').addEventListener('change', e => {
+            const display = document.getElementById('mangalDoshDisplay');
+            if(e.target.checked) {
+                display.textContent = 'मंगळ दोष आहे';
+                display.style.color = '#dc3545'; // Red text
+            } else {
+                display.textContent = 'मंगळ दोष नाही';
+                display.style.color = 'var(--text-dark)'; // Black text
+            }
+        });
 
         // --- 2. Dynamic Controls Generator ---
         const jyotishData = {
@@ -493,32 +531,23 @@
             container.insertAdjacentHTML('beforeend', html);
         });
 
-        // Insert Ratna Options
         const ratnaContainer = document.getElementById('ratnaControl');
         let ratnaHtml = `<div class="form-group"><label>रत्न निवडा (Select Gemstone)</label><select data-control="RashiRatna">`;
         ratnaOptions.forEach(opt => ratnaHtml += `<option value="${opt.stone}">${opt.label} - ${opt.stone}</option>`);
         ratnaHtml += `</select></div>`;
         ratnaContainer.innerHTML = ratnaHtml;
 
-        // INJECT POOJA CHECKLIST
         const poojaChecklistContainer = document.getElementById('poojaChecklist');
         poojaList.forEach((pooja, i) => {
             poojaChecklistContainer.insertAdjacentHTML('beforeend', `
-                <label class="checkbox-item">
-                    <input type="checkbox" value="${pooja}" onchange="renderPoojaTable()">
-                    ${pooja}
-                </label>
+                <label class="checkbox-item"><input type="checkbox" value="${pooja}" onchange="renderPoojaTable()"> ${pooja}</label>
             `);
         });
 
-        // INJECT MANTRA CHECKLIST
         const mantraChecklistContainer = document.getElementById('mantraChecklist');
         Object.keys(mantraData).forEach((key, i) => {
             mantraChecklistContainer.insertAdjacentHTML('beforeend', `
-                <label class="checkbox-item">
-                    <input type="checkbox" value="${key}" onchange="renderMantraTable()">
-                    ${mantraData[key].name}
-                </label>
+                <label class="checkbox-item"><input type="checkbox" value="${key}" onchange="renderMantraTable()"> ${mantraData[key].name}</label>
             `);
         });
 
@@ -609,15 +638,8 @@
         const falaSidebarInput = document.getElementById('falaShrutiSidebarInput');
         const falaDisplay = document.getElementById('falaShrutiDisplay');
 
-        // Sidebar -> PDF Document
-        falaSidebarInput.addEventListener('input', (e) => {
-            falaDisplay.innerText = e.target.value;
-        });
-
-        // PDF Document -> Sidebar
-        falaDisplay.addEventListener('input', (e) => {
-            falaSidebarInput.value = e.target.innerText;
-        });
+        falaSidebarInput.addEventListener('input', (e) => { falaDisplay.innerText = e.target.value; });
+        falaDisplay.addEventListener('input', (e) => { falaSidebarInput.value = e.target.innerText; });
     </script>
 </body>
 </html>
