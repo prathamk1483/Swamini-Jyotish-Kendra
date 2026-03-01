@@ -29,19 +29,22 @@
         .print-btn { margin-top: 20px; margin-bottom: 20px; background-color: #F47A20; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; width: 100%; }
 
         .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; }
-        .page-container { width: 850px; background: white; padding: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 10px; }
+        
+        /* Adjusted padding slightly to give it more breathing room */
+        .page-container { width: 850px; background: white; padding: 30px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 10px; }
         .header h1 { font-size: 24px; color: var(--primary-blue); margin: 0; }
         .logo-area { display: flex; align-items: center; font-size: 24px; font-weight: 700; color: var(--primary-blue); }
         .logo-area span.swastik { color: #F47A20; font-size: 30px; margin-right: 10px; }
 
-        .box { border: 1px solid var(--border-color); border-radius: 6px; background: white; margin-bottom: 15px; padding: 15px; }
+        .box { border: 1px solid var(--border-color); border-radius: 6px; background: white; margin-bottom: 12px; padding: 12px; }
         .info-box { text-align: center; background-color: #fafbfc; }
         .info-row-1 { font-size: 18px; margin-bottom: 5px; }
         .info-row-1 strong { color: var(--primary-blue); }
         .info-row-2 { font-size: 18px; color: var(--primary-blue); }
 
-        .summary-box { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: #fafbfc; }
+        .summary-box { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: #fafbfc; }
         .summary-item { text-align: center; }
         .rashi-title { font-size: 20px; font-weight: bold; color: var(--accent-green); }
         .lagna-title { font-size: 16px; color: var(--accent-green); margin-top: 5px; }
@@ -49,26 +52,27 @@
         .summary-center p { margin: 0; font-size: 14px; color: var(--accent-green); }
         .mangal-dosh { text-decoration: line-through; color: var(--text-dark); }
 
-        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        .detail-card { padding: 15px; background-color: #fafbfc; display: flex; justify-content: center; }
+        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 12px; }
+        .detail-card { padding: 12px; background-color: #fafbfc; display: flex; justify-content: center; }
         .detail-table { border-collapse: collapse; width: 100%; }
-        .detail-table td { padding: 3px 8px; font-size: 15px; }
+        .detail-table td { padding: 2px 8px; font-size: 15px; }
         .detail-table td:first-child { text-align: right; color: var(--text-dark); width: 50%; }
         .detail-table td:last-child { color: var(--accent-green); font-weight: 500; }
 
-        .main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; background-color: #fafbfc; }
-        .svg-chart { width: 100%; height: auto; max-width: 350px; margin: 0 auto; display: block; }
+        .main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 15px; background-color: #fafbfc; }
+        /* Reduced SVG max-width slightly to ensure it doesn't push table down */
+        .svg-chart { width: 100%; height: auto; max-width: 320px; margin: 0 auto; display: block; }
         .chart-lines { stroke: #a0aab5; stroke-width: 1; fill: none; }
         .chart-num { font-size: 10px; fill: var(--text-dark); }
         .chart-planet { font-size: 12px; fill: #4A90E2; font-weight: 600; }
 
-        .planet-table-section h3 { margin-top: 0; color: var(--primary-blue); font-size: 18px; margin-bottom: 15px; }
+        .planet-table-section h3 { margin-top: 0; color: var(--primary-blue); font-size: 18px; margin-bottom: 10px; }
         .planet-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        .planet-table th { text-align: left; padding-bottom: 10px; color: var(--text-dark); font-weight: 600; }
-        .planet-table td { padding: 6px 0; color: var(--text-dark); }
+        .planet-table th { text-align: left; padding-bottom: 8px; color: var(--text-dark); font-weight: 600; }
+        .planet-table td { padding: 4px 0; color: var(--text-dark); }
         .planet-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
         .dot-sun { background: #F47A20; } .dot-moon { background: #95A5A6; } .dot-merc { background: #7F8C8D; } .dot-ven { background: #F1C40F; } .dot-mars { background: #E74C3C; } .dot-jup { background: #A0522D; } .dot-sat { background: #7A8498; } .dot-node { background: transparent; }
-        .footer-note { margin-top: 15px; font-size: 12px; color: var(--primary-blue); }
+        .footer-note { margin-top: 10px; font-size: 12px; color: var(--primary-blue); }
 
         @media (max-width: 850px) {
             body { flex-direction: column; height: auto; overflow: auto; }
@@ -82,11 +86,45 @@
             .detail-table td:first-child { text-align: left; }
         }
 
+        /* =========================================
+           UPDATED PRINT STYLES FOR EXACT 1-PAGE A4
+           ========================================= */
         @media print {
-            body { background: white; display: block; height: auto; overflow: visible; }
+            /* Force exact A4 size and remove default browser margins */
+            @page {
+                size: A4 portrait;
+                margin: 5mm; 
+            }
+            
+            body { 
+                background: white; 
+                display: block; 
+                height: 100%; 
+                overflow: hidden; /* Stop scrolling/spilling */
+                margin: 0;
+            }
+            
             .sidebar { display: none !important; }
-            .main-workspace { padding: 0; display: block; }
-            .page-container { box-shadow: none; padding: 0 !important; width: 100% !important; max-width: 100% !important; border: none; }
+            
+            .main-workspace { 
+                padding: 0; 
+                display: block;
+                height: 100%;
+            }
+            
+            .page-container { 
+                box-shadow: none; 
+                padding: 10px !important; 
+                width: 100% !important; 
+                max-width: 100% !important; 
+                border: none;
+                /* Scale slightly to ensure it fits without breaking */
+                transform: scale(0.97); 
+                transform-origin: top center;
+                /* Prevent breaking inside the container */
+                page-break-inside: avoid; 
+            }
+            
             .box { border-color: #000; }
             .details-grid, .main-content { grid-template-columns: 1fr 1fr !important; display: grid !important; }
             .summary-box { flex-direction: row !important; display: flex !important; }
