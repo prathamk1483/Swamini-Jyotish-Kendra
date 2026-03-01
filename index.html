@@ -31,13 +31,18 @@
         .btn-undo { background-color: #ffc107; color: #212529; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 5px; }
         .btn-clear { background-color: #dc3545; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 20px; }
 
-        /* --- WORKSPACE & PAGE 1 --- */
+        /* --- WORKSPACE & GLOBAL PAGE STYLES --- */
         .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 40px;}
         .page-container { width: 850px; background: white; padding: 30px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; flex-shrink: 0; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 10px; }
-        .header h1 { font-size: 24px; color: var(--primary-blue); margin: 0; }
-        .logo-area { display: flex; align-items: center; font-size: 24px; font-weight: 700; color: var(--primary-blue); }
-        .logo-area span.swastik { color: #F47A20; font-size: 30px; margin-right: 10px; }
+        
+        /* --- NEW GLOBAL HEADER --- */
+        .page-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--primary-blue); padding-bottom: 12px; margin-bottom: 15px; }
+        .header-title .main-heading { font-size: 26px; color: var(--primary-blue); margin: 0; }
+        .header-contact { text-align: right; }
+        .logo-area { display: flex; align-items: center; justify-content: flex-end; font-size: 22px; font-weight: 700; color: var(--primary-blue); margin-bottom: 5px; }
+        .logo-area span.swastik { color: #F47A20; font-size: 28px; margin-right: 8px; }
+        .contact-details { font-size: 14px; color: var(--text-dark); line-height: 1.4; }
+        .contact-details strong { color: var(--primary-blue); }
 
         .box { border: 1px solid var(--border-color); border-radius: 6px; background: white; margin-bottom: 12px; padding: 12px; }
         .info-box { text-align: center; background-color: #fafbfc; }
@@ -89,7 +94,9 @@
             .sidebar { width: 100%; box-sizing: border-box; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
             .main-workspace { padding: 10px; width: 100%; box-sizing: border-box; gap: 20px; }
             .page-container { width: 100%; padding: 15px; }
-            .header { flex-direction: column; text-align: center; gap: 10px; }
+            .page-header { flex-direction: column; text-align: center; align-items: center; gap: 15px; }
+            .header-contact { text-align: center; }
+            .logo-area { justify-content: center; }
             .details-grid, .main-content { grid-template-columns: 1fr; }
             .summary-box { flex-direction: column; gap: 15px; }
             .detail-table td:first-child { text-align: left; }
@@ -110,7 +117,6 @@
             .box { border-color: #000; }
             .details-grid, .main-content { grid-template-columns: 1fr 1fr !important; display: grid !important; }
             .summary-box { flex-direction: row !important; display: flex !important; }
-            .header { flex-direction: row !important; text-align: left !important; }
             .detail-table td:first-child { text-align: right !important; }
             #page2Grid { grid-template-columns: 1fr 1fr !important; display: grid !important; }
         }
@@ -120,7 +126,7 @@
 
     <aside class="sidebar">
         <h2>ग्राहक तपशील</h2>
-        <div class="form-group"><label>पूर्ण नाव</label><input type="text" id="clientNameInput" value="Amey Hatekar"></div>
+        <div class="form-group"><label>पूर्ण नाव</label><input type="text" id="clientNameInput" value="Sample Name"></div>
         <div class="form-group"><label>जन्मस्थान</label><input type="text" id="clientPlaceInput" value="Amravati, India"></div>
         <div class="form-group"><label>जन्म तारीख</label><input type="date" id="clientDateInput" value="1998-04-25"></div>
         <div class="form-group"><label>जन्म वेळ</label><input type="time" id="clientTimeInput" value="09:09"></div>
@@ -152,14 +158,22 @@
     <main class="main-workspace">
         
         <div class="page-container">
-            <header class="header">
-                <h1>कुंडली <span id="headerNameDisplay">Amey Hatekar</span></h1>
-                <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष</div>
+            <header class="page-header">
+                <div class="header-title">
+                    <h1 class="main-heading">कुंडली <span class="client-name-bind">Sample Name</span></h1>
+                </div>
+                <div class="header-contact">
+                    <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष कार्यालय</div>
+                    <div class="contact-details">
+                        <strong>ज्योतिष:</strong> योगेश उंबरकर<br>
+                        <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
+                    </div>
+                </div>
             </header>
 
             <div class="box info-box">
                 <div class="info-row-1">
-                    नाम: <strong id="infoNameDisplay">Amey Hatekar</strong> 
+                    नाम: <strong class="client-name-bind">Sample Name</strong> 
                     स्थान: <strong id="infoPlaceDisplay">Amravati, India</strong> (Lat: 20.93 , Lon: 77.75)
                 </div>
                 <div class="info-row-2" id="infoDateTimeDisplay">
@@ -257,12 +271,18 @@
         </div>
 
         <div class="page-container page-2">
-            <header class="header" style="justify-content: center; margin-bottom: 25px;">
-                <h1 style="font-size: 28px;">विंशोत्तरी महादशा व राशी रत्न</h1>
+            <header class="page-header">
+                <div class="header-title"></div>
+                <div class="header-contact">
+                    <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष कार्यालय</div>
+                    <div class="contact-details">
+                        <strong>ज्योतिष:</strong> योगेश उंबरकर<br>
+                        <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
+                    </div>
+                </div>
             </header>
 
             <div id="page2Grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
-                
                 <div class="box" style="padding: 0; overflow: hidden;">
                     <h3 class="page-2-header">विंशोत्तरी महादशा</h3>
                     <table style="width: 100%; border-collapse: collapse;">
@@ -277,19 +297,19 @@
                         मूंगा (Red Coral)
                     </div>
                 </div>
-
             </div>
         </div>
 
     </main>
 
     <script>
-        // --- 1. Header Binding Logic ---
+        // --- 1. Header Binding Logic (Updates both pages) ---
         document.getElementById('clientNameInput').addEventListener('input', e => {
             const val = e.target.value || '______________';
-            document.getElementById('headerNameDisplay').textContent = val;
-            document.getElementById('infoNameDisplay').textContent = val;
+            // Updates all elements with the class 'client-name-bind' instantly
+            document.querySelectorAll('.client-name-bind').forEach(el => el.textContent = val);
         });
+        
         document.getElementById('clientPlaceInput').addEventListener('input', e => {
             document.getElementById('infoPlaceDisplay').textContent = e.target.value || '______________';
         });
@@ -348,8 +368,6 @@
             { id: "शनि", default: "♈ मेष" }, { id: "राहू", default: "♌ सिंह" }, { id: "केतु", default: "♒ कुम्भ" }
         ];
         
-        // --- ALL 12 ZODIAC GEMSTONES MAPPED ---
-        // 'label' shows in dropdown, 'stone' prints on the document
         const ratnaOptions = [
             { label: "मेष (Aries)", stone: "मूंगा (Red Coral)" },
             { label: "वृषभ (Taurus)", stone: "पुखराज (Yellow Sapphire)" },
@@ -384,14 +402,12 @@
             container.insertAdjacentHTML('beforeend', html);
         });
 
-        // Insert smart Ratna Select into the sidebar with correct styling
         const ratnaContainer = document.getElementById('ratnaControl');
         let ratnaHtml = `<div class="form-group"><label>रत्न निवडा (Select Gemstone)</label><select data-control="RashiRatna">`;
         ratnaOptions.forEach(opt => ratnaHtml += `<option value="${opt.stone}">${opt.label} - ${opt.stone}</option>`);
         ratnaHtml += `</select></div>`;
         ratnaContainer.innerHTML = ratnaHtml;
 
-        // Global Input Listener
         document.body.addEventListener('input', (e) => {
             if(e.target.dataset.control) {
                 const val = e.target.value;
