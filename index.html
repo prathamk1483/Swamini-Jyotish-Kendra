@@ -67,13 +67,16 @@
 
         .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 12px; }
         .detail-card { padding: 10px; background-color: #fafbfc; display: flex; justify-content: center; }
+        
         .detail-table { border-collapse: collapse; width: 100%; }
-        .detail-table td { padding: 2px 8px; font-size: 15px; }
-        .detail-table td:first-child { text-align: right; color: var(--text-dark); width: 50%; }
-        .detail-table td:last-child { color: var(--accent-green); font-weight: 500; }
+        .detail-table td { padding: 4px 10px; font-size: 15px; vertical-align: middle; }
+        .detail-table td:first-child { text-align: right; color: var(--text-dark); width: 50%; border-right: 1px solid transparent; }
+        .detail-table td:last-child { color: var(--accent-green); font-weight: 500; text-align: left; }
 
         .main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 15px; background-color: #fafbfc; }
-        .svg-chart { width: 100%; height: auto; max-width: 310px; margin: 0 auto; display: block; }
+        
+        .chart-container { display: flex; align-items: center; justify-content: center; height: 100%; }
+        .svg-chart { width: 100%; height: auto; max-width: 310px; display: block; }
         .chart-lines { stroke: #a0aab5; stroke-width: 1; fill: none; }
         .chart-num { font-size: 10px; fill: var(--text-dark); }
         .chart-planet { font-size: 12px; fill: #4A90E2; font-weight: 600; }
@@ -86,7 +89,6 @@
         .dot-sun { background: #F47A20; } .dot-moon { background: #95A5A6; } .dot-merc { background: #7F8C8D; } .dot-ven { background: #F1C40F; } .dot-mars { background: #E74C3C; } .dot-jup { background: #A0522D; } .dot-sat { background: #7A8498; } .dot-node { background: transparent; }
         .footer-note { margin-top: 10px; font-size: 12px; color: var(--primary-blue); }
         
-        /* Astrological symbol formatting */
         .planet-suffix { font-weight: bold; color: var(--primary-blue); margin-left: 2px; }
 
         /* --- PAGE 2 SPECIFIC STYLES --- */
@@ -109,7 +111,8 @@
         .editable-textarea { width: 100%; min-height: 600px; padding: 20px; font-size: 18px; line-height: 1.8; border: none; outline: none; white-space: pre-wrap; color: var(--text-dark); }
         .editable-textarea:empty:before { content: attr(data-placeholder); color: #B0BEC5; font-style: italic; }
 
-        @media (max-width: 850px) {
+        /* CHANGED: Added 'screen and' so mobile styles ONLY apply to screens, not printers! */
+        @media screen and (max-width: 850px) {
             body { flex-direction: column; height: auto; overflow: auto; }
             .sidebar { width: 100%; box-sizing: border-box; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
             .main-workspace { padding: 10px; width: 100%; box-sizing: border-box; gap: 20px; }
@@ -133,6 +136,11 @@
                 box-shadow: none; padding: 5px 20px !important; width: 100% !important; max-width: 100% !important; border: none;
                 transform: scale(0.97); transform-origin: top center; margin-bottom: 0; page-break-after: always;
             }
+            /* Bulletproof print header alignment */
+            .page-header { display: flex !important; flex-direction: row !important; text-align: left !important; align-items: flex-end !important; justify-content: space-between !important; }
+            .header-contact { text-align: right !important; }
+            .logo-area { justify-content: flex-end !important; }
+
             .page-2, .page-3 { page-break-before: always; padding-top: 20px !important; page-break-after: auto; }
             .box { border-color: #000; }
             .details-grid, .main-content { grid-template-columns: 1fr 1fr !important; display: grid !important; }
@@ -269,7 +277,7 @@
                     स्थान: <strong id="infoPlaceDisplay">Amravati, India</strong> (Lat: <span id="latDisplay">20.93</span> , Lon: <span id="lonDisplay">77.75</span>)
                 </div>
                 <div class="info-row-2" id="infoDateTimeDisplay">
-                    २५ एप्रि १९९८, शनिवार, ०९:०९ AM
+                    25 एप्रि 1998, शनिवार, 09:09 AM
                 </div>
             </div>
 
@@ -436,6 +444,12 @@
     </main>
 
     <script>
+        // --- Number Conversion Utility (Force English Digits) ---
+        const toEnglishDigits = str => {
+            const map = {'०':'0','१':'1','२':'2','३':'3','४':'4','५':'5','६':'6','७':'7','८':'8','९':'9'};
+            return str.replace(/[०-९]/g, m => map[m]);
+        };
+
         // --- 1. Header & Basic Info Binding ---
         document.getElementById('clientNameInput').addEventListener('input', e => {
             const val = e.target.value || '______________';
@@ -449,15 +463,16 @@
         const updateDateTime = () => {
             const d = document.getElementById('clientDateInput').value, t = document.getElementById('clientTimeInput').value;
             if(!d) return;
-            const formattedDate = new Intl.DateTimeFormat('mr-IN', { day: 'numeric', month: 'short', year: 'numeric', weekday: 'long' }).format(new Date(d));
+            
+            let formattedDate = new Intl.DateTimeFormat('mr-IN', { day: 'numeric', month: 'short', year: 'numeric', weekday: 'long' }).format(new Date(d));
+            formattedDate = toEnglishDigits(formattedDate);
+            
             let fTime = "";
             if(t) {
                 let [h, m] = t.split(':');
                 let ampm = h >= 12 ? 'PM' : 'AM';
                 h = h % 12 || 12;
-                const mDig = ['०','१','२','३','४','५','६','७','८','९'];
-                const toMar = s => String(s).split('').map(x => mDig[x] || x).join('');
-                fTime = `, ${toMar(h.toString().padStart(2, '0'))}:${toMar(m)} ${ampm}`;
+                fTime = `, ${h.toString().padStart(2, '0')}:${m} ${ampm}`;
             }
             document.getElementById('infoDateTimeDisplay').textContent = `${formattedDate}${fTime}`;
         };
@@ -534,15 +549,15 @@
         ];
 
         const mantraData = {
-            "सूर्य": { name: "☀️ सूर्य", mantra: "ॐ ह्रां ह्रीं ह्रौं सः सूर्याय नमः", count: "२८,०००" },
-            "चंद्र": { name: "🌙 चंद्र", mantra: "ॐ श्रां श्रीं श्रौं सः चन्द्राय नमः", count: "४४,०००" },
-            "मंगळ": { name: "♂️ मंगळ", mantra: "ॐ क्रां क्रीं क्रौं सः भौमाय नमः", count: "४०,०००" },
-            "बुध": { name: "☿️ बुध", mantra: "ॐ ब्रां ब्रीं ब्रौं सः बुधाय नमः", count: "३६,०००" },
-            "गुरु": { name: "♃ गुरु", mantra: "ॐ ग्रां ग्रीं ग्रौं सः गुरवे नमः", count: "७६,०००" },
-            "शुक्र": { name: "♀️ शुक्र", mantra: "ॐ द्रां د्रीं द्रौं सः शुक्राय नमः", count: "६४,०००" },
-            "शनि": { name: "♄ शनि", mantra: "ॐ प्रां प्रीं प्रौं सः शनैश्चराय नमः", count: "९२,०००" },
-            "राहू": { name: "☊ राहू", mantra: "ॐ भ्रां भ्रीं भ्रौं सः राहवे नमः", count: "७२,०००" },
-            "केतु": { name: "☋ केतु", mantra: "ॐ स्रां स्रीं स्रौं सः केतवे नमः", count: "६८,०००" }
+            "सूर्य": { name: "☀️ सूर्य", mantra: "ॐ ह्रां ह्रीं ह्रौं सः सूर्याय नमः", count: "28,000" },
+            "चंद्र": { name: "🌙 चंद्र", mantra: "ॐ श्रां श्रीं श्रौं सः चन्द्राय नमः", count: "44,000" },
+            "मंगळ": { name: "♂️ मंगळ", mantra: "ॐ क्रां क्रीं क्रौं सः भौमाय नमः", count: "40,000" },
+            "बुध": { name: "☿️ बुध", mantra: "ॐ ब्रां ब्रीं ब्रौं सः बुधाय नमः", count: "36,000" },
+            "गुरु": { name: "♃ गुरु", mantra: "ॐ ग्रां ग्रीं ग्रौं सः गुरवे नमः", count: "76,000" },
+            "शुक्र": { name: "♀️ शुक्र", mantra: "ॐ द्रां द्रीं द्रौं सः शुक्राय नमः", count: "64,000" },
+            "शनि": { name: "♄ शनि", mantra: "ॐ प्रां प्रीं प्रौं सः शनैश्चराय नमः", count: "92,000" },
+            "राहू": { name: "☊ राहू", mantra: "ॐ भ्रां भ्रीं भ्रौं सः राहवे नमः", count: "72,000" },
+            "केतु": { name: "☋ केतु", mantra: "ॐ स्रां स्रीं स्रौं सः केतवे नमः", count: "68,000" }
         };
 
         const container = document.getElementById('dynamicControls');
@@ -557,7 +572,7 @@
             container.insertAdjacentHTML('beforeend', `<div class="form-group"><label>${attrs.label}</label><input type="${attrs.type}" data-control="${key}" ${stepAttr} value="00:00${attrs.step ? ':00' : ''}"></div>`);
         }
         
-        // NEW COMPACT PLANET & DEGREE GENERATOR WITH VAKRI/ASTA
+        // COMPACT PLANET & DEGREE GENERATOR WITH VAKRI/ASTA
         const planetContainer = document.getElementById('planetControls');
         planetContainer.insertAdjacentHTML('beforeend', '<h2 style="margin-top: 25px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">ग्रह स्थिती आणि अंश</h2>');
         planetContainer.insertAdjacentHTML('beforeend', `
@@ -646,7 +661,8 @@
         // --- 3. DASHA ROW GENERATOR ---
         function formatDashaDate(dateString) {
             if(!dateString) return "";
-            return new Intl.DateTimeFormat('mr-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(dateString));
+            let formatted = new Intl.DateTimeFormat('mr-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(dateString));
+            return toEnglishDigits(formatted);
         }
 
         function addDashaRow() {
