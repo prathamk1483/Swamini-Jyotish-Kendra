@@ -202,15 +202,15 @@
                     <h3>लग्न कुंडली</h3>
                     <table class="planet-table">
                         <tr><th>ग्रह</th><th>राशि निरायण</th><th>नक्षत्र, पद</th></tr>
-                        <tr><td><span class="planet-dot dot-sun"></span> सूर्य</td><td>♈ मेष</td><td>अश्विनी, 4 ला</td></tr>
-                        <tr><td><span class="planet-dot dot-moon"></span> चन्द्र</td><td>♓ मीन</td><td>रेवती, 2 दो</td></tr>
-                        <tr><td><span class="planet-dot dot-merc"></span> बुध</td><td>♓ मीन</td><td>रेवती, 1 दे</td></tr>
-                        <tr><td><span class="planet-dot dot-ven"></span> शुक्र</td><td>♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 सो</td></tr>
-                        <tr><td><span class="planet-dot dot-mars"></span> मंगल</td><td>♈ मेष</td><td>भरणी, 1 ली</td></tr>
-                        <tr><td><span class="planet-dot dot-jup"></span> बृहस्पति</td><td>♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 सो</td></tr>
-                        <tr><td><span class="planet-dot dot-sat"></span> शनि</td><td>♈ मेष</td><td>अश्विनी, 1 चु</td></tr>
-                        <tr><td><span class="planet-dot dot-node">☊</span> राहू</td><td>♌ सिंह</td><td>पूर्व फाल्गुनी, 1 मो</td></tr>
-                        <tr><td><span class="planet-dot dot-node">☋</span> केतु</td><td>♒ कुम्भ</td><td>शतभिष, 3 सी</td></tr>
+                        <tr><td><span class="planet-dot dot-sun"></span> सूर्य</td><td data-bind="Rashi_सूर्य">♈ मेष</td><td>अश्विनी, 4 ला</td></tr>
+                        <tr><td><span class="planet-dot dot-moon"></span> चन्द्र</td><td data-bind="Rashi_चन्द्र">♓ मीन</td><td>रेवती, 2 दो</td></tr>
+                        <tr><td><span class="planet-dot dot-mars"></span> मंगल</td><td data-bind="Rashi_मंगल">♈ मेष</td><td>भरणी, 1 ली</td></tr>
+                        <tr><td><span class="planet-dot dot-merc"></span> बुध</td><td data-bind="Rashi_बुध">♓ मीन</td><td>रेवती, 1 दे</td></tr>
+                        <tr><td><span class="planet-dot dot-jup"></span> गुरु</td><td data-bind="Rashi_गुरु">♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 सो</td></tr>
+                        <tr><td><span class="planet-dot dot-ven"></span> शुक्र</td><td data-bind="Rashi_शुक्र">♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 सो</td></tr>
+                        <tr><td><span class="planet-dot dot-sat"></span> शनि</td><td data-bind="Rashi_शनि">♈ मेष</td><td>अश्विनी, 1 चु</td></tr>
+                        <tr><td><span class="planet-dot dot-node">☊</span> राहू</td><td data-bind="Rashi_राहू">♌ सिंह</td><td>पूर्व फाल्गुनी, 1 मो</td></tr>
+                        <tr><td><span class="planet-dot dot-node">☋</span> केतु</td><td data-bind="Rashi_केतु">♒ कुम्भ</td><td>शतभिष, 3 सी</td></tr>
                     </table>
                     <div class="footer-note">अयनांश लाहिरी / चित्रपक्ष = 23°50'</div>
                 </div>
@@ -298,6 +298,21 @@
             Suryoday: { label: "सूर्योदय", type: "time" }
         };
 
+        const rashiSymbols = ["♈ मेष", "♉ वृषभ", "♊ मिथुन", "♋ कर्क", "♌ सिंह", "♍ कन्या", "♎ तुला", "♏ वृश्चिक", "♐ धनु", "♑ मकर", "♒ कुंभ", "♓ मीन"];
+        
+        // CHANGED: Re-ordered in the data array as well so the sidebar matches the document
+        const planetsList = [
+            { id: "सूर्य", default: "♈ मेष" },
+            { id: "चन्द्र", default: "♓ मीन" },
+            { id: "मंगल", default: "♈ मेष" },
+            { id: "बुध", default: "♓ मीन" },
+            { id: "गुरु", default: "♒ कुम्भ" },
+            { id: "शुक्र", default: "♒ कुम्भ" },
+            { id: "शनि", default: "♈ मेष" },
+            { id: "राहू", default: "♌ सिंह" },
+            { id: "केतु", default: "♒ कुम्भ" }
+        ];
+
         const container = document.getElementById('dynamicControls');
         
         // Build Selects
@@ -314,15 +329,25 @@
             container.insertAdjacentHTML('beforeend', `<div class="form-group"><label>${attrs.label}</label><input type="${attrs.type}" data-control="${key}" ${stepAttr} value="00:00${attrs.step ? ':00' : ''}"></div>`);
         }
 
+        container.insertAdjacentHTML('beforeend', '<h2 style="margin-top: 25px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">ग्रह स्थिती (Planet Positions)</h2>');
+        
+        planetsList.forEach(p => {
+            let html = `<div class="form-group"><label>${p.id} राशी</label><select data-control="Rashi_${p.id}">`;
+            rashiSymbols.forEach(opt => {
+                html += `<option value="${opt}" ${opt === p.default ? 'selected' : ''}>${opt}</option>`;
+            });
+            html += `</select></div>`;
+            container.insertAdjacentHTML('beforeend', html);
+        });
+
         // 3. Single Event Delegation for all dynamically generated controls
         container.addEventListener('input', (e) => {
             if(e.target.dataset.control) {
                 const val = e.target.value;
                 document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
                 
-                // CHANGED: Specific logic to extract Janmakshar and apply to naam heading
+                // Janmakshar specific logic
                 if(e.target.dataset.control === 'NakshatraPada') {
-                    // This regex extracts whatever is inside the parenthesis (e.g. "चू")
                     const match = val.match(/\(([^)]+)\)/);
                     if (match && match[1]) {
                         document.getElementById('naamAksharDisplay').textContent = match[1] + "..";
