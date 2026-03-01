@@ -23,7 +23,10 @@
         .sidebar h2 { margin-top: 0; font-size: 20px; border-bottom: 1px solid #455A64; padding-bottom: 10px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #B0BEC5; }
-        .form-group input:not([type="checkbox"]), .form-group select { width: 100%; padding: 10px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 15px; box-sizing: border-box; }
+        
+        /* Updated to include textarea styling */
+        .form-group input:not([type="checkbox"]), .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 15px; box-sizing: border-box; font-family: inherit; }
+        .form-group textarea { resize: vertical; min-height: 100px; }
         .form-group input[type="time"]::-webkit-calendar-picker-indicator, .form-group input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 
         .print-btn { margin-top: 15px; margin-bottom: 20px; background-color: #F47A20; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; width: 100%; }
@@ -99,10 +102,14 @@
         .ratna-box { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 15px; box-sizing: border-box; background: #fffdf5; border: 2px dashed #f1c40f;}
 
         /* More Compact Mantra Box */
-        .mantra-row td { padding: 5px 10px; font-size: 13px; } /* Reduced padding and font-size */
+        .mantra-row td { padding: 5px 10px; font-size: 13px; }
         .mantra-row td:first-child { font-weight: bold; color: var(--primary-blue); font-size: 15px; width: 22%; text-align: center; }
         .mantra-row td:nth-child(2) { text-align: center; font-weight: bold; color: var(--accent-green); font-size: 15px; }
         .mantra-row td:last-child { text-align: center; font-weight: normal; color: var(--text-dark); font-size: 13px; width: 22%; background: #fafbfc; border-left: 1px solid #eaedf0; }
+
+        /* --- PAGE 3 (FALA SHRUTI) STYLES --- */
+        .editable-textarea { width: 100%; min-height: 600px; padding: 20px; font-size: 18px; line-height: 1.8; border: none; outline: none; white-space: pre-wrap; color: var(--text-dark); }
+        .editable-textarea:empty:before { content: attr(data-placeholder); color: #B0BEC5; font-style: italic; }
 
         @media (max-width: 850px) {
             body { flex-direction: column; height: auto; overflow: auto; }
@@ -128,12 +135,14 @@
                 box-shadow: none; padding: 5px 20px !important; width: 100% !important; max-width: 100% !important; border: none;
                 transform: scale(0.97); transform-origin: top center; margin-bottom: 0; page-break-after: always;
             }
-            .page-2 { page-break-before: always; padding-top: 20px !important; page-break-after: auto; }
+            /* Ensure Pages 2 and 3 start on new physical sheets of paper */
+            .page-2, .page-3 { page-break-before: always; padding-top: 20px !important; page-break-after: auto; }
             .box { border-color: #000; }
             .details-grid, .main-content { grid-template-columns: 1fr 1fr !important; display: grid !important; }
             .summary-box { flex-direction: row !important; display: flex !important; }
             .detail-table td:first-child { text-align: right !important; }
             #page2Grid { grid-template-columns: 1fr 1fr !important; display: grid !important; }
+            .editable-textarea:empty:before { content: ""; } /* Hide placeholder when printing */
         }
     </style>
 </head>
@@ -174,6 +183,12 @@
         <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">मंत्र उपासना</h2>
         <div class="checkbox-list" id="mantraChecklist">
             </div>
+
+        <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">फलश्रुती (Page 3)</h2>
+        <div class="form-group">
+            <label>येथे टाईप करा (Type here):</label>
+            <textarea id="falaShrutiSidebarInput" placeholder="येथे फलश्रुती टाईप करा..."></textarea>
+        </div>
 
         <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
     </aside>
@@ -344,7 +359,25 @@
                         </tbody>
                 </table>
             </div>
+        </div>
 
+        <div class="page-container page-3">
+            <header class="page-header">
+                <div class="header-title">
+                    <h1 class="main-heading">फलश्रुती <span class="client-name-bind">Amey Hatekar</span></h1>
+                </div>
+                <div class="header-contact">
+                    <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष कार्यालय</div>
+                    <div class="contact-details">
+                        <strong>ज्योतिष:</strong> योगेश उंबरकर<br>
+                        <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
+                    </div>
+                </div>
+            </header>
+
+            <div class="box" style="padding: 0;">
+                <div id="falaShrutiDisplay" class="editable-textarea" contenteditable="true" spellcheck="false" data-placeholder="येथे फलश्रुती टाईप करा (Click here to type)..."></div>
+            </div>
         </div>
 
     </main>
@@ -527,7 +560,7 @@
         }
         function clearDashaRows() { document.getElementById('dashaTableBody').innerHTML = ""; }
 
-        // --- 4. POOJA CHECKLIST RENDERER (Now 2 columns inside) ---
+        // --- 4. POOJA CHECKLIST RENDERER ---
         function renderPoojaTable() {
             const poojaGrid = document.getElementById('poojaGrid');
             const poojaBox = document.getElementById('poojaBox');
@@ -571,6 +604,20 @@
                 });
             }
         }
+
+        // --- 6. FALA SHRUTI BIDIRECTIONAL SYNC ---
+        const falaSidebarInput = document.getElementById('falaShrutiSidebarInput');
+        const falaDisplay = document.getElementById('falaShrutiDisplay');
+
+        // Sidebar -> PDF Document
+        falaSidebarInput.addEventListener('input', (e) => {
+            falaDisplay.innerText = e.target.value;
+        });
+
+        // PDF Document -> Sidebar
+        falaDisplay.addEventListener('input', (e) => {
+            falaSidebarInput.value = e.target.innerText;
+        });
     </script>
 </body>
 </html>
