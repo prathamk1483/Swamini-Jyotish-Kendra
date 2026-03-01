@@ -19,7 +19,7 @@
         body { font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif; margin: 0; padding: 0; background-color: #e9ecef; color: var(--text-dark); -webkit-print-color-adjust: exact; print-color-adjust: exact; display: flex; height: 100vh; overflow: hidden; }
 
         /* --- SIDEBAR --- */
-        .sidebar { width: 350px; background-color: var(--sidebar-bg); color: white; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; z-index: 10; overflow-y: auto; }
+        .sidebar { width: 340px; background-color: var(--sidebar-bg); color: white; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; z-index: 10; overflow-y: auto; }
         .sidebar h2 { margin-top: 0; font-size: 20px; border-bottom: 1px solid #455A64; padding-bottom: 10px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #B0BEC5; }
@@ -81,10 +81,13 @@
         .planet-table-section h3 { margin-top: 0; color: var(--primary-blue); font-size: 18px; margin-bottom: 8px; }
         .planet-table { width: 100%; border-collapse: collapse; font-size: 14px; }
         .planet-table th { text-align: left; padding-bottom: 6px; color: var(--text-dark); font-weight: 600; }
-        .planet-table td { padding: 2px 0; color: var(--text-dark); } /* Reduced padding to fit 12 planets */
+        .planet-table td { padding: 2px 0; color: var(--text-dark); } 
         .planet-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
         .dot-sun { background: #F47A20; } .dot-moon { background: #95A5A6; } .dot-merc { background: #7F8C8D; } .dot-ven { background: #F1C40F; } .dot-mars { background: #E74C3C; } .dot-jup { background: #A0522D; } .dot-sat { background: #7A8498; } .dot-node { background: transparent; }
         .footer-note { margin-top: 10px; font-size: 12px; color: var(--primary-blue); }
+        
+        /* Astrological symbol formatting */
+        .planet-suffix { font-weight: bold; color: var(--primary-blue); margin-left: 2px; }
 
         /* --- PAGE 2 SPECIFIC STYLES --- */
         .page-2-header { background-color: var(--primary-blue); color: white; margin: 0; padding: 8px; text-align: center; font-size: 18px; border-radius: 4px 4px 0 0; }
@@ -344,20 +347,19 @@
                     <h3>लग्न कुंडली</h3>
                     <table class="planet-table">
                         <tr><th>ग्रह</th><th>राशि निरायण</th><th>अंश, कला</th></tr>
-                        <tr><td><span class="planet-dot dot-sun"></span> सूर्य</td><td data-bind="Rashi_सूर्य">♈ मेष</td><td data-bind="Deg_सूर्य">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-moon"></span> चन्द्र</td><td data-bind="Rashi_चन्द्र">♓ मीन</td><td data-bind="Deg_चन्द्र">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-mars"></span> मंगल</td><td data-bind="Rashi_मंगल">♈ मेष</td><td data-bind="Deg_मंगल">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-merc"></span> बुध</td><td data-bind="Rashi_बुध">♓ मीन</td><td data-bind="Deg_बुध">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-jup"></span> गुरु</td><td data-bind="Rashi_गुरु">♒ कुम्भ</td><td data-bind="Deg_गुरु">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-ven"></span> शुक्र</td><td data-bind="Rashi_शुक्र">♒ कुम्भ</td><td data-bind="Deg_शुक्र">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-sat"></span> शनि</td><td data-bind="Rashi_शनि">♈ मेष</td><td data-bind="Deg_शनि">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-node">☊</span> राहू</td><td data-bind="Rashi_राहू">♌ सिंह</td><td data-bind="Deg_राहू">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-node">☋</span> केतु</td><td data-bind="Rashi_केतु">♒ कुम्भ</td><td data-bind="Deg_केतु">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-node">♅</span> हर्शल</td><td data-bind="Rashi_हर्शल">♒ कुम्भ</td><td data-bind="Deg_हर्शल">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-node">♆</span> नेपच्यून</td><td data-bind="Rashi_नेपच्यून">♑ मकर</td><td data-bind="Deg_नेपच्यून">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-node">♇</span> प्लूटो</td><td data-bind="Rashi_प्लूटो">♐ धनु</td><td data-bind="Deg_प्लूटो">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-sun"></span> सूर्य<span class="planet-suffix" data-suffix="सूर्य"></span></td><td data-bind="Rashi_सूर्य">♈ मेष</td><td data-bind="Deg_सूर्य">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-moon"></span> चन्द्र<span class="planet-suffix" data-suffix="चन्द्र"></span></td><td data-bind="Rashi_चन्द्र">♓ मीन</td><td data-bind="Deg_चन्द्र">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-mars"></span> मंगल<span class="planet-suffix" data-suffix="मंगल"></span></td><td data-bind="Rashi_मंगल">♈ मेष</td><td data-bind="Deg_मंगल">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-merc"></span> बुध<span class="planet-suffix" data-suffix="बुध"></span></td><td data-bind="Rashi_बुध">♓ मीन</td><td data-bind="Deg_बुध">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-jup"></span> गुरु<span class="planet-suffix" data-suffix="गुरु"></span></td><td data-bind="Rashi_गुरु">♒ कुम्भ</td><td data-bind="Deg_गुरु">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-ven"></span> शुक्र<span class="planet-suffix" data-suffix="शुक्र"></span></td><td data-bind="Rashi_शुक्र">♒ कुम्भ</td><td data-bind="Deg_शुक्र">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-sat"></span> शनि<span class="planet-suffix" data-suffix="शनि"></span></td><td data-bind="Rashi_शनि">♈ मेष</td><td data-bind="Deg_शनि">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-node">☊</span> राहू<span class="planet-suffix" data-suffix="राहू"></span></td><td data-bind="Rashi_राहू">♌ सिंह</td><td data-bind="Deg_राहू">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-node">☋</span> केतु<span class="planet-suffix" data-suffix="केतु"></span></td><td data-bind="Rashi_केतु">♒ कुम्भ</td><td data-bind="Deg_केतु">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-node">♅</span> हर्शल<span class="planet-suffix" data-suffix="हर्शल"></span></td><td data-bind="Rashi_हर्शल">♒ कुम्भ</td><td data-bind="Deg_हर्शल">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-node">♆</span> नेपच्यून<span class="planet-suffix" data-suffix="नेपच्यून"></span></td><td data-bind="Rashi_नेपच्यून">♑ मकर</td><td data-bind="Deg_नेपच्यून">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-node">♇</span> प्लूटो<span class="planet-suffix" data-suffix="प्लूटो"></span></td><td data-bind="Rashi_प्लूटो">♐ धनु</td><td data-bind="Deg_प्लूटो">00° 00'</td></tr>
                     </table>
-                    <div class="footer-note">अयनांश लाहिरी / चित्रपक्ष = 23°50'</div>
                 </div>
             </div>
         </div>
@@ -473,10 +475,10 @@
             const display = document.getElementById('mangalDoshDisplay');
             if(e.target.checked) {
                 display.textContent = 'मंगळ दोष आहे';
-                display.style.color = '#dc3545'; // Red text
+                display.style.color = '#dc3545'; 
             } else {
                 display.textContent = 'मंगळ दोष नाही';
-                display.style.color = 'var(--text-dark)'; // Black text
+                display.style.color = 'var(--text-dark)'; 
             }
         });
 
@@ -509,8 +511,6 @@
 
         const extraTimers = { IshtKaal: { label: "इष्टकाल", type: "time", step: "1" }, Suryoday: { label: "सूर्योदय", type: "time" } };
         const rashiSymbols = ["♈ मेष", "♉ वृषभ", "♊ मिथुन", "♋ कर्क", "♌ सिंह", "♍ कन्या", "♎ तुला", "♏ वृश्चिक", "♐ धनु", "♑ मकर", "♒ कुंभ", "♓ मीन"];
-        
-        // NEW: Planets list now includes Uranus, Neptune, Pluto with default Rashis assigned
         const planetsList = [
             { id: "सूर्य", default: "♈ मेष" }, { id: "चन्द्र", default: "♓ मीन" }, { id: "मंगल", default: "♈ मेष" },
             { id: "बुध", default: "♓ मीन" }, { id: "गुरु", default: "♒ कुम्भ" }, { id: "शुक्र", default: "♒ कुम्भ" },
@@ -535,11 +535,11 @@
 
         const mantraData = {
             "सूर्य": { name: "☀️ सूर्य", mantra: "ॐ ह्रां ह्रीं ह्रौं सः सूर्याय नमः", count: "२८,०००" },
-            "चंद्र": { name: "🌙 चंद्र", mantra: "ॐ श्रां श्रीं श्रौं सः चन्द्राय কিছুক্ষণ", count: "४४,०००" },
+            "चंद्र": { name: "🌙 चंद्र", mantra: "ॐ श्रां श्रीं श्रौं सः चन्द्राय नमः", count: "४४,०००" },
             "मंगळ": { name: "♂️ मंगळ", mantra: "ॐ क्रां क्रीं क्रौं सः भौमाय नमः", count: "४०,०००" },
             "बुध": { name: "☿️ बुध", mantra: "ॐ ब्रां ब्रीं ब्रौं सः बुधाय नमः", count: "३६,०००" },
             "गुरु": { name: "♃ गुरु", mantra: "ॐ ग्रां ग्रीं ग्रौं सः गुरवे नमः", count: "७६,०००" },
-            "शुक्र": { name: "♀️ शुक्र", mantra: "ॐ द्रां द्रीं द्रौं सः शुक्राय नमः", count: "६४,०००" },
+            "शुक्र": { name: "♀️ शुक्र", mantra: "ॐ द्रां د्रीं द्रौं सः शुक्राय नमः", count: "६४,०००" },
             "शनि": { name: "♄ शनि", mantra: "ॐ प्रां प्रीं प्रौं सः शनैश्चराय नमः", count: "९२,०००" },
             "राहू": { name: "☊ राहू", mantra: "ॐ भ्रां भ्रीं भ्रौं सः राहवे नमः", count: "७२,०००" },
             "केतु": { name: "☋ केतु", mantra: "ॐ स्रां स्रीं स्रौं सः केतवे नमः", count: "६८,०००" }
@@ -557,26 +557,37 @@
             container.insertAdjacentHTML('beforeend', `<div class="form-group"><label>${attrs.label}</label><input type="${attrs.type}" data-control="${key}" ${stepAttr} value="00:00${attrs.step ? ':00' : ''}"></div>`);
         }
         
-        // NEW COMPACT PLANET & DEGREE GENERATOR
+        // NEW COMPACT PLANET & DEGREE GENERATOR WITH VAKRI/ASTA
         const planetContainer = document.getElementById('planetControls');
         planetContainer.insertAdjacentHTML('beforeend', '<h2 style="margin-top: 25px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">ग्रह स्थिती आणि अंश</h2>');
         planetContainer.insertAdjacentHTML('beforeend', `
-            <div style="display: flex; gap: 10px; margin-bottom: 5px; font-size: 12px; color: #B0BEC5;">
-                <div style="width: 50px;">ग्रह</div>
+            <div style="display: flex; gap: 8px; margin-bottom: 5px; font-size: 12px; color: #B0BEC5;">
+                <div style="width: 55px;">ग्रह</div>
                 <div style="flex: 1;">राशी</div>
                 <div style="width: 65px;">अंश, कला</div>
             </div>
         `);
         
         planetsList.forEach(p => {
-            let html = `<div style="display: flex; gap: 10px; margin-bottom: 8px; align-items: center;">`;
-            html += `<div style="width: 50px; font-size: 14px;">${p.id}</div>`;
+            let html = `<div style="margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #3e4f5e;">`;
+            
+            // Row 1: Planet, Rashi Select, Degree Input
+            html += `<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 5px;">`;
+            html += `<div style="width: 55px; font-size: 14px;">${p.id}</div>`;
             
             html += `<select data-control="Rashi_${p.id}" style="flex: 1; padding: 6px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 14px;">`;
             rashiSymbols.forEach(opt => html += `<option value="${opt}" ${opt === p.default ? 'selected' : ''}>${opt}</option>`);
             html += `</select>`;
             
             html += `<input type="text" data-control="Deg_${p.id}" value="00° 00'" placeholder="00° 00'" style="width: 65px; padding: 6px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 14px; text-align: center;">`;
+            html += `</div>`;
+            
+            // Row 2: Vakri & Asta Checkboxes
+            html += `<div style="display: flex; gap: 15px; margin-left: 63px;">`;
+            html += `<label class="checkbox-item" style="font-size: 12px; margin:0;"><input type="checkbox" data-vakri="${p.id}"> वक्रि (*)</label>`;
+            html += `<label class="checkbox-item" style="font-size: 12px; margin:0;"><input type="checkbox" data-asta="${p.id}"> अस्त (^)</label>`;
+            html += `</div>`;
+            
             html += `</div>`;
             planetContainer.insertAdjacentHTML('beforeend', html);
         });
@@ -601,7 +612,9 @@
             `);
         });
 
+        // Global Event Listeners
         document.body.addEventListener('input', (e) => {
+            // Text and Select inputs
             if(e.target.dataset.control) {
                 const val = e.target.value;
                 document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
@@ -611,6 +624,23 @@
                 }
             }
         });
+
+        // Global Change Listener specifically for Vakri/Asta checkboxes
+        document.body.addEventListener('change', (e) => {
+            if(e.target.dataset.vakri || e.target.dataset.asta) {
+                const pId = e.target.dataset.vakri || e.target.dataset.asta;
+                const isVakri = document.querySelector(`input[data-vakri="${pId}"]`).checked;
+                const isAsta = document.querySelector(`input[data-asta="${pId}"]`).checked;
+                
+                let suffix = "";
+                if(isVakri) suffix += "*";
+                if(isAsta) suffix += "^";
+                
+                document.querySelectorAll(`[data-suffix="${pId}"]`).forEach(el => el.textContent = suffix);
+            }
+        });
+
+        // Fire initial inputs to populate bindings
         document.querySelectorAll('[data-control]').forEach(input => input.dispatchEvent(new Event('input', { bubbles: true })));
 
         // --- 3. DASHA ROW GENERATOR ---
