@@ -17,21 +17,21 @@
 
         body { font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif; margin: 0; padding: 0; background-color: #e9ecef; color: var(--text-dark); -webkit-print-color-adjust: exact; print-color-adjust: exact; display: flex; height: 100vh; overflow: hidden; }
 
-        .sidebar { width: 300px; background-color: var(--sidebar-bg); color: white; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; z-index: 10; overflow-y: auto; }
+        /* --- SIDEBAR --- */
+        .sidebar { width: 320px; background-color: var(--sidebar-bg); color: white; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; z-index: 10; overflow-y: auto; }
         .sidebar h2 { margin-top: 0; font-size: 20px; border-bottom: 1px solid #455A64; padding-bottom: 10px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #B0BEC5; }
-        
-        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 16px; box-sizing: border-box; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 15px; box-sizing: border-box; }
         .form-group input[type="time"]::-webkit-calendar-picker-indicator, .form-group input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 
-        .print-btn { margin-top: 20px; margin-bottom: 20px; background-color: #F47A20; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; width: 100%; }
+        .print-btn { margin-top: 15px; margin-bottom: 20px; background-color: #F47A20; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; width: 100%; }
         
-        /* Updated Buttons for Dasha */
-        .btn-add { background-color: #28a745; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 5px; }
-        .btn-undo { background-color: #ffc107; color: #212529; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 5px; }
-        .btn-clear { background-color: #dc3545; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 20px; }
+        .btn-add { background-color: #28a745; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 5px; }
+        .btn-undo { background-color: #ffc107; color: #212529; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 5px; }
+        .btn-clear { background-color: #dc3545; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 20px; }
 
+        /* --- WORKSPACE & PAGE 1 --- */
         .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 40px;}
         .page-container { width: 850px; background: white; padding: 30px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; flex-shrink: 0; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 10px; }
@@ -45,7 +45,7 @@
         .info-row-1 strong { color: var(--primary-blue); }
         .info-row-2 { font-size: 18px; color: var(--primary-blue); }
 
-        .summary-box { display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; background-color: #fafbfc; }
+        .summary-box { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; background-color: #fafbfc; }
         .summary-item { text-align: center; }
         .rashi-title { font-size: 20px; font-weight: bold; color: var(--accent-green); }
         .lagna-title { font-size: 16px; color: var(--accent-green); margin-top: 5px; }
@@ -54,58 +54,65 @@
         .mangal-dosh { text-decoration: line-through; color: var(--text-dark); }
 
         .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 12px; }
-        .detail-card { padding: 12px; background-color: #fafbfc; display: flex; justify-content: center; }
+        .detail-card { padding: 10px; background-color: #fafbfc; display: flex; justify-content: center; }
         .detail-table { border-collapse: collapse; width: 100%; }
         .detail-table td { padding: 2px 8px; font-size: 15px; }
         .detail-table td:first-child { text-align: right; color: var(--text-dark); width: 50%; }
         .detail-table td:last-child { color: var(--accent-green); font-weight: 500; }
 
         .main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 15px; background-color: #fafbfc; }
-        .svg-chart { width: 100%; height: auto; max-width: 320px; margin: 0 auto; display: block; }
+        .svg-chart { width: 100%; height: auto; max-width: 310px; margin: 0 auto; display: block; }
         .chart-lines { stroke: #a0aab5; stroke-width: 1; fill: none; }
         .chart-num { font-size: 10px; fill: var(--text-dark); }
         .chart-planet { font-size: 12px; fill: #4A90E2; font-weight: 600; }
 
-        .planet-table-section h3 { margin-top: 0; color: var(--primary-blue); font-size: 18px; margin-bottom: 10px; }
+        .planet-table-section h3 { margin-top: 0; color: var(--primary-blue); font-size: 18px; margin-bottom: 8px; }
         .planet-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        .planet-table th { text-align: left; padding-bottom: 8px; color: var(--text-dark); font-weight: 600; }
-        .planet-table td { padding: 4px 0; color: var(--text-dark); }
+        .planet-table th { text-align: left; padding-bottom: 6px; color: var(--text-dark); font-weight: 600; }
+        .planet-table td { padding: 3px 0; color: var(--text-dark); }
         .planet-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
         .dot-sun { background: #F47A20; } .dot-moon { background: #95A5A6; } .dot-merc { background: #7F8C8D; } .dot-ven { background: #F1C40F; } .dot-mars { background: #E74C3C; } .dot-jup { background: #A0522D; } .dot-sat { background: #7A8498; } .dot-node { background: transparent; }
         .footer-note { margin-top: 10px; font-size: 12px; color: var(--primary-blue); }
 
-        .dasha-row { border-bottom: 1px solid var(--border-color); }
-        .dasha-row td { padding: 15px 10px; font-size: 18px; }
-        .dasha-row td:first-child { font-weight: bold; color: var(--accent-green); width: 30%; }
-        .dasha-row td:last-child { text-align: right; color: var(--text-dark); font-weight: 600;}
+        /* --- PAGE 2 SPECIFIC STYLES --- */
+        .page-2-header { background-color: var(--primary-blue); color: white; margin: 0; padding: 12px; text-align: center; font-size: 20px; border-radius: 4px 4px 0 0; }
+        .dasha-row { border-bottom: 1px solid #eaedf0; }
+        .dasha-row:last-child { border-bottom: none; }
+        .dasha-row td { padding: 12px 15px; font-size: 16px; }
+        .dasha-row td:first-child { font-weight: bold; color: var(--accent-green); width: 30%; border-right: 1px solid #eaedf0; background: #fafbfc;}
+        .dasha-row td:last-child { text-align: center; color: var(--text-dark); font-weight: 600; }
+        
+        .ratna-box { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px 20px; height: 100%; box-sizing: border-box; background: #fffdf5; border: 2px dashed #f1c40f;}
 
         @media (max-width: 850px) {
             body { flex-direction: column; height: auto; overflow: auto; }
             .sidebar { width: 100%; box-sizing: border-box; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-            .main-workspace { padding: 10px; width: 100%; box-sizing: border-box; }
+            .main-workspace { padding: 10px; width: 100%; box-sizing: border-box; gap: 20px; }
             .page-container { width: 100%; padding: 15px; }
             .header { flex-direction: column; text-align: center; gap: 10px; }
-            .details-grid { grid-template-columns: 1fr; }
-            .main-content { grid-template-columns: 1fr; }
+            .details-grid, .main-content { grid-template-columns: 1fr; }
             .summary-box { flex-direction: column; gap: 15px; }
             .detail-table td:first-child { text-align: left; }
+            #page2Grid { grid-template-columns: 1fr !important; }
         }
 
+        /* --- PRINT STYLES --- */
         @media print {
             @page { size: A4 portrait; margin: 5mm; }
             body { background: white; display: block; height: 100%; overflow: hidden; margin: 0; }
             .sidebar { display: none !important; }
             .main-workspace { padding: 0; display: block; height: 100%; gap: 0; }
             .page-container { 
-                box-shadow: none; padding: 10px !important; width: 100% !important; max-width: 100% !important; border: none;
+                box-shadow: none; padding: 5px 20px !important; width: 100% !important; max-width: 100% !important; border: none;
                 transform: scale(0.97); transform-origin: top center; page-break-inside: avoid; margin-bottom: 0;
             }
-            .page-2 { page-break-before: always; }
+            .page-2 { page-break-before: always; padding-top: 20px !important; }
             .box { border-color: #000; }
             .details-grid, .main-content { grid-template-columns: 1fr 1fr !important; display: grid !important; }
             .summary-box { flex-direction: row !important; display: flex !important; }
             .header { flex-direction: row !important; text-align: left !important; }
             .detail-table td:first-child { text-align: right !important; }
+            #page2Grid { grid-template-columns: 1fr 1fr !important; display: grid !important; }
         }
     </style>
 </head>
@@ -113,7 +120,6 @@
 
     <aside class="sidebar">
         <h2>ग्राहक तपशील</h2>
-        
         <div class="form-group"><label>पूर्ण नाव</label><input type="text" id="clientNameInput" value="Amey Hatekar"></div>
         <div class="form-group"><label>जन्मस्थान</label><input type="text" id="clientPlaceInput" value="Amravati, India"></div>
         <div class="form-group"><label>जन्म तारीख</label><input type="date" id="clientDateInput" value="1998-04-25"></div>
@@ -121,7 +127,10 @@
 
         <div id="dynamicControls"></div>
 
-        <h2 style="margin-top: 25px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">विंशोत्तरी महादशा (Page 2)</h2>
+        <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">राशी रत्न (Gemstone)</h2>
+        <div id="ratnaControl"></div>
+
+        <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">महादशा (Page 2)</h2>
         <div class="form-group">
             <label>ग्रह (Planet)</label>
             <select id="dashaPlanetInput">
@@ -236,7 +245,7 @@
                         <tr><td><span class="planet-dot dot-moon"></span> चन्द्र</td><td data-bind="Rashi_चन्द्र">♓ मीन</td><td>रेवती, 2 दो</td></tr>
                         <tr><td><span class="planet-dot dot-mars"></span> मंगल</td><td data-bind="Rashi_मंगल">♈ मेष</td><td>भरणी, 1 ली</td></tr>
                         <tr><td><span class="planet-dot dot-merc"></span> बुध</td><td data-bind="Rashi_बुध">♓ मीन</td><td>रेवती, 1 दे</td></tr>
-                        <tr><td><span class="planet-dot dot-jup"></span> गुरु</td><td data-bind="Rashi_गुरु">♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 सो</td></tr>
+                        <tr><td><span class="planet-dot dot-jup"></span> गुरु</td><td data-bind="Rashi_गुरु">♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 সো</td></tr>
                         <tr><td><span class="planet-dot dot-ven"></span> शुक्र</td><td data-bind="Rashi_शुक्र">♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 सो</td></tr>
                         <tr><td><span class="planet-dot dot-sat"></span> शनि</td><td data-bind="Rashi_शनि">♈ मेष</td><td>अश्विनी, 1 चु</td></tr>
                         <tr><td><span class="planet-dot dot-node">☊</span> राहू</td><td data-bind="Rashi_राहू">♌ सिंह</td><td>पूर्व फाल्गुनी, 1 मो</td></tr>
@@ -248,15 +257,27 @@
         </div>
 
         <div class="page-container page-2">
-            <header class="header" style="justify-content: center;">
-                <h1 style="font-size: 28px; margin-bottom: 20px;">विंशोत्तरी महादशा</h1>
+            <header class="header" style="justify-content: center; margin-bottom: 25px;">
+                <h1 style="font-size: 28px;">विंशोत्तरी महादशा व राशी रत्न</h1>
             </header>
 
-            <div class="box" style="padding: 0;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <tbody id="dashaTableBody">
-                        </tbody>
-                </table>
+            <div id="page2Grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
+                
+                <div class="box" style="padding: 0; overflow: hidden;">
+                    <h3 class="page-2-header">विंशोत्तरी महादशा</h3>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tbody id="dashaTableBody">
+                            </tbody>
+                    </table>
+                </div>
+
+                <div class="box ratna-box">
+                    <h3 style="color: var(--primary-blue); margin-top: 0; margin-bottom: 15px; font-size: 22px;">तुमच्यासाठी उपयुक्त रत्न</h3>
+                    <div style="font-size: 26px; font-weight: bold; color: var(--accent-green); line-height: 1.4;" data-bind="RashiRatna">
+                        मूंगा (Red Coral)
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -326,6 +347,18 @@
             { id: "बुध", default: "♓ मीन" }, { id: "गुरु", default: "♒ कुम्भ" }, { id: "शुक्र", default: "♒ कुम्भ" },
             { id: "शनि", default: "♈ मेष" }, { id: "राहू", default: "♌ सिंह" }, { id: "केतु", default: "♒ कुम्भ" }
         ];
+        
+        // RATNA LIST
+        const ratnaList = [
+            "मूंगा (Red Coral)",
+            "पुखराज (Yellow Sapphire)",
+            "मरकरी / पन्ना (Emerald)",
+            "मोती (Pearl)",
+            "मूंगा / पुखराज (Red Coral / Yellow Sapphire)",
+            "पुखराज / नीलम (Yellow Sapphire / Blue Sapphire)",
+            "हीरा (Diamond)",
+            "नीलम (Blue Sapphire)"
+        ];
 
         const container = document.getElementById('dynamicControls');
         for (const [key, options] of Object.entries(jyotishData)) {
@@ -346,7 +379,15 @@
             container.insertAdjacentHTML('beforeend', html);
         });
 
-        container.addEventListener('input', (e) => {
+        // FIXED: Added form-group class wrapper here to apply proper styling
+        const ratnaContainer = document.getElementById('ratnaControl');
+        let ratnaHtml = `<div class="form-group"><label>रत्न निवडा</label><select data-control="RashiRatna">`;
+        ratnaList.forEach(opt => ratnaHtml += `<option value="${opt}">${opt}</option>`);
+        ratnaHtml += `</select></div>`;
+        ratnaContainer.innerHTML = ratnaHtml;
+
+        // Global Input Listener
+        document.body.addEventListener('input', (e) => {
             if(e.target.dataset.control) {
                 const val = e.target.value;
                 document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
@@ -387,7 +428,6 @@
             tbody.insertAdjacentHTML('beforeend', newRow);
         }
 
-        // NEW: Function to remove the last added row
         function removeLastDashaRow() {
             const tbody = document.getElementById('dashaTableBody');
             if (tbody.lastElementChild) {
