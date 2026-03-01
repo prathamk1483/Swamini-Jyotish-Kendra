@@ -26,13 +26,14 @@
         .form-group input[type="time"]::-webkit-calendar-picker-indicator, .form-group input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 
         .print-btn { margin-top: 20px; margin-bottom: 20px; background-color: #F47A20; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; width: 100%; }
+        
+        /* Updated Buttons for Dasha */
+        .btn-add { background-color: #28a745; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 5px; }
+        .btn-undo { background-color: #ffc107; color: #212529; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 5px; }
+        .btn-clear { background-color: #dc3545; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 20px; }
 
-        .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 40px; }
-        
-        /* Page Container Styles */
+        .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 40px;}
         .page-container { width: 850px; background: white; padding: 30px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; flex-shrink: 0; }
-        
-        /* Page 1 Specific Styles */
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 10px; }
         .header h1 { font-size: 24px; color: var(--primary-blue); margin: 0; }
         .logo-area { display: flex; align-items: center; font-size: 24px; font-weight: 700; color: var(--primary-blue); }
@@ -73,59 +74,38 @@
         .dot-sun { background: #F47A20; } .dot-moon { background: #95A5A6; } .dot-merc { background: #7F8C8D; } .dot-ven { background: #F1C40F; } .dot-mars { background: #E74C3C; } .dot-jup { background: #A0522D; } .dot-sat { background: #7A8498; } .dot-node { background: transparent; }
         .footer-note { margin-top: 10px; font-size: 12px; color: var(--primary-blue); }
 
-        /* Page 2 (Dasha) Specific Styles */
-        .dasha-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
-        .dasha-box { border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; }
-        .dasha-header-row { background-color: var(--primary-blue); color: white; text-align: center; padding: 6px; font-weight: bold; font-size: 15px; }
-        .dasha-table-inner { width: 100%; border-collapse: collapse; font-size: 14px; text-align: center; }
-        .dasha-table-inner td { padding: 4px; border-bottom: 1px solid #eaedf0; }
-        .dasha-table-inner tr:last-child td { border-bottom: none; }
-        .dasha-table-inner td:first-child { border-right: 1px solid #eaedf0; font-weight: 600; width: 40%; background-color: #fafbfc; color: var(--text-dark); }
-        .editable-date { display: inline-block; min-width: 80px; border-bottom: 1px dashed #b0bec5; outline: none; padding: 0 4px; color: var(--accent-green); cursor: text; }
-        .editable-date:focus { background-color: #fff9c4; border-bottom-color: var(--primary-blue); }
+        .dasha-row { border-bottom: 1px solid var(--border-color); }
+        .dasha-row td { padding: 15px 10px; font-size: 18px; }
+        .dasha-row td:first-child { font-weight: bold; color: var(--accent-green); width: 30%; }
+        .dasha-row td:last-child { text-align: right; color: var(--text-dark); font-weight: 600;}
 
         @media (max-width: 850px) {
             body { flex-direction: column; height: auto; overflow: auto; }
             .sidebar { width: 100%; box-sizing: border-box; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-            .main-workspace { padding: 10px; width: 100%; box-sizing: border-box; gap: 20px; }
+            .main-workspace { padding: 10px; width: 100%; box-sizing: border-box; }
             .page-container { width: 100%; padding: 15px; }
             .header { flex-direction: column; text-align: center; gap: 10px; }
-            .details-grid, .main-content { grid-template-columns: 1fr; }
-            .dasha-grid { grid-template-columns: 1fr; } /* Stack tables on mobile */
+            .details-grid { grid-template-columns: 1fr; }
+            .main-content { grid-template-columns: 1fr; }
             .summary-box { flex-direction: column; gap: 15px; }
             .detail-table td:first-child { text-align: left; }
         }
 
-        /* Print Styles - Forces Two Pages */
         @media print {
             @page { size: A4 portrait; margin: 5mm; }
-            body { background: white; display: block; height: auto; overflow: visible; margin: 0; }
+            body { background: white; display: block; height: 100%; overflow: hidden; margin: 0; }
             .sidebar { display: none !important; }
-            
-            .main-workspace { padding: 0; display: block; gap: 0; }
-            
+            .main-workspace { padding: 0; display: block; height: 100%; gap: 0; }
             .page-container { 
-                box-shadow: none; 
-                padding: 10px !important; 
-                width: 100% !important; 
-                max-width: 100% !important; 
-                border: none;
-                transform: scale(0.97); 
-                transform-origin: top center;
-                page-break-inside: avoid; 
-                margin-bottom: 0;
+                box-shadow: none; padding: 10px !important; width: 100% !important; max-width: 100% !important; border: none;
+                transform: scale(0.97); transform-origin: top center; page-break-inside: avoid; margin-bottom: 0;
             }
-            
-            /* Magic CSS to force Page 2 onto a new sheet */
             .page-2 { page-break-before: always; }
-            
             .box { border-color: #000; }
             .details-grid, .main-content { grid-template-columns: 1fr 1fr !important; display: grid !important; }
-            .dasha-grid { grid-template-columns: repeat(3, 1fr) !important; display: grid !important; }
             .summary-box { flex-direction: row !important; display: flex !important; }
             .header { flex-direction: row !important; text-align: left !important; }
             .detail-table td:first-child { text-align: right !important; }
-            .editable-date { border-bottom: none; } /* Hide dashed lines when printing */
         }
     </style>
 </head>
@@ -139,12 +119,29 @@
         <div class="form-group"><label>जन्म तारीख</label><input type="date" id="clientDateInput" value="1998-04-25"></div>
         <div class="form-group"><label>जन्म वेळ</label><input type="time" id="clientTimeInput" value="09:09"></div>
 
-        <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
-
         <div id="dynamicControls"></div>
+
+        <h2 style="margin-top: 25px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">विंशोत्तरी महादशा (Page 2)</h2>
+        <div class="form-group">
+            <label>ग्रह (Planet)</label>
+            <select id="dashaPlanetInput">
+                <option value="सूर्य">सूर्य</option><option value="चन्द्र">चन्द्र</option><option value="मंगल">मंगल</option>
+                <option value="बुध" selected>बुध</option><option value="गुरु">गुरु</option><option value="शुक्र">शुक्र</option>
+                <option value="शनि">शनि</option><option value="राहू">राहू</option><option value="केतु">केतु</option>
+            </select>
+        </div>
+        <div class="form-group"><label>सुरुवात (Start Date)</label><input type="date" id="dashaStartInput"></div>
+        <div class="form-group"><label>शेवट (End Date)</label><input type="date" id="dashaEndInput"></div>
+        
+        <button class="btn-add" onclick="addDashaRow()">+ जोडा (Add Row)</button>
+        <button class="btn-undo" onclick="removeLastDashaRow()">- शेवटची ओळ काढा (Remove Last)</button>
+        <button class="btn-clear" onclick="clearDashaRows()">सर्व काढा (Clear All)</button>
+
+        <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
     </aside>
 
     <main class="main-workspace">
+        
         <div class="page-container">
             <header class="header">
                 <h1>कुंडली <span id="headerNameDisplay">Amey Hatekar</span></h1>
@@ -251,32 +248,26 @@
         </div>
 
         <div class="page-container page-2">
-            <header class="header">
-                <h1>विंशोत्तरी महादशा व अंतर्दशा</h1>
-                <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष</div>
+            <header class="header" style="justify-content: center;">
+                <h1 style="font-size: 28px; margin-bottom: 20px;">विंशोत्तरी महादशा</h1>
             </header>
-            
-            <div class="box info-box" style="padding: 10px;">
-                <div class="info-row-1">
-                    नाम: <strong id="infoNameDisplay2">Amey Hatekar</strong>
-                </div>
-                <div style="font-size: 14px; margin-top: 5px; color: var(--text-muted);">
-                    (तारखेवर क्लिक करून तुम्ही ती थेट बदलू शकता / Click dates to edit)
-                </div>
-            </div>
 
-            <div class="dasha-grid" id="dashaGridContainer"></div>
+            <div class="box" style="padding: 0;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tbody id="dashaTableBody">
+                        </tbody>
+                </table>
+            </div>
         </div>
 
     </main>
 
     <script>
-        // 1. Core Header Listeners (Updates both pages)
+        // --- 1. Header Binding Logic ---
         document.getElementById('clientNameInput').addEventListener('input', e => {
             const val = e.target.value || '______________';
             document.getElementById('headerNameDisplay').textContent = val;
             document.getElementById('infoNameDisplay').textContent = val;
-            document.getElementById('infoNameDisplay2').textContent = val; // Page 2 name
         });
         document.getElementById('clientPlaceInput').addEventListener('input', e => {
             document.getElementById('infoPlaceDisplay').textContent = e.target.value || '______________';
@@ -301,7 +292,7 @@
         document.getElementById('clientTimeInput').addEventListener('input', updateDateTime);
         updateDateTime();
 
-        // 2. Data-Driven Dynamic Dropdowns Generator
+        // --- 2. Dynamic Controls Generator ---
         const jyotishData = {
             Rashi: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
             Lagna: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
@@ -365,46 +356,48 @@
                 }
             }
         });
-
         document.querySelectorAll('[data-control]').forEach(input => input.dispatchEvent(new Event('input', { bubbles: true })));
 
-        // ==========================================
-        // 3. PAGE 2: GENERATE DASHA TABLES MAGIC
-        // ==========================================
-        // The exact Vimshottari Mahadasha sequence and durations (Years)
-        const dashaSequence = [
-            { name: "सूर्य", years: 6 }, { name: "चंद्र", years: 10 }, { name: "मंगळ", years: 7 },
-            { name: "राहू", years: 18 }, { name: "गुरु", years: 16 }, { name: "शनि", years: 19 },
-            { name: "बुध", years: 17 }, { name: "केतू", years: 7 }, { name: "शुक्र", years: 20 }
-        ];
+        // --- 3. DASHA ROW GENERATOR ---
+        function formatDashaDate(dateString) {
+            if(!dateString) return "";
+            return new Intl.DateTimeFormat('mr-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(dateString));
+        }
 
-        const dashaContainer = document.getElementById('dashaGridContainer');
-        
-        // Loop through all 9 planets to create 9 Mahadasha boxes
-        dashaSequence.forEach((mahadasha, mIndex) => {
-            let tableHTML = `
-                <div class="dasha-box">
-                    <div class="dasha-header-row">${mahadasha.name} महादशा (${mahadasha.years} वर्षे)</div>
-                    <table class="dasha-table-inner">
-            `;
+        function addDashaRow() {
+            const planet = document.getElementById('dashaPlanetInput').value;
+            const startDate = document.getElementById('dashaStartInput').value;
+            const endDate = document.getElementById('dashaEndInput').value;
             
-            // Generate the 9 Antardashas inside this Mahadasha (always starts with the Mahadasha lord)
-            for (let i = 0; i < 9; i++) {
-                // Calculate the wrapping index to maintain sequence
-                let aIndex = (mIndex + i) % 9;
-                let antardasha = dashaSequence[aIndex];
-                
-                tableHTML += `
-                    <tr>
-                        <td>${antardasha.name} अंतर्दशा</td>
-                        <td><span class="editable-date" contenteditable="true" spellcheck="false">dd-mm-yyyy</span></td>
-                    </tr>
-                `;
+            if(!startDate || !endDate) {
+                alert("कृपया सुरुवात आणि शेवटची तारीख निवडा (Please select both start and end dates)");
+                return;
             }
+
+            const formattedStart = formatDashaDate(startDate);
+            const formattedEnd = formatDashaDate(endDate);
             
-            tableHTML += `</table></div>`;
-            dashaContainer.insertAdjacentHTML('beforeend', tableHTML);
-        });
+            const tbody = document.getElementById('dashaTableBody');
+            const newRow = `
+                <tr class="dasha-row">
+                    <td>${planet}</td>
+                    <td>${formattedStart} - ${formattedEnd}</td>
+                </tr>
+            `;
+            tbody.insertAdjacentHTML('beforeend', newRow);
+        }
+
+        // NEW: Function to remove the last added row
+        function removeLastDashaRow() {
+            const tbody = document.getElementById('dashaTableBody');
+            if (tbody.lastElementChild) {
+                tbody.removeChild(tbody.lastElementChild);
+            }
+        }
+
+        function clearDashaRows() {
+            document.getElementById('dashaTableBody').innerHTML = "";
+        }
     </script>
 </body>
 </html>
