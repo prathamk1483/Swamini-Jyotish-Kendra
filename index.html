@@ -15,76 +15,22 @@
             --sidebar-bg: #2C3E50;
         }
 
-        body {
-            font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #e9ecef;
-            color: var(--text-dark);
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
+        body { font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif; margin: 0; padding: 0; background-color: #e9ecef; color: var(--text-dark); -webkit-print-color-adjust: exact; print-color-adjust: exact; display: flex; height: 100vh; overflow: hidden; }
 
-        /* --- App Layout (Sidebar + Main) --- */
-        .sidebar {
-            width: 300px;
-            background-color: var(--sidebar-bg);
-            color: white;
-            padding: 20px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
-            overflow-y: auto;
-        }
-
+        .sidebar { width: 300px; background-color: var(--sidebar-bg); color: white; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; z-index: 10; overflow-y: auto; }
         .sidebar h2 { margin-top: 0; font-size: 20px; border-bottom: 1px solid #455A64; padding-bottom: 10px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #B0BEC5; }
-        .form-group input { width: 100%; padding: 12px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 16px; box-sizing: border-box; }
         
-        /* Time input specific fix for some mobile browsers to ensure text is white */
-        .form-group input[type="time"]::-webkit-calendar-picker-indicator,
-        .form-group input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-        }
+        /* Updated to include select dropdowns */
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 16px; box-sizing: border-box; }
+        
+        .form-group input[type="time"]::-webkit-calendar-picker-indicator, .form-group input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 
-        .print-btn {
-            margin-top: 20px;
-            background-color: #F47A20;
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            width: 100%;
-        }
+        .print-btn { margin-top: 20px; margin-bottom: 20px; background-color: #F47A20; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; width: 100%; }
 
-        .main-workspace {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        /* --- Kundali Document Styles --- */
-        .page-container {
-            width: 850px;
-            background: white;
-            padding: 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
+        .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; }
+        .page-container { width: 850px; background: white; padding: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 10px; }
         .header h1 { font-size: 24px; color: var(--primary-blue); margin: 0; }
         .logo-area { display: flex; align-items: center; font-size: 24px; font-weight: 700; color: var(--primary-blue); }
@@ -125,13 +71,9 @@
         .dot-sun { background: #F47A20; } .dot-moon { background: #95A5A6; } .dot-merc { background: #7F8C8D; } .dot-ven { background: #F1C40F; } .dot-mars { background: #E74C3C; } .dot-jup { background: #A0522D; } .dot-sat { background: #7A8498; } .dot-node { background: transparent; }
         .footer-note { margin-top: 15px; font-size: 12px; color: var(--primary-blue); }
 
-        /* =========================================
-           MOBILE RESPONSIVE STYLES
-           ========================================= */
         @media (max-width: 850px) {
             body { flex-direction: column; height: auto; overflow: auto; }
             .sidebar { width: 100%; box-sizing: border-box; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-            .print-btn { margin-top: 10px; }
             .main-workspace { padding: 10px; width: 100%; box-sizing: border-box; }
             .page-container { width: 100%; padding: 15px; }
             .header { flex-direction: column; text-align: center; gap: 10px; }
@@ -141,9 +83,6 @@
             .detail-table td:first-child { text-align: left; }
         }
 
-        /* =========================================
-           PRINT STYLES
-           ========================================= */
         @media print {
             body { background: white; display: block; height: auto; overflow: visible; }
             .sidebar { display: none !important; }
@@ -162,27 +101,14 @@
     <aside class="sidebar">
         <h2>ग्राहक तपशील</h2>
         
-        <div class="form-group">
-            <label for="clientNameInput">पूर्ण नाव (Full Name)</label>
-            <input type="text" id="clientNameInput" value="Amey Hatekar" placeholder="नाव प्रविष्ट करा">
-        </div>
-
-        <div class="form-group">
-            <label for="clientPlaceInput">जन्मस्थान (Birthplace)</label>
-            <input type="text" id="clientPlaceInput" value="Amravati, India" placeholder="स्थान प्रविष्ट करा">
-        </div>
-
-        <div class="form-group">
-            <label for="clientDateInput">जन्म तारीख (Date of Birth)</label>
-            <input type="date" id="clientDateInput" value="1998-04-25">
-        </div>
-
-        <div class="form-group">
-            <label for="clientTimeInput">जन्म वेळ (Time of Birth)</label>
-            <input type="time" id="clientTimeInput" value="09:09">
-        </div>
+        <div class="form-group"><label>पूर्ण नाव</label><input type="text" id="clientNameInput" value="Amey Hatekar"></div>
+        <div class="form-group"><label>जन्मस्थान</label><input type="text" id="clientPlaceInput" value="Amravati, India"></div>
+        <div class="form-group"><label>जन्म तारीख</label><input type="date" id="clientDateInput" value="1998-04-25"></div>
+        <div class="form-group"><label>जन्म वेळ</label><input type="time" id="clientTimeInput" value="09:09"></div>
 
         <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+
+        <div id="dynamicControls"></div>
     </aside>
 
     <main class="main-workspace">
@@ -190,9 +116,7 @@
             
             <header class="header">
                 <h1>कुंडली <span id="headerNameDisplay">Amey Hatekar</span></h1>
-                <div class="logo-area">
-                    <span class="swastik">卐</span> हिंदू कॅलेंडर
-                </div>
+                <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष</div>
             </header>
 
             <div class="box info-box">
@@ -207,8 +131,8 @@
 
             <div class="box summary-box">
                 <div class="summary-item">
-                    <div class="rashi-title">राशि ♓ मीन</div>
-                    <div class="lagna-title">लग्न ♊ मिथुन</div>
+                    <div class="rashi-title">राशि ♓ <span data-bind="Rashi">मीन</span></div>
+                    <div class="lagna-title">लग्न ♊ <span data-bind="Lagna">मिथुन</span></div>
                 </div>
                 <div class="summary-item summary-center">
                     <h3>नाम दो..</h3>
@@ -222,23 +146,23 @@
             <div class="details-grid">
                 <div class="box detail-card">
                     <table class="detail-table">
-                        <tr><td>राशि स्वामी</td><td>गुरु</td></tr>
-                        <tr><td>नक्षत्र स्वामी</td><td>बुध</td></tr>
-                        <tr><td>नक्षत्र पाया</td><td>सुवर्ण</td></tr>
-                        <tr><td>योनि</td><td>गज</td></tr>
-                        <tr><td>गण</td><td>देव</td></tr>
-                        <tr><td>नाडी</td><td>अन्त्य (कफ)</td></tr>
-                        <tr><td>वर्ण</td><td>ब्राह्मण</td></tr>
+                        <tr><td>राशि स्वामी</td><td data-bind="RashiSwami">गुरु</td></tr>
+                        <tr><td>नक्षत्र स्वामी</td><td data-bind="NakshatraSwami">बुध</td></tr>
+                        <tr><td>नक्षत्र पाया</td><td data-bind="NakshtraPaya">सुवर्ण</td></tr>
+                        <tr><td>योनि</td><td data-bind="Yoni">गज</td></tr>
+                        <tr><td>गण</td><td data-bind="Gan">देव</td></tr>
+                        <tr><td>नाडी</td><td data-bind="Naadi">अन्त्य (कफ)</td></tr>
+                        <tr><td>वर्ण</td><td data-bind="Varna">ब्राह्मण</td></tr>
                     </table>
                 </div>
                 <div class="box detail-card">
                     <table class="detail-table">
-                        <tr><td>तिथि</td><td>चतुर्दशी, कृष्ण</td></tr>
-                        <tr><td>नक्षत्र, पद</td><td>रेवती 2 दो</td></tr>
-                        <tr><td>योग</td><td>विष्कुम्भ</td></tr>
-                        <tr><td>करण</td><td>विष्टि भद्र</td></tr>
-                        <tr><td>इष्टकाल</td><td>08:07:05</td></tr>
-                        <tr><td>सूर्योदय</td><td>05:54</td></tr>
+                        <tr><td>तिथि</td><td data-bind="Tithi">चतुर्दशी, कृष्ण</td></tr>
+                        <tr><td>नक्षत्र, पद</td><td data-bind="NakshatraPada">रेवती 2 दो</td></tr>
+                        <tr><td>योग</td><td data-bind="Yog">विष्कुम्भ</td></tr>
+                        <tr><td>करण</td><td data-bind="Karan">विष्टि भद्र</td></tr>
+                        <tr><td>इष्टकाल</td><td data-bind="IshtKaal">08:07:05</td></tr>
+                        <tr><td>सूर्योदय</td><td data-bind="Suryoday">05:54</td></tr>
                         <tr><td></td><td>शनिवार, चैत्र, 2055 विक्रम संवत</td></tr>
                     </table>
                 </div>
@@ -251,7 +175,6 @@
                         <line x1="0" y1="0" x2="300" y2="300" class="chart-lines"/>
                         <line x1="300" y1="0" x2="0" y2="300" class="chart-lines"/>
                         <polygon points="150,0 300,150 150,300 0,150" class="chart-lines"/>
-
                         <text x="150" y="15" text-anchor="middle" class="chart-num">3 Gem</text>
                         <text x="60" y="25" text-anchor="middle" class="chart-num">4 Can</text>
                         <text x="15" y="80" text-anchor="middle" class="chart-num">5 Leo</text>
@@ -264,7 +187,6 @@
                         <text x="260" y="150" text-anchor="middle" class="chart-num">12 Pis</text>
                         <text x="285" y="80" text-anchor="middle" class="chart-num">1 Ari</text>
                         <text x="240" y="25" text-anchor="middle" class="chart-num">2 Tau</text>
-
                         <text x="150" y="80" text-anchor="middle" class="chart-planet">लग्न</text>
                         <text x="40" y="110" text-anchor="middle" class="chart-planet">राहू*</text>
                         <text x="60" y="260" text-anchor="middle" class="chart-planet">यम*</text>
@@ -291,83 +213,92 @@
                         <tr><td><span class="planet-dot dot-node">☊</span> राहू</td><td>♌ सिंह</td><td>पूर्व फाल्गुनी, 1 मो</td></tr>
                         <tr><td><span class="planet-dot dot-node">☋</span> केतु</td><td>♒ कुम्भ</td><td>शतभिष, 3 सी</td></tr>
                     </table>
-                    
-                    <div class="footer-note">
-                        अयनांश लाहिरी / चित्रपक्ष = 23°50'
-                    </div>
+                    <div class="footer-note">अयनांश लाहिरी / चित्रपक्ष = 23°50'</div>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        // DOM Elements
-        const nameInput = document.getElementById('clientNameInput');
-        const headerNameDisplay = document.getElementById('headerNameDisplay');
-        const infoNameDisplay = document.getElementById('infoNameDisplay');
-        
-        const placeInput = document.getElementById('clientPlaceInput');
-        const infoPlaceDisplay = document.getElementById('infoPlaceDisplay');
-
-        const dateInput = document.getElementById('clientDateInput');
-        const timeInput = document.getElementById('clientTimeInput');
-        const infoDateTimeDisplay = document.getElementById('infoDateTimeDisplay');
-
-        // Simple text updates
-        nameInput.addEventListener('input', e => {
+        // 1. Core Header Listeners
+        document.getElementById('clientNameInput').addEventListener('input', e => {
             const val = e.target.value || '______________';
-            headerNameDisplay.textContent = val;
-            infoNameDisplay.textContent = val;
+            document.getElementById('headerNameDisplay').textContent = val;
+            document.getElementById('infoNameDisplay').textContent = val;
+        });
+        document.getElementById('clientPlaceInput').addEventListener('input', e => {
+            document.getElementById('infoPlaceDisplay').textContent = e.target.value || '______________';
         });
 
-        placeInput.addEventListener('input', e => {
-            infoPlaceDisplay.textContent = e.target.value || '______________';
-        });
-
-        // Date and Time Update Logic
-        function updateDateTime() {
-            const dateVal = dateInput.value;
-            const timeVal = timeInput.value;
-
-            if (!dateVal) {
-                infoDateTimeDisplay.textContent = "तारीख निवडा";
-                return;
+        const updateDateTime = () => {
+            const d = document.getElementById('clientDateInput').value, t = document.getElementById('clientTimeInput').value;
+            if(!d) return;
+            const formattedDate = new Intl.DateTimeFormat('mr-IN', { day: 'numeric', month: 'short', year: 'numeric', weekday: 'long' }).format(new Date(d));
+            let fTime = "";
+            if(t) {
+                let [h, m] = t.split(':');
+                let ampm = h >= 12 ? 'PM' : 'AM';
+                h = h % 12 || 12;
+                const mDig = ['०','१','२','३','४','५','६','७','८','९'];
+                const toMar = s => String(s).split('').map(x => mDig[x] || x).join('');
+                fTime = `, ${toMar(h.toString().padStart(2, '0'))}:${toMar(m)} ${ampm}`;
             }
+            document.getElementById('infoDateTimeDisplay').textContent = `${formattedDate}${fTime}`;
+        };
+        document.getElementById('clientDateInput').addEventListener('input', updateDateTime);
+        document.getElementById('clientTimeInput').addEventListener('input', updateDateTime);
+        updateDateTime();
 
-            // 1. Format Date in Marathi (e.g., २५ एप्रि १९९८, शनिवार)
-            const dateObj = new Date(dateVal);
-            const dateOptions = { day: 'numeric', month: 'short', year: 'numeric', weekday: 'long' };
-            let formattedDate = new Intl.DateTimeFormat('mr-IN', dateOptions).format(dateObj);
+        // 2. Data-Driven Dynamic Dropdowns Generator
+        const jyotishData = {
+            Rashi: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
+            Lagna: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
+            RashiSwami: ["सूर्य", "चंद्र", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि", "राहू", "केतू"],
+            NakshatraSwami: ["सूर्य", "चंद्र", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि", "राहू", "केतू"],
+            NakshtraPaya: ["सुवर्ण", "रजत", "ताम्र", "लोह"],
+            Yoni: ["अश्व", "गज", "मेष", "सर्प", "श्वान", "मार्जार", "मूषक", "गौ", "महिष", "व्याघ्र", "मृग", "वानर", "नकुल", "सिंह"],
+            Gan: ["देव", "मनुष्य", "राक्षस"],
+            Naadi: ["आद्य (वात)", "मध्य (पित्त)", "अन्त्य (कफ)"],
+            Varna: ["ब्राह्मण", "क्षत्रिय", "वैश्य", "शूद्र"],
+            Tithi: ["प्रतिपदा", "द्वितीया", "तृतीया", "चतुर्थी", "पंचमी", "षष्ठी", "सप्तमी", "अष्टमी", "नवमी", "दशमी", "एकादशी", "द्वादशी", "त्रयोदशी", "चतुर्दशी", "पौर्णिमा", "अमावास्या"].flatMap(t=>[t+', शुक्ल', t+', कृष्ण']),
+            NakshatraPada: ["अश्विनी", "भरणी", "कृत्तिका", "रोहिणी", "मृगशीर्ष", "आर्द्रा", "पुनर्वसु", "पुष्य", "आश्लेषा", "मघा", "पूर्वा फाल्गुनी", "उत्तरा फाल्गुनी", "हस्त", "चित्रा", "स्वाती", "विशाखा", "अनुराधा", "ज्येष्ठा", "मूळ", "पूर्वाषाढा", "उत्तराषाढा", "श्रवण", "धनिष्ठा", "शततारका", "पूर्वा भाद्रपदा", "उत्तरा भाद्रपदा", "रेवती"].flatMap(n=>[n+', पद १', n+', पद २', n+', पद ३', n+', पद ४']),
+            Yog: ["विष्कुंभ", "प्रीति", "आयुष्मान", "सौभाग्य", "शोभन", "अतिगंड", "सुकर्मा", "धृति", "शूल", "गंड", "वृद्धि", "ध्रुव", "व्याघात", "हर्षण", "वज्र", "सिद्धि", "व्यतीपात", "वरीयान", "परिघ", "शिव", "सिद्ध", "साध्य", "शुभ", "शुक्ल", "ब्रह्म", "ऐंद्र", "वैधृति"],
+            Karan: ["बव", "बालव", "कौलव", "तैतिल", "गर", "वणिज", "विष्टि (भद्रा)", "शकुनि", "चतुष्पाद", "नाग", "किंस्तुघ्न"]
+        };
 
-            // 2. Format Time in 12-hour format
-            let formattedTime = "";
-            if (timeVal) {
-                let [hours, minutes] = timeVal.split(':');
-                let ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12;
-                hours = hours ? hours : 12; // Handle midnight (0 hours)
-                
-                // Convert English numbers to Marathi numbers for consistency
-                const marathiDigits = ['०','१','२','३','४','५','६','७','८','९'];
-                const convertToMarathiNum = (numStr) => String(numStr).split('').map(d => marathiDigits[d] || d).join('');
-                
-                // Keep time formatted exactly like original design, but converted to 12h
-                let mHours = convertToMarathiNum(hours.toString().padStart(2, '0'));
-                let mMins = convertToMarathiNum(minutes);
-                
-                formattedTime = `, ${mHours}:${mMins} ${ampm}`;
-            }
+        const extraTimers = {
+            IshtKaal: { label: "इष्टकाल", type: "time", step: "1" }, // step="1" adds Seconds picker
+            Suryoday: { label: "सूर्योदय", type: "time" }
+        };
 
-            // Update the display
-            infoDateTimeDisplay.textContent = `${formattedDate}${formattedTime}`;
+        const container = document.getElementById('dynamicControls');
+        
+        // Build Selects
+        for (const [key, options] of Object.entries(jyotishData)) {
+            let html = `<div class="form-group"><label>${key}</label><select data-control="${key}">`;
+            options.forEach(opt => html += `<option value="${opt}">${opt}</option>`);
+            html += `</select></div>`;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+        
+        // Build Timers
+        for (const [key, attrs] of Object.entries(extraTimers)) {
+            let stepAttr = attrs.step ? `step="${attrs.step}"` : "";
+            container.insertAdjacentHTML('beforeend', `<div class="form-group"><label>${attrs.label}</label><input type="${attrs.type}" data-control="${key}" ${stepAttr} value="00:00${attrs.step ? ':00' : ''}"></div>`);
         }
 
-        // Listen for changes on both date and time inputs
-        dateInput.addEventListener('input', updateDateTime);
-        timeInput.addEventListener('input', updateDateTime);
+        // 3. Single Event Delegation for all dynamically generated controls
+        container.addEventListener('input', (e) => {
+            if(e.target.dataset.control) {
+                const val = e.target.value;
+                document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
+            }
+        });
 
-        // Run once on load to format the default values properly
-        updateDateTime();
+        // Initialize display to match first values in arrays
+        document.querySelectorAll('[data-control]').forEach(input => {
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        });
     </script>
 </body>
 </html>
