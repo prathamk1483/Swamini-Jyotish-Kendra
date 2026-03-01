@@ -245,7 +245,7 @@
                         <tr><td><span class="planet-dot dot-moon"></span> चन्द्र</td><td data-bind="Rashi_चन्द्र">♓ मीन</td><td>रेवती, 2 दो</td></tr>
                         <tr><td><span class="planet-dot dot-mars"></span> मंगल</td><td data-bind="Rashi_मंगल">♈ मेष</td><td>भरणी, 1 ली</td></tr>
                         <tr><td><span class="planet-dot dot-merc"></span> बुध</td><td data-bind="Rashi_बुध">♓ मीन</td><td>रेवती, 1 दे</td></tr>
-                        <tr><td><span class="planet-dot dot-jup"></span> गुरु</td><td data-bind="Rashi_गुरु">♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 সো</td></tr>
+                        <tr><td><span class="planet-dot dot-jup"></span> गुरु</td><td data-bind="Rashi_गुरु">♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 सो</td></tr>
                         <tr><td><span class="planet-dot dot-ven"></span> शुक्र</td><td data-bind="Rashi_शुक्र">♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 सो</td></tr>
                         <tr><td><span class="planet-dot dot-sat"></span> शनि</td><td data-bind="Rashi_शनि">♈ मेष</td><td>अश्विनी, 1 चु</td></tr>
                         <tr><td><span class="planet-dot dot-node">☊</span> राहू</td><td data-bind="Rashi_राहू">♌ सिंह</td><td>पूर्व फाल्गुनी, 1 मो</td></tr>
@@ -348,16 +348,21 @@
             { id: "शनि", default: "♈ मेष" }, { id: "राहू", default: "♌ सिंह" }, { id: "केतु", default: "♒ कुम्भ" }
         ];
         
-        // RATNA LIST
-        const ratnaList = [
-            "मूंगा (Red Coral)",
-            "पुखराज (Yellow Sapphire)",
-            "मरकरी / पन्ना (Emerald)",
-            "मोती (Pearl)",
-            "मूंगा / पुखराज (Red Coral / Yellow Sapphire)",
-            "पुखराज / नीलम (Yellow Sapphire / Blue Sapphire)",
-            "हीरा (Diamond)",
-            "नीलम (Blue Sapphire)"
+        // --- ALL 12 ZODIAC GEMSTONES MAPPED ---
+        // 'label' shows in dropdown, 'stone' prints on the document
+        const ratnaOptions = [
+            { label: "मेष (Aries)", stone: "मूंगा (Red Coral)" },
+            { label: "वृषभ (Taurus)", stone: "पुखराज (Yellow Sapphire)" },
+            { label: "मिथुन (Gemini)", stone: "मरकरी / पन्ना (Emerald)" },
+            { label: "कर्क (Cancer)", stone: "मोती (Pearl)" },
+            { label: "सिंह (Leo)", stone: "मूंगा / पुखराज (Red Coral / Yellow Sapphire)" },
+            { label: "कन्या (Virgo)", stone: "पुखराज / नीलम (Yellow Sapphire / Blue Sapphire)" },
+            { label: "तुला (Libra)", stone: "हीरा (Diamond)" },
+            { label: "वृश्चिक (Scorpio)", stone: "पुखराज / नीलम (Yellow Sapphire / Blue Sapphire)" },
+            { label: "धनु (Sagittarius)", stone: "पुखराज (Yellow Sapphire)" },
+            { label: "मकर (Capricorn)", stone: "नीलम (Blue Sapphire)" },
+            { label: "कुंभ (Aquarius)", stone: "नीलम (Blue Sapphire)" },
+            { label: "मीन (Pisces)", stone: "पुखराज (Yellow Sapphire)" }
         ];
 
         const container = document.getElementById('dynamicControls');
@@ -379,10 +384,10 @@
             container.insertAdjacentHTML('beforeend', html);
         });
 
-        // FIXED: Added form-group class wrapper here to apply proper styling
+        // Insert smart Ratna Select into the sidebar with correct styling
         const ratnaContainer = document.getElementById('ratnaControl');
-        let ratnaHtml = `<div class="form-group"><label>रत्न निवडा</label><select data-control="RashiRatna">`;
-        ratnaList.forEach(opt => ratnaHtml += `<option value="${opt}">${opt}</option>`);
+        let ratnaHtml = `<div class="form-group"><label>रत्न निवडा (Select Gemstone)</label><select data-control="RashiRatna">`;
+        ratnaOptions.forEach(opt => ratnaHtml += `<option value="${opt.stone}">${opt.label} - ${opt.stone}</option>`);
         ratnaHtml += `</select></div>`;
         ratnaContainer.innerHTML = ratnaHtml;
 
