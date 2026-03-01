@@ -22,7 +22,6 @@
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #B0BEC5; }
         
-        /* Updated to include select dropdowns */
         .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 16px; box-sizing: border-box; }
         
         .form-group input[type="time"]::-webkit-calendar-picker-indicator, .form-group input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
@@ -135,7 +134,7 @@
                     <div class="lagna-title">लग्न ♊ <span data-bind="Lagna">मिथुन</span></div>
                 </div>
                 <div class="summary-item summary-center">
-                    <h3>नाम दो..</h3>
+                    <h3>नाम <span id="naamAksharDisplay">दो..</span></h3>
                     <p>दशा भोग्य बुध 10y 3m 13d</p>
                 </div>
                 <div class="summary-item">
@@ -261,13 +260,41 @@
             Naadi: ["आद्य (वात)", "मध्य (पित्त)", "अन्त्य (कफ)"],
             Varna: ["ब्राह्मण", "क्षत्रिय", "वैश्य", "शूद्र"],
             Tithi: ["प्रतिपदा", "द्वितीया", "तृतीया", "चतुर्थी", "पंचमी", "षष्ठी", "सप्तमी", "अष्टमी", "नवमी", "दशमी", "एकादशी", "द्वादशी", "त्रयोदशी", "चतुर्दशी", "पौर्णिमा", "अमावास्या"].flatMap(t=>[t+', शुक्ल', t+', कृष्ण']),
-            NakshatraPada: ["अश्विनी", "भरणी", "कृत्तिका", "रोहिणी", "मृगशीर्ष", "आर्द्रा", "पुनर्वसु", "पुष्य", "आश्लेषा", "मघा", "पूर्वा फाल्गुनी", "उत्तरा फाल्गुनी", "हस्त", "चित्रा", "स्वाती", "विशाखा", "अनुराधा", "ज्येष्ठा", "मूळ", "पूर्वाषाढा", "उत्तराषाढा", "श्रवण", "धनिष्ठा", "शततारका", "पूर्वा भाद्रपदा", "उत्तरा भाद्रपदा", "रेवती"].flatMap(n=>[n+', पद १', n+', पद २', n+', पद ३', n+', पद ४']),
+            NakshatraPada: [
+                ["अश्विनी", ["चू", "चे", "चो", "ला"]],
+                ["भरणी", ["ली", "लू", "ले", "लो"]],
+                ["कृत्तिका", ["अ", "ई", "ऊ", "ए"]],
+                ["रोहिणी", ["ओ", "वा", "वी", "वू"]],
+                ["मृगशीर्ष", ["वे", "वो", "का", "की"]],
+                ["आर्द्रा", ["कू", "घ", "ङ", "छ"]],
+                ["पुनर्वसु", ["के", "को", "हा", "ही"]],
+                ["पुष्य", ["हू", "हे", "हो", "डा"]],
+                ["आश्लेषा", ["डी", "डू", "डे", "डो"]],
+                ["मघा", ["मा", "मी", "मू", "मे"]],
+                ["पूर्वा फाल्गुनी", ["मो", "टा", "टी", "टू"]],
+                ["उत्तरा फाल्गुनी", ["टे", "टो", "पा", "पी"]],
+                ["हस्त", ["पू", "ष", "ण", "ठ"]],
+                ["चित्रा", ["पे", "पो", "रा", "री"]],
+                ["स्वाती", ["रू", "रे", "रो", "ता"]],
+                ["विशाखा", ["ती", "तू", "ते", "तो"]],
+                ["अनुराधा", ["ना", "नी", "नू", "ने"]],
+                ["ज्येष्ठा", ["नो", "या", "यी", "यू"]],
+                ["मूळ", ["ये", "यो", "भा", "भी"]],
+                ["पूर्वाषाढा", ["भू", "धा", "फा", "ढा"]],
+                ["उत्तराषाढा", ["भे", "भो", "जा", "जी"]],
+                ["श्रवण", ["खी", "खू", "खे", "खो"]],
+                ["धनिष्ठा", ["गा", "गी", "गू", "गे"]],
+                ["शततारका", ["गो", "सा", "सी", "सू"]],
+                ["पूर्वा भाद्रपदा", ["से", "सो", "दा", "दी"]],
+                ["उत्तरा भाद्रपदा", ["दू", "थ", "झ", "ञ"]],
+                ["रेवती", ["दे", "दो", "चा", "ची"]]
+            ].flatMap(([n, letters]) => letters.map((l, i) => `${n}, पद ${i + 1} (${l})`)),
             Yog: ["विष्कुंभ", "प्रीति", "आयुष्मान", "सौभाग्य", "शोभन", "अतिगंड", "सुकर्मा", "धृति", "शूल", "गंड", "वृद्धि", "ध्रुव", "व्याघात", "हर्षण", "वज्र", "सिद्धि", "व्यतीपात", "वरीयान", "परिघ", "शिव", "सिद्ध", "साध्य", "शुभ", "शुक्ल", "ब्रह्म", "ऐंद्र", "वैधृति"],
             Karan: ["बव", "बालव", "कौलव", "तैतिल", "गर", "वणिज", "विष्टि (भद्रा)", "शकुनि", "चतुष्पाद", "नाग", "किंस्तुघ्न"]
         };
 
         const extraTimers = {
-            IshtKaal: { label: "इष्टकाल", type: "time", step: "1" }, // step="1" adds Seconds picker
+            IshtKaal: { label: "इष्टकाल", type: "time", step: "1" },
             Suryoday: { label: "सूर्योदय", type: "time" }
         };
 
@@ -292,6 +319,15 @@
             if(e.target.dataset.control) {
                 const val = e.target.value;
                 document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
+                
+                // CHANGED: Specific logic to extract Janmakshar and apply to naam heading
+                if(e.target.dataset.control === 'NakshatraPada') {
+                    // This regex extracts whatever is inside the parenthesis (e.g. "चू")
+                    const match = val.match(/\(([^)]+)\)/);
+                    if (match && match[1]) {
+                        document.getElementById('naamAksharDisplay').textContent = match[1] + "..";
+                    }
+                }
             }
         });
 
