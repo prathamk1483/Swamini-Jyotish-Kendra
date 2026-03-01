@@ -45,12 +45,12 @@
         /* --- GLOBAL HEADER --- */
         .page-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--primary-blue); padding-bottom: 12px; margin-bottom: 15px; }
         .header-title .main-heading { font-size: 26px; color: var(--primary-blue); margin: 0; }
-        .header-contact { text-align: right; }
-        .logo-area { text-align: center;display: flex; align-items: center; justify-content: flex-end; font-size: 20px; font-weight: 700; color: var(--primary-blue);z-index: 10; }
+        .header-contact { text-align: left; margin-left:-90px;}
+        .logo-area { text-align: center;display: flex; align-items: center; justify-content: flex-start; font-size: 20px; font-weight: 700; color: var(--primary-blue);z-index: 10; }
         .logo-area span.swastik { color: #F47A20; font-size: 28px; margin-right: 8px; }
         .contact-details { font-size: 14px; color: var(--text-dark); line-height: 1.4; }
         .contact-details strong { color: var(--primary-blue); }
-        .logo{height: 40px;width: 40px;z-index: 2;}
+        .logo{height: 100px;width: 100px;}
 
         .box { border: 1px solid var(--border-color); border-radius: 6px; background: white; margin-bottom: 12px; padding: 12px; page-break-inside: avoid; }
         .info-box { text-align: center; background-color: #fafbfc; }
@@ -137,8 +137,8 @@
                 transform: scale(0.97); transform-origin: top center; margin-bottom: 0; page-break-after: always;
             }
             .page-header { display: flex !important; flex-direction: row !important; text-align: left !important; align-items: flex-end !important; justify-content: space-between !important; }
-            .header-contact { text-align: right !important; }
-            .logo-area { justify-content: flex-end !important; }
+            .header-contact { text-align: left !important; }
+            .logo-area { justify-content: flex-start !important; }
 
             .page-2, .page-3 { page-break-before: always; padding-top: 20px !important; page-break-after: auto; }
             .box { border-color: #000; }
@@ -258,15 +258,16 @@
         
         <div class="page-container">
             <header class="page-header">
-                <div class="header-title">
-                    <h1 class="main-heading">कुंडली <span class="client-name-bind">Amey Hatekar</span></h1>
-                </div>
+                <img class="logo" src="./assets/Logos/SwaminiLogo.png" alt="">
                 <div class="header-contact">
-                    <div class="logo-area"><span class="swastik"><img class="logo" src="./assets/Logos/SwaminiLogo.png" alt=""></span> स्वामिनी ज्योतिष कार्यालय</div>
+                    <div class="logo-area">स्वामिनी ज्योतिष कार्यालय</div>
                     <div class="contact-details">
                         <strong>ज्योतिष: योगेश उंबरकर</strong><br>
                         <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
                     </div>
+                </div>
+                    <div class="header-title">
+                    <h1 class="main-heading">कुंडली <span class="client-name-bind">Amey Hatekar</span></h1>
                 </div>
             </header>
 
@@ -355,15 +356,16 @@
 
         <div class="page-container page-2">
             <header class="page-header">
-                <div class="header-title">
-                    <h1 class="main-heading">महादशा व पूजन <span class="client-name-bind">Amey Hatekar</span></h1>
-                </div>
+                <img class="logo" src="./assets/Logos/SwaminiLogo.png" alt="">
                 <div class="header-contact">
-                    <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष कार्यालय</div>
+                    <div class="logo-area">स्वामिनी ज्योतिष कार्यालय</div>
                     <div class="contact-details">
                         <strong>ज्योतिष: योगेश उंबरकर</strong><br>
                         <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
                     </div>
+                </div>
+                <div class="header-title">
+                    <h1 class="main-heading">महादशा व पूजन &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
                 </div>
             </header>
 
@@ -405,15 +407,16 @@
 
         <div class="page-container page-3">
             <header class="page-header">
-                <div class="header-title">
-                    <h1 class="main-heading">फलश्रुती <span class="client-name-bind">Amey Hatekar</span></h1>
-                </div>
+                <img class="logo" src="./assets/Logos/SwaminiLogo.png" alt="">
                 <div class="header-contact">
-                    <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष कार्यालय</div>
+                    <div class="logo-area">स्वामिनी ज्योतिष कार्यालय</div>
                     <div class="contact-details">
                         <strong>ज्योतिष: योगेश उंबरकर</strong><br>
                         <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
                     </div>
+                </div>
+                <div class="header-title">
+                    <h1 class="main-heading">फलश्रुती &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
                 </div>
             </header>
 
