@@ -46,10 +46,11 @@
         .page-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--primary-blue); padding-bottom: 12px; margin-bottom: 15px; }
         .header-title .main-heading { font-size: 26px; color: var(--primary-blue); margin: 0; }
         .header-contact { text-align: right; }
-        .logo-area { display: flex; align-items: center; justify-content: flex-end; font-size: 22px; font-weight: 700; color: var(--primary-blue); margin-bottom: 5px; }
+        .logo-area { text-align: center;display: flex; align-items: center; justify-content: flex-end; font-size: 20px; font-weight: 700; color: var(--primary-blue);z-index: 10; }
         .logo-area span.swastik { color: #F47A20; font-size: 28px; margin-right: 8px; }
         .contact-details { font-size: 14px; color: var(--text-dark); line-height: 1.4; }
         .contact-details strong { color: var(--primary-blue); }
+        .logo{height: 40px;width: 40px;z-index: 2;}
 
         .box { border: 1px solid var(--border-color); border-radius: 6px; background: white; margin-bottom: 12px; padding: 12px; page-break-inside: avoid; }
         .info-box { text-align: center; background-color: #fafbfc; }
@@ -261,7 +262,7 @@
                     <h1 class="main-heading">कुंडली <span class="client-name-bind">Amey Hatekar</span></h1>
                 </div>
                 <div class="header-contact">
-                    <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष कार्यालय</div>
+                    <div class="logo-area"><span class="swastik"><img class="logo" src="./assets/Logos/SwaminiLogo.png" alt=""></span> स्वामिनी ज्योतिष कार्यालय</div>
                     <div class="contact-details">
                         <strong>ज्योतिष: योगेश उंबरकर</strong><br>
                         <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
@@ -348,7 +349,6 @@
                         <tr><td><span class="planet-dot dot-node">♆</span> नेपच्यून<span class="planet-suffix" data-suffix="नेपच्यून"></span></td><td data-bind="Rashi_नेपच्यून">♑ मकर</td><td data-bind="Deg_नेपच्यून">00° 00'</td></tr>
                         <tr><td><span class="planet-dot dot-node">♇</span> प्लूटो<span class="planet-suffix" data-suffix="प्लूटो"></span></td><td data-bind="Rashi_प्लूटो">♐ धनु</td><td data-bind="Deg_प्लूटो">00° 00'</td></tr>
                     </table>
-                    <div class="footer-note">अयनांश लाहिरी / चित्रपक्ष = 23°50'</div>
                 </div>
             </div>
         </div>
