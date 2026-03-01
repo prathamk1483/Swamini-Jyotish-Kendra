@@ -48,7 +48,7 @@
         .header-contact { text-align: right; }
         .logo-area { display: flex; align-items: center; justify-content: flex-end; font-size: 22px; font-weight: 700; color: var(--primary-blue); margin-bottom: 5px; }
         .logo-area span.swastik { color: #F47A20; font-size: 28px; margin-right: 8px; }
-        .contact-details { font-size: 14px; color: var(--text-dark); line-height: 1.4; }
+        .contact-details { font-size: 16px; color: var(--text-dark); line-height: 1.4; }
         .contact-details strong { color: var(--primary-blue); }
 
         .box { border: 1px solid var(--border-color); border-radius: 6px; background: white; margin-bottom: 12px; padding: 12px; page-break-inside: avoid; }
@@ -176,6 +176,34 @@
         <div class="form-group"><label>जन्म तारीख</label><input type="date" id="clientDateInput" value="1998-04-25"></div>
         <div class="form-group"><label>जन्म वेळ</label><input type="time" id="clientTimeInput" value="09:09"></div>
 
+        <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">पंचांग तपशील</h2>
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <div class="form-group" style="margin-bottom: 0; flex: 1.2;">
+                <label>वार</label>
+                <select data-control="PanchangDay">
+                    <option value="रविवार">रविवार</option><option value="सोमवार">सोमवार</option>
+                    <option value="मंगळवार">मंगळवार</option><option value="बुधवार">बुधवार</option>
+                    <option value="गुरुवार">गुरुवार</option><option value="शुक्रवार">शुक्रवार</option>
+                    <option value="शनिवार" selected>शनिवार</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1.2;">
+                <label>महिना</label>
+                <select data-control="PanchangMonth">
+                    <option value="चैत्र" selected>चैत्र</option><option value="वैशाख">वैशाख</option>
+                    <option value="ज्येष्ठ">ज्येष्ठ</option><option value="आषाढ">आषाढ</option>
+                    <option value="श्रावण">श्रावण</option><option value="भाद्रपद">भाद्रपद</option>
+                    <option value="आश्विन">आश्विन</option><option value="कार्तिक">कार्तिक</option>
+                    <option value="मार्गशीर्ष">मार्गशीर्ष</option><option value="पौष">पौष</option>
+                    <option value="माघ">माघ</option><option value="फाल्गुन">फाल्गुन</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                <label>वर्ष</label>
+                <input type="number" data-control="PanchangYear" value="2055">
+            </div>
+        </div>
+
         <div id="dynamicControls"></div>
 
         <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">राशी रत्न (Gemstone)</h2>
@@ -224,7 +252,7 @@
                 <div class="header-contact">
                     <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष कार्यालय</div>
                     <div class="contact-details">
-                        <strong>ज्योतिष:</strong> योगेश उंबरकर<br>
+                        <strong>ज्योतिष: योगेश उंबरकर</strong><br>
                         <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
                     </div>
                 </div>
@@ -274,7 +302,7 @@
                         <tr><td>करण</td><td data-bind="Karan">विष्टि भद्र</td></tr>
                         <tr><td>इष्टकाल</td><td data-bind="IshtKaal">08:07:05</td></tr>
                         <tr><td>सूर्योदय</td><td data-bind="Suryoday">05:54</td></tr>
-                        <tr><td></td><td>शनिवार, चैत्र, 2055 विक्रम संवत</td></tr>
+                        <tr><td></td><td><span data-bind="PanchangDay">शनिवार</span>, <span data-bind="PanchangMonth">चैत्र</span>, <span data-bind="PanchangYear">2055</span> विक्रम संवत</td></tr>
                     </table>
                 </div>
             </div>
@@ -319,7 +347,7 @@
                         <tr><td><span class="planet-dot dot-mars"></span> मंगल</td><td data-bind="Rashi_मंगल">♈ मेष</td><td>भरणी, 1 ली</td></tr>
                         <tr><td><span class="planet-dot dot-merc"></span> बुध</td><td data-bind="Rashi_बुध">♓ मीन</td><td>रेवती, 1 दे</td></tr>
                         <tr><td><span class="planet-dot dot-jup"></span> गुरु</td><td data-bind="Rashi_गुरु">♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 सो</td></tr>
-                        <tr><td><span class="planet-dot dot-ven"></span> शुक्र</td><td data-bind="Rashi_शुक्र">♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 सो</td></tr>
+                        <tr><td><span class="planet-dot dot-ven"></span> शुक्र</td><td data-bind="Rashi_शुक्र">♒ कुम्भ</td><td>पूर्वाभाद्रपदा, 2 সো</td></tr>
                         <tr><td><span class="planet-dot dot-sat"></span> शनि</td><td data-bind="Rashi_शनि">♈ मेष</td><td>अश्विनी, 1 चु</td></tr>
                         <tr><td><span class="planet-dot dot-node">☊</span> राहू</td><td data-bind="Rashi_राहू">♌ सिंह</td><td>पूर्व फाल्गुनी, 1 मो</td></tr>
                         <tr><td><span class="planet-dot dot-node">☋</span> केतु</td><td data-bind="Rashi_केतु">♒ कुम्भ</td><td>शतभिष, 3 सी</td></tr>
@@ -337,7 +365,7 @@
                 <div class="header-contact">
                     <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष कार्यालय</div>
                     <div class="contact-details">
-                        <strong>ज्योतिष:</strong> योगेश उंबरकर<br>
+                        <strong>ज्योतिष: योगेश उंबरकर</strong><br>
                         <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
                     </div>
                 </div>
@@ -390,7 +418,7 @@
                 <div class="header-contact">
                     <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष कार्यालय</div>
                     <div class="contact-details">
-                        <strong>ज्योतिष:</strong> योगेश उंबरकर<br>
+                        <strong>ज्योतिष: योगेश उंबरकर</strong><br>
                         <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
                     </div>
                 </div>
