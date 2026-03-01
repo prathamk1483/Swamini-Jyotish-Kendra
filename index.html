@@ -12,6 +12,7 @@
             --border-color: #D3D9DE;
             --bg-color: #F8F9FA;
             --text-dark: #212529;
+            --text-muted: #6C757D;
             --sidebar-bg: #2C3E50;
         }
 
@@ -35,7 +36,7 @@
         .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 40px;}
         .page-container { width: 850px; background: white; padding: 30px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; flex-shrink: 0; }
         
-        /* --- NEW GLOBAL HEADER --- */
+        /* --- GLOBAL HEADER --- */
         .page-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--primary-blue); padding-bottom: 12px; margin-bottom: 15px; }
         .header-title .main-heading { font-size: 26px; color: var(--primary-blue); margin: 0; }
         .header-contact { text-align: right; }
@@ -44,7 +45,7 @@
         .contact-details { font-size: 14px; color: var(--text-dark); line-height: 1.4; }
         .contact-details strong { color: var(--primary-blue); }
 
-        .box { border: 1px solid var(--border-color); border-radius: 6px; background: white; margin-bottom: 12px; padding: 12px; }
+        .box { border: 1px solid var(--border-color); border-radius: 6px; background: white; margin-bottom: 12px; padding: 12px; page-break-inside: avoid; }
         .info-box { text-align: center; background-color: #fafbfc; }
         .info-row-1 { font-size: 18px; margin-bottom: 5px; }
         .info-row-1 strong { color: var(--primary-blue); }
@@ -83,11 +84,17 @@
         .page-2-header { background-color: var(--primary-blue); color: white; margin: 0; padding: 12px; text-align: center; font-size: 20px; border-radius: 4px 4px 0 0; }
         .dasha-row { border-bottom: 1px solid #eaedf0; }
         .dasha-row:last-child { border-bottom: none; }
-        .dasha-row td { padding: 12px 15px; font-size: 16px; }
+        .dasha-row td { padding: 10px 15px; font-size: 16px; }
         .dasha-row td:first-child { font-weight: bold; color: var(--accent-green); width: 30%; border-right: 1px solid #eaedf0; background: #fafbfc;}
         .dasha-row td:last-child { text-align: center; color: var(--text-dark); font-weight: 600; }
         
-        .ratna-box { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px 20px; height: 100%; box-sizing: border-box; background: #fffdf5; border: 2px dashed #f1c40f;}
+        .pooja-row td { color: var(--text-dark); background: transparent !important; font-weight: 600 !important; text-align: center !important; font-size: 16px !important; border-right: none !important;}
+
+        .ratna-box { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 25px 20px; box-sizing: border-box; background: #fffdf5; border: 2px dashed #f1c40f;}
+
+        .mantra-row td:first-child { font-weight: bold; color: var(--primary-blue); font-size: 18px; width: 25%; text-align: center; }
+        .mantra-row td:nth-child(2) { text-align: center; font-weight: bold; color: var(--accent-green); font-size: 18px; }
+        .mantra-row td:last-child { text-align: center; font-weight: normal; color: var(--text-dark); font-size: 15px; width: 25%; background: #fafbfc; border-left: 1px solid #eaedf0; }
 
         @media (max-width: 850px) {
             body { flex-direction: column; height: auto; overflow: auto; }
@@ -106,14 +113,15 @@
         /* --- PRINT STYLES --- */
         @media print {
             @page { size: A4 portrait; margin: 5mm; }
-            body { background: white; display: block; height: 100%; overflow: hidden; margin: 0; }
+            /* Allowed overflow visible so it automatically breaks to page 3 if user adds too many rows */
+            body { background: white; display: block; height: auto; overflow: visible; margin: 0; }
             .sidebar { display: none !important; }
-            .main-workspace { padding: 0; display: block; height: 100%; gap: 0; }
+            .main-workspace { padding: 0; display: block; height: auto; overflow: visible; gap: 0; }
             .page-container { 
                 box-shadow: none; padding: 5px 20px !important; width: 100% !important; max-width: 100% !important; border: none;
-                transform: scale(0.97); transform-origin: top center; page-break-inside: avoid; margin-bottom: 0;
+                transform: scale(0.97); transform-origin: top center; margin-bottom: 0; page-break-after: always;
             }
-            .page-2 { page-break-before: always; padding-top: 20px !important; }
+            .page-2 { page-break-before: always; padding-top: 20px !important; page-break-after: auto; }
             .box { border-color: #000; }
             .details-grid, .main-content { grid-template-columns: 1fr 1fr !important; display: grid !important; }
             .summary-box { flex-direction: row !important; display: flex !important; }
@@ -126,7 +134,7 @@
 
     <aside class="sidebar">
         <h2>ग्राहक तपशील</h2>
-        <div class="form-group"><label>पूर्ण नाव</label><input type="text" id="clientNameInput" value="Sample Name"></div>
+        <div class="form-group"><label>पूर्ण नाव</label><input type="text" id="clientNameInput" value="Amey Hatekar"></div>
         <div class="form-group"><label>जन्मस्थान</label><input type="text" id="clientPlaceInput" value="Amravati, India"></div>
         <div class="form-group"><label>जन्म तारीख</label><input type="date" id="clientDateInput" value="1998-04-25"></div>
         <div class="form-group"><label>जन्म वेळ</label><input type="time" id="clientTimeInput" value="09:09"></div>
@@ -148,9 +156,31 @@
         <div class="form-group"><label>सुरुवात (Start Date)</label><input type="date" id="dashaStartInput"></div>
         <div class="form-group"><label>शेवट (End Date)</label><input type="date" id="dashaEndInput"></div>
         
-        <button class="btn-add" onclick="addDashaRow()">+ जोडा (Add Row)</button>
-        <button class="btn-undo" onclick="removeLastDashaRow()">- शेवटची ओळ काढा (Remove Last)</button>
-        <button class="btn-clear" onclick="clearDashaRows()">सर्व काढा (Clear All)</button>
+        <button class="btn-add" onclick="addDashaRow()">+ जोडा (Add Dasha)</button>
+        <button class="btn-undo" onclick="removeLastDashaRow()">- शेवटची ओळ काढा</button>
+        <button class="btn-clear" onclick="clearDashaRows()">सर्व काढा</button>
+
+        <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">शांती पूजन (Page 2)</h2>
+        <div id="poojaControl"></div>
+        
+        <button class="btn-add" onclick="addPoojaRow()">+ जोडा (Add Pooja)</button>
+        <button class="btn-undo" onclick="removeLastPoojaRow()">- शेवटची ओळ काढा</button>
+        <button class="btn-clear" onclick="clearPoojaRows()">सर्व काढा</button>
+
+        <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">मंत्र उपासना (Page 2)</h2>
+        <div class="form-group">
+            <label>ग्रह मंत्र (Mantra)</label>
+            <select id="mantraInput">
+                <option value="सूर्य">☀️ सूर्य</option><option value="चंद्र">🌙 चंद्र</option>
+                <option value="मंगळ">♂️ मंगळ</option><option value="बुध">☿️ बुध</option>
+                <option value="गुरु">♃ गुरु</option><option value="शुक्र">♀️ शुक्र</option>
+                <option value="शनि">♄ शनि</option><option value="राहू">☊ राहू</option>
+                <option value="केतु">☋ केतु</option>
+            </select>
+        </div>
+        <button class="btn-add" onclick="addMantraRow()">+ जोडा (Add Mantra)</button>
+        <button class="btn-undo" onclick="removeLastMantraRow()">- शेवटची ओळ काढा</button>
+        <button class="btn-clear" onclick="clearMantraRows()">सर्व काढा</button>
 
         <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
     </aside>
@@ -160,7 +190,7 @@
         <div class="page-container">
             <header class="page-header">
                 <div class="header-title">
-                    <h1 class="main-heading">कुंडली <span class="client-name-bind">Sample Name</span></h1>
+                    <h1 class="main-heading">कुंडली <span class="client-name-bind">Amey Hatekar</span></h1>
                 </div>
                 <div class="header-contact">
                     <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष कार्यालय</div>
@@ -173,7 +203,7 @@
 
             <div class="box info-box">
                 <div class="info-row-1">
-                    नाम: <strong class="client-name-bind">Sample Name</strong> 
+                    नाम: <strong class="client-name-bind">Amey Hatekar</strong> 
                     स्थान: <strong id="infoPlaceDisplay">Amravati, India</strong> (Lat: 20.93 , Lon: 77.75)
                 </div>
                 <div class="info-row-2" id="infoDateTimeDisplay">
@@ -272,7 +302,9 @@
 
         <div class="page-container page-2">
             <header class="page-header">
-                <div class="header-title"></div>
+                <div class="header-title">
+                    <h1 class="main-heading">महादशा व पूजन <span class="client-name-bind">Amey Hatekar</span></h1>
+                </div>
                 <div class="header-contact">
                     <div class="logo-area"><span class="swastik">卐</span> स्वामिनी ज्योतिष कार्यालय</div>
                     <div class="contact-details">
@@ -283,6 +315,7 @@
             </header>
 
             <div id="page2Grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
+                
                 <div class="box" style="padding: 0; overflow: hidden;">
                     <h3 class="page-2-header">विंशोत्तरी महादशा</h3>
                     <table style="width: 100%; border-collapse: collapse;">
@@ -291,22 +324,43 @@
                     </table>
                 </div>
 
-                <div class="box ratna-box">
-                    <h3 style="color: var(--primary-blue); margin-top: 0; margin-bottom: 15px; font-size: 22px;">तुमच्यासाठी उपयुक्त रत्न</h3>
-                    <div style="font-size: 26px; font-weight: bold; color: var(--accent-green); line-height: 1.4;" data-bind="RashiRatna">
-                        मूंगा (Red Coral)
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="box ratna-box">
+                        <h3 style="color: var(--primary-blue); margin-top: 0; margin-bottom: 15px; font-size: 22px;">तुमच्यासाठी उपयुक्त रत्न</h3>
+                        <div style="font-size: 26px; font-weight: bold; color: var(--accent-green); line-height: 1.4;" data-bind="RashiRatna">
+                            मूंगा (Red Coral)
+                        </div>
+                    </div>
+
+                    <div class="box" style="padding: 0; overflow: hidden;">
+                        <h3 class="page-2-header" style="background-color: #F47A20;">आवश्यक शांती पूजन</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tbody id="poojaTableBody">
+                                </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+
+            <div class="box" style="padding: 0; overflow: hidden; margin-top: 20px;">
+                <h3 class="page-2-header" style="background-color: #187A22;">मंत्र उपासना</h3>
+                <div style="padding: 12px 20px; font-size: 14px; color: var(--text-dark); background: #fdfdfd; border-bottom: 1px solid var(--border-color); line-height: 1.5;">
+                    <strong style="color: var(--primary-blue);">टिप :</strong> खाली दिलेले मंत्र हे कोणत्याही महिन्याच्या अमावश्ये नंतर त्या त्या ग्रहाच्या ठराविक दिवसा पासून सुरु करू शकता, त्याकरिता रुद्राक्ष जपमाळ, तांब्याचा दिवा त्या मध्ये शुद्ध गायचे तूप इत्यादी साहित्य आवश्यक आहे.
+                </div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tbody id="mantraTableBody">
+                        </tbody>
+                </table>
+            </div>
+
         </div>
 
     </main>
 
     <script>
-        // --- 1. Header Binding Logic (Updates both pages) ---
+        // --- 1. Header Binding Logic ---
         document.getElementById('clientNameInput').addEventListener('input', e => {
             const val = e.target.value || '______________';
-            // Updates all elements with the class 'client-name-bind' instantly
             document.querySelectorAll('.client-name-bind').forEach(el => el.textContent = val);
         });
         
@@ -369,19 +423,32 @@
         ];
         
         const ratnaOptions = [
-            { label: "मेष (Aries)", stone: "मूंगा (Red Coral)" },
-            { label: "वृषभ (Taurus)", stone: "पुखराज (Yellow Sapphire)" },
-            { label: "मिथुन (Gemini)", stone: "मरकरी / पन्ना (Emerald)" },
-            { label: "कर्क (Cancer)", stone: "मोती (Pearl)" },
-            { label: "सिंह (Leo)", stone: "मूंगा / पुखराज (Red Coral / Yellow Sapphire)" },
-            { label: "कन्या (Virgo)", stone: "पुखराज / नीलम (Yellow Sapphire / Blue Sapphire)" },
-            { label: "तुला (Libra)", stone: "हीरा (Diamond)" },
-            { label: "वृश्चिक (Scorpio)", stone: "पुखराज / नीलम (Yellow Sapphire / Blue Sapphire)" },
-            { label: "धनु (Sagittarius)", stone: "पुखराज (Yellow Sapphire)" },
-            { label: "मकर (Capricorn)", stone: "नीलम (Blue Sapphire)" },
-            { label: "कुंभ (Aquarius)", stone: "नीलम (Blue Sapphire)" },
-            { label: "मीन (Pisces)", stone: "पुखराज (Yellow Sapphire)" }
+            { label: "मेष (Aries)", stone: "मूंगा (Red Coral)" }, { label: "वृषभ (Taurus)", stone: "पुखराज (Yellow Sapphire)" },
+            { label: "मिथुन (Gemini)", stone: "मरकरी / पन्ना (Emerald)" }, { label: "कर्क (Cancer)", stone: "मोती (Pearl)" },
+            { label: "सिंह (Leo)", stone: "मूंगा / पुखराज (Red Coral / Yellow Sapphire)" }, { label: "कन्या (Virgo)", stone: "पुखराज / नीलम (Yellow Sapphire / Blue Sapphire)" },
+            { label: "तुला (Libra)", stone: "हीरा (Diamond)" }, { label: "वृश्चिक (Scorpio)", stone: "पुखराज / नीलम (Yellow Sapphire / Blue Sapphire)" },
+            { label: "धनु (Sagittarius)", stone: "पुखराज (Yellow Sapphire)" }, { label: "मकर (Capricorn)", stone: "नीलम (Blue Sapphire)" },
+            { label: "कुंभ (Aquarius)", stone: "नीलम (Blue Sapphire)" }, { label: "मीन (Pisces)", stone: "पुखराज (Yellow Sapphire)" }
         ];
+
+        const poojaList = [
+            "🔴 नवग्रह शांती (हवन)", "📿 गुरु शांती", "🪐 मंगळ दोष शांती", "⚫ शनि शांती", "🌑 राहु-केतु शांती",
+            "🐍 कालसर्प दोष शांती", "👶 पितृ दोष शांती", "⚪ त्रीपिंडी श्राद्ध", "🟡 गुरु- राहू चांडाळ योग शांती",
+            "🌟 नक्षत्र शांती", "💰 लक्ष्मी शांती", "🔱 महामृत्युंजय जप", "🧭 वास्तु शांती", "🏺 अर्क विवाह / कुंभ विवाह", "🔥 नवचंडी विधान"
+        ];
+
+        // NEW: MANTRA DATA
+        const mantraData = {
+            "सूर्य": { name: "☀️ सूर्य", mantra: "ॐ ह्रां ह्रीं ह्रौं सः सूर्याय नमः", count: "२८,०००" },
+            "चंद्र": { name: "🌙 चंद्र", mantra: "ॐ श्रां श्रीं श्रौं सः चन्द्राय नमः", count: "४४,०००" },
+            "मंगळ": { name: "♂️ मंगळ", mantra: "ॐ क्रां क्रीं क्रौं सः भौमाय नमः", count: "४०,०००" },
+            "बुध": { name: "☿️ बुध", mantra: "ॐ ब्रां ब्रीं ब्रौं सः बुधाय नमः", count: "३६,०००" },
+            "गुरु": { name: "♃ गुरु", mantra: "ॐ ग्रां ग्रीं ग्रौं सः गुरवे नमः", count: "७६,०००" },
+            "शुक्र": { name: "♀️ शुक्र", mantra: "ॐ द्रां द्रीं द्रौं सः शुक्राय नमः", count: "६४,०००" },
+            "शनि": { name: "♄ शनि", mantra: "ॐ प्रां प्रीं प्रौं सः शनैश्चराय नमः", count: "९२,०००" },
+            "राहू": { name: "☊ राहू", mantra: "ॐ भ्रां भ्रीं भ्रौं सः राहवे नमः", count: "७२,०००" },
+            "केतु": { name: "☋ केतु", mantra: "ॐ स्रां स्रीं स्रौं सः केतवे नमः", count: "६८,०००" }
+        };
 
         const container = document.getElementById('dynamicControls');
         for (const [key, options] of Object.entries(jyotishData)) {
@@ -402,11 +469,19 @@
             container.insertAdjacentHTML('beforeend', html);
         });
 
+        // Insert Ratna Options
         const ratnaContainer = document.getElementById('ratnaControl');
         let ratnaHtml = `<div class="form-group"><label>रत्न निवडा (Select Gemstone)</label><select data-control="RashiRatna">`;
         ratnaOptions.forEach(opt => ratnaHtml += `<option value="${opt.stone}">${opt.label} - ${opt.stone}</option>`);
         ratnaHtml += `</select></div>`;
         ratnaContainer.innerHTML = ratnaHtml;
+
+        // Insert Pooja Options
+        const poojaContainer = document.getElementById('poojaControl');
+        let poojaHtml = `<div class="form-group"><label>पूजन निवडा (Select Pooja)</label><select id="poojaInput">`;
+        poojaList.forEach(opt => poojaHtml += `<option value="${opt}">${opt}</option>`);
+        poojaHtml += `</select></div>`;
+        poojaContainer.innerHTML = poojaHtml;
 
         document.body.addEventListener('input', (e) => {
             if(e.target.dataset.control) {
@@ -451,13 +526,57 @@
 
         function removeLastDashaRow() {
             const tbody = document.getElementById('dashaTableBody');
-            if (tbody.lastElementChild) {
-                tbody.removeChild(tbody.lastElementChild);
-            }
+            if (tbody.lastElementChild) tbody.removeChild(tbody.lastElementChild);
         }
 
         function clearDashaRows() {
             document.getElementById('dashaTableBody').innerHTML = "";
+        }
+
+        // --- 4. POOJA ROW GENERATOR ---
+        function addPoojaRow() {
+            const pooja = document.getElementById('poojaInput').value;
+            const tbody = document.getElementById('poojaTableBody');
+            const newRow = `
+                <tr class="dasha-row pooja-row">
+                    <td style="text-align: center; padding: 12px 15px;">${pooja}</td>
+                </tr>
+            `;
+            tbody.insertAdjacentHTML('beforeend', newRow);
+        }
+
+        function removeLastPoojaRow() {
+            const tbody = document.getElementById('poojaTableBody');
+            if (tbody.lastElementChild) tbody.removeChild(tbody.lastElementChild);
+        }
+
+        function clearPoojaRows() {
+            document.getElementById('poojaTableBody').innerHTML = "";
+        }
+
+        // --- 5. MANTRA ROW GENERATOR ---
+        function addMantraRow() {
+            const planetKey = document.getElementById('mantraInput').value;
+            const data = mantraData[planetKey];
+            const tbody = document.getElementById('mantraTableBody');
+            
+            const newRow = `
+                <tr class="dasha-row mantra-row">
+                    <td>${data.name}</td>
+                    <td>${data.mantra}</td>
+                    <td>जप: <strong>${data.count}</strong></td>
+                </tr>
+            `;
+            tbody.insertAdjacentHTML('beforeend', newRow);
+        }
+
+        function removeLastMantraRow() {
+            const tbody = document.getElementById('mantraTableBody');
+            if (tbody.lastElementChild) tbody.removeChild(tbody.lastElementChild);
+        }
+
+        function clearMantraRows() {
+            document.getElementById('mantraTableBody').innerHTML = "";
         }
     </script>
 </body>
