@@ -79,7 +79,7 @@
         .svg-chart { width: 100%; height: auto; max-width: 310px; display: block; }
         .chart-lines { stroke: #a0aab5; stroke-width: 1; fill: none; }
         .chart-num { font-size: 10px; fill: var(--text-dark); }
-        .chart-planet { font-size: 10px; fill: #4A90E2; font-weight: 600; }
+        .chart-planet { font-size: 12px; fill: #4A90E2; font-weight: 600; }
 
         .planet-table-section h3 { margin-top: 0; color: var(--primary-blue); font-size: 18px; margin-bottom: 8px; }
         .planet-table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -366,6 +366,7 @@
                         <tr><td><span class="planet-dot dot-node">♆</span> नेपच्यून<span class="planet-suffix" data-suffix="नेपच्यून"></span></td><td data-bind="Rashi_नेपच्यून">♑ मकर</td><td data-bind="Deg_नेपच्यून">00° 00'</td></tr>
                         <tr><td><span class="planet-dot dot-node">♇</span> प्लूटो<span class="planet-suffix" data-suffix="प्लूटो"></span></td><td data-bind="Rashi_प्लूटो">♐ धनु</td><td data-bind="Deg_प्लूटो">00° 00'</td></tr>
                     </table>
+                    <div class="footer-note">अयनांश लाहिरी / चित्रपक्ष = 23°50'</div>
                 </div>
             </div>
         </div>
@@ -447,6 +448,23 @@
             const map = {'०':'0','१':'1','२':'2','३':'3','४':'4','५':'5','६':'6','७':'7','८':'8','९':'9'};
             return str.replace(/[०-९]/g, m => map[m]);
         };
+
+        // --- Chart Number Rotation Logic ---
+        function updateChartNumbers() {
+            const lagnaSelect = document.querySelector('[data-control="Lagna"]');
+            if(!lagnaSelect) return;
+            const rashiNames = ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"];
+            let lagnaNum = rashiNames.indexOf(lagnaSelect.value) + 1;
+            
+            const numElements = document.querySelectorAll('.chart-num');
+            if(numElements.length === 12) {
+                numElements.forEach((el, index) => {
+                    let num = lagnaNum + index;
+                    if(num > 12) num -= 12;
+                    el.textContent = num;
+                });
+            }
+        }
 
         // --- 1. Header & Basic Info Binding ---
         document.getElementById('clientNameInput').addEventListener('input', e => {
@@ -632,9 +650,16 @@
             if(e.target.dataset.control) {
                 const val = e.target.value;
                 document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
+                
+                // Triggers Naam Akshar update when Nakshatra is changed
                 if(e.target.dataset.control === 'NakshatraPada') {
                     const match = val.match(/\(([^)]+)\)/);
                     if (match && match[1]) document.getElementById('naamAksharDisplay').textContent = match[1] + "..";
+                }
+                
+                // Triggers the chart numbers update when Lagna is changed
+                if(e.target.dataset.control === 'Lagna') {
+                    updateChartNumbers();
                 }
             }
         });
@@ -654,7 +679,7 @@
             }
         });
 
-        // Fire initial inputs to populate bindings
+        // Fire initial inputs to populate bindings & trigger rotation
         document.querySelectorAll('[data-control]').forEach(input => input.dispatchEvent(new Event('input', { bubbles: true })));
 
         // --- 3. DASHA ROW GENERATOR ---
