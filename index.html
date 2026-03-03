@@ -69,7 +69,7 @@
         .mangal-dosh { font-weight: bold; font-size: 18px; }
 
         .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 12px; }
-        .detail-card { padding: 10px; background-color: #fafbfc; display: flex; justify-content: center; }
+        .detail-card { padding: 5px; background-color: #fafbfc; display: flex; justify-content: center; }
         
         .detail-table { border-collapse: collapse; width: 100%; }
         .detail-table td { padding: 4px 10px; font-size: 15px; vertical-align: middle; }
@@ -117,7 +117,7 @@
         /* --- FOOTER STYLES --- */
         .page-footer {
             margin-top: auto; 
-            padding-top: 10px;
+            padding-top: 5px;
             border-top: 1px solid var(--border-color);
             text-align: center;
             font-size: 13px;
@@ -186,6 +186,9 @@
             <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>रेखांश (Lon)</label><input type="number" step="0.01" id="clientLonInput" value="77.75"></div>
         </div>
 
+        <div class="form-group"><label>जन्म तारीख</label><input type="date" id="clientDateInput" value="1998-04-25"></div>
+        <div class="form-group"><label>जन्म वेळ</label><input type="time" id="clientTimeInput" value="09:09"></div>
+
         <div class="form-group" style="margin-bottom: 8px;">
             <label>दशा भोग्य ग्रह व काळ</label>
             <select id="bhogyaPlanetInput" style="margin-bottom: 10px;">
@@ -194,6 +197,7 @@
                 <option value="शनि">शनि</option><option value="राहू">राहू</option><option value="केतु">केतु</option>
             </select>
         </div>
+
         <div style="display: flex; gap: 10px; margin-bottom: 15px;">
             <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>वर्षे (y)</label><input type="number" id="bhogyaYInput" value="10" min="0"></div>
             <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>महिने (m)</label><input type="number" id="bhogyaMInput" value="3" min="0"></div>
@@ -205,9 +209,6 @@
                 <input type="checkbox" id="mangalDoshInput"> मंगळ दोष आहे? (Has Mangal Dosh)
             </label>
         </div>
-
-        <div class="form-group"><label>जन्म तारीख</label><input type="date" id="clientDateInput" value="1998-04-25"></div>
-        <div class="form-group"><label>जन्म वेळ</label><input type="time" id="clientTimeInput" value="09:09"></div>
 
         <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">पंचांग तपशील</h2>
         <div style="display: flex; gap: 10px; margin-bottom: 15px;">
