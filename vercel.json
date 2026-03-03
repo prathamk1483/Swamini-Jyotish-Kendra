@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "SwaminiProject/wsgi.py",
+            "use": "@vercel/python",
+            "config": { "maxLambdaSize": "1024mb", "runtime": "python3.9" }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "SwaminiProject/wsgi.py"
+        }
+    ]
+}
