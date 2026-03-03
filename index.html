@@ -40,6 +40,7 @@
 
         /* --- WORKSPACE & GLOBAL PAGE STYLES --- */
         .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 40px;}
+        /* Updated page-container to flex column to push footer to bottom if content is short */
         .page-container { width: 850px; background: white; padding: 30px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; flex-shrink: 0; display: flex; flex-direction: column; }
         
         /* --- PROPER HEADER STYLES --- */
@@ -47,7 +48,7 @@
         .header-left { display: flex; align-items: center; gap: 15px; }
         .logo { height: 75px; width: auto; object-fit: contain; }
         .header-info { display: flex; flex-direction: column; }
-        .logo-area { font-size: 22px; font-weight: 700; color: rgb(255, 136, 0); margin-bottom: 2px; }
+        .logo-area { font-size: 22px; font-weight: 700; color: var(--primary-blue); margin-bottom: 2px; }
         .contact-details { font-size: 15px; color: var(--text-dark); line-height: 1.4; }
         .contact-details strong { color: var(--primary-blue); }
         .header-right { text-align: right; }
@@ -236,6 +237,13 @@
             </div>
         </div>
 
+        <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">इष्टकाल (Ishtakaal)</h2>
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>Yrs</label><input type="number" id="ishtYInput" value="8" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>Months</label><input type="number" id="ishtMInput" value="7" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>Days</label><input type="number" id="ishtDInput" value="5" min="0"></div>
+        </div>
+
         <div id="dynamicControls"></div>
 
         <div id="planetControls"></div>
@@ -337,7 +345,7 @@
                         <tr><td>नक्षत्र, पद</td><td data-bind="NakshatraPada">रेवती 2 दो</td></tr>
                         <tr><td>योग</td><td data-bind="Yog">विष्कुम्भ</td></tr>
                         <tr><td>करण</td><td data-bind="Karan">विष्टि भद्र</td></tr>
-                        <tr><td>इष्टकाल</td><td data-bind="IshtKaal">08:07:05</td></tr>
+                        <tr><td>इष्टकाल</td><td><span id="ishtYDisplay">08</span>y <span id="ishtMDisplay">07</span>m <span id="ishtDDisplay">05</span>d</td></tr>
                         <tr><td>सूर्योदय</td><td data-bind="Suryoday">05:54</td></tr>
                         <tr><td></td><td><span data-bind="PanchangDay">शनिवार</span>, <span data-bind="PanchangMonth">चैत्र</span>, <span data-bind="PanchangYear">2055</span> विक्रम संवत</td></tr>
                     </table>
@@ -610,6 +618,25 @@
             }
         });
 
+        // --- NEW: Ishtakaal Manual Entry Event Listeners ---
+        const updateIshtakaal = () => {
+            const yInput = document.getElementById('ishtYInput').value;
+            const mInput = document.getElementById('ishtMInput').value;
+            const dInput = document.getElementById('ishtDInput').value;
+            
+            const y = yInput ? yInput.padStart(2, '0') : '00';
+            const m = mInput ? mInput.padStart(2, '0') : '00';
+            const d = dInput ? dInput.padStart(2, '0') : '00';
+            
+            document.getElementById('ishtYDisplay').textContent = y;
+            document.getElementById('ishtMDisplay').textContent = m;
+            document.getElementById('ishtDDisplay').textContent = d;
+        };
+        document.getElementById('ishtYInput').addEventListener('input', updateIshtakaal);
+        document.getElementById('ishtMInput').addEventListener('input', updateIshtakaal);
+        document.getElementById('ishtDInput').addEventListener('input', updateIshtakaal);
+        updateIshtakaal();
+
         // --- 2. Dynamic Controls Generator ---
         const jyotishData = {
             Lagna: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
@@ -637,7 +664,7 @@
             Karan: ["बव", "बालव", "कौलव", "तैतिल", "गर", "वणिज", "विष्टि (भद्रा)", "शकुनि", "चतुष्पाद", "नाग", "किंस्तुघ्न"]
         };
 
-        const extraTimers = { IshtKaal: { label: "इष्टकाल", type: "time", step: "1" }, Suryoday: { label: "सूर्योदय", type: "time" } };
+        const extraTimers = { Suryoday: { label: "सूर्योदय", type: "time" } };
         
         const ratnaOptions = [
             { label: "मेष (Aries)", stone: "मूंगा (Red Coral)" }, { label: "वृषभ (Taurus)", stone: "पुखराज (Yellow Sapphire)" },
