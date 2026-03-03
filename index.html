@@ -40,17 +40,18 @@
 
         /* --- WORKSPACE & GLOBAL PAGE STYLES --- */
         .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 40px;}
-        /* Updated page-container to flex column to push footer to bottom if content is short */
         .page-container { width: 850px; background: white; padding: 30px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; flex-shrink: 0; display: flex; flex-direction: column; }
         
-        /* --- GLOBAL HEADER --- */
-        .page-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--primary-blue); padding-bottom: 12px; margin-bottom: 15px; }
-        .header-title .main-heading { font-size: 26px; color: var(--primary-blue); margin: 0; }
-        .header-contact { text-align: left; margin-left:-50px;}
-        .logo-area { text-align: center;display: flex; align-items: center; justify-content: flex-start; font-size: 20px; font-weight: 700; color: var(--primary-blue);z-index: 10; }
-        .contact-details { font-size: 14px; color: var(--text-dark); line-height: 1.4; }
+        /* --- PROPER HEADER STYLES --- */
+        .page-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary-blue); padding-bottom: 15px; margin-bottom: 20px; }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .logo { height: 75px; width: auto; object-fit: contain; }
+        .header-info { display: flex; flex-direction: column; }
+        .logo-area { font-size: 22px; font-weight: 700; color: rgb(255, 136, 0); margin-bottom: 2px; }
+        .contact-details { font-size: 15px; color: var(--text-dark); line-height: 1.4; }
         .contact-details strong { color: var(--primary-blue); }
-        .logo{height: 100px;width: 100px;}
+        .header-right { text-align: right; }
+        .main-heading { font-size: 26px; color: var(--primary-blue); margin: 0; }
 
         .box { border: 1px solid var(--border-color); border-radius: 6px; background: white; margin-bottom: 12px; padding: 12px; page-break-inside: avoid; }
         .info-box { text-align: center; background-color: #fafbfc; }
@@ -58,7 +59,7 @@
         .info-row-1 strong { color: var(--primary-blue); }
         .info-row-2 { font-size: 18px; color: var(--primary-blue); }
 
-        .summary-box { display: flex; justify-content: space-between; align-items: center; padding: 0px 30px; background-color: #fafbfc; }
+        .summary-box { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; background-color: #fafbfc; }
         .summary-item { text-align: center; }
         .rashi-title { font-size: 20px; font-weight: bold; color: var(--accent-green); }
         .lagna-title { font-size: 16px; color: var(--accent-green); margin-top: 5px; }
@@ -88,7 +89,7 @@
         .planet-table td { padding: 2px 0; color: var(--text-dark); } 
         .planet-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
         .dot-sun { background: #F47A20; } .dot-moon { background: #95A5A6; } .dot-merc { background: #7F8C8D; } .dot-ven { background: #F1C40F; } .dot-mars { background: #E74C3C; } .dot-jup { background: #A0522D; } .dot-sat { background: #7A8498; } .dot-node { background: transparent; }
-        .footer-note { margin-top: 0px; font-size: 10px; color: var(--primary-blue); }
+        .footer-note { margin-top: 10px; font-size: 12px; color: var(--primary-blue); }
         
         .planet-suffix { font-weight: bold; color: var(--primary-blue); margin-left: 2px; }
 
@@ -112,9 +113,9 @@
         .editable-textarea { width: 100%; min-height: 600px; padding: 20px; font-size: 18px; line-height: 1.8; border: none; outline: none; white-space: pre-wrap; color: var(--text-dark); }
         .editable-textarea:empty:before { content: attr(data-placeholder); color: #B0BEC5; font-style: italic; }
 
-        /* --- NEW FOOTER STYLES --- */
+        /* --- FOOTER STYLES --- */
         .page-footer {
-            margin-top: auto; /* Pushes to bottom within flex container */
+            margin-top: auto; 
             padding-top: 10px;
             border-top: 1px solid var(--border-color);
             text-align: center;
@@ -125,27 +126,19 @@
             justify-content: center;
             gap: 6px;
         }
-        .footer-logo {
-            height: 22px;
-            width: auto;
-            vertical-align: middle;
-        }
-        .orconix-text {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            color: var(--primary-blue);
-        }
+        .footer-logo { height: 22px; width: auto; vertical-align: middle; }
+        .orconix-text { font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--primary-blue); }
 
-        @media (max-width: 850px) {
+        @media screen and (max-width: 850px) {
             body { flex-direction: column; height: auto; overflow: auto; }
             .sidebar { width: 100%; box-sizing: border-box; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
             .main-workspace { padding: 10px; width: 100%; box-sizing: border-box; gap: 20px; }
             .page-container { width: 100%; padding: 15px; height: auto; }
-            .page-header { flex-direction: column; text-align: center; align-items: center; gap: 15px; }
-            .header-contact { text-align: center; margin-left: 0; }
-            .logo-area { justify-content: center; }
+            .page-header { flex-direction: column; text-align: center; gap: 15px; }
+            .header-left { flex-direction: column; text-align: center; }
+            .header-right { text-align: center; }
             .details-grid, .main-content { grid-template-columns: 1fr; }
-            .summary-box { flex-direction: column; gap: 5px; }
+            .summary-box { flex-direction: column; gap: 15px; }
             .detail-table td:first-child { text-align: left; }
             #page2Grid { grid-template-columns: 1fr !important; }
         }
@@ -159,17 +152,15 @@
             .page-container { 
                 box-shadow: none; padding: 5px 20px !important; width: 100% !important; max-width: 100% !important; border: none;
                 transform: scale(0.97); transform-origin: top center; margin-bottom: 0; page-break-after: always;
-                height: 100%; /* Ensure it fills the printed page height for footer placement */
+                height: 100%; 
                 display: flex; flex-direction: column;
             }
-            /* Ensure main content expands to fill printed page so footer sits at bottom */
-            .page-container > *:not(.page-header):not(.page-footer) {
-                 flex-shrink: 0;
-            }
+            .page-container > *:not(.page-header):not(.page-footer) { flex-shrink: 0; }
             
-            .page-header { display: flex !important; flex-direction: row !important; text-align: left !important; align-items: flex-end !important; justify-content: space-between !important; }
-            .header-contact { text-align: left !important; margin-left: -50px !important; }
-            .logo-area { justify-content: flex-start !important; }
+            /* Bulletproof print header alignment */
+            .page-header { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; }
+            .header-left { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 15px !important; text-align: left !important; }
+            .header-right { text-align: right !important; }
 
             .page-2, .page-3 { page-break-before: always; padding-top: 20px !important; page-break-after: auto; }
             .box { border-color: #000; }
@@ -289,16 +280,18 @@
         
         <div class="page-container">
             <header class="page-header">
-                <img class="logo" src="./assets/Logos/SwaminiLogo.png" alt="">
-                <div class="header-contact">
-                    <div class="logo-area" style="color: #F47A20;">स्वामिनी ज्योतिष कार्यालय</div>
-                    <div class="contact-details">
-                        <strong>ज्योतिष: योगेश उंबरकर</strong><br>
-                        <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
+                <div class="header-left">
+                    <img class="logo" src="./assets/Logos/SwaminiLogo.png" alt="Logo">
+                    <div class="header-info">
+                        <div class="logo-area">स्वामिनी ज्योतिष कार्यालय</div>
+                        <div class="contact-details">
+                            <strong>ज्योतिष: योगेश उंबरकर</strong><br>
+                            <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
+                        </div>
                     </div>
                 </div>
-                    <div class="header-title">
-                    <h1 class="main-heading">कुंडली <span class="client-name-bind">Amey Hatekar</span></h1>
+                <div class="header-right">
+                    <h1 class="main-heading">कुंडली <br><span class="client-name-bind" style="font-size: 20px; color: var(--text-muted);">Amey Hatekar</span></h1>
                 </div>
             </header>
 
@@ -383,23 +376,26 @@
                     </table>
                 </div>
             </div>
+            
             <footer class="page-footer">
-                Made with ❤️ by <a href="https://orconix.vercel.app/"><img src="./assets/Logos/OrconixLogo.png" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>
+                Made with ❤️ by <a href="https://orconix.vercel.app/" style="text-decoration:none;"><img src="./assets/Logos/OrconixLogo.png" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>
             </footer>
         </div>
 
         <div class="page-container page-2">
             <header class="page-header">
-                <img class="logo" src="./assets/Logos/SwaminiLogo.png" alt="">
-                <div class="header-contact">
-                    <div class="logo-area" style="color: #F47A20;">स्वामिनी ज्योतिष कार्यालय</div>
-                    <div class="contact-details">
-                        <strong>ज्योतिष: योगेश उंबरकर</strong><br>
-                        <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
+                <div class="header-left">
+                    <img class="logo" src="./assets/Logos/SwaminiLogo.png" alt="Logo">
+                    <div class="header-info">
+                        <div class="logo-area">स्वामिनी ज्योतिष कार्यालय</div>
+                        <div class="contact-details">
+                            <strong>ज्योतिष: योगेश उंबरकर</strong><br>
+                            <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
+                        </div>
                     </div>
                 </div>
-                <div class="header-title">
-                    <h1 class="main-heading">महादशा व पूजन &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+                <div class="header-right">
+                    <h1 class="main-heading">महादशा व पूजन</h1>
                 </div>
             </header>
 
@@ -437,30 +433,36 @@
                     <tbody id="mantraTableBody"></tbody>
                 </table>
             </div>
+            
             <footer class="page-footer">
-Made with ❤️ by <a href="https://orconix.vercel.app/"><img src="./assets/Logos/OrconixLogo.png" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>            </footer>
+                Made with ❤️ by <a href="https://orconix.vercel.app/" style="text-decoration:none;"><img src="./assets/Logos/OrconixLogo.png" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>
+            </footer>
         </div>
 
         <div class="page-container page-3">
             <header class="page-header">
-                <img class="logo" src="./assets/Logos/SwaminiLogo.png" alt="">
-                <div class="header-contact">
-                    <div class="logo-area" style="color: #F47A20;">स्वामिनी ज्योतिष कार्यालय</div>
-                    <div class="contact-details">
-                        <strong>ज्योतिष: योगेश उंबरकर</strong><br>
-                        <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
+                <div class="header-left">
+                    <img class="logo" src="./assets/Logos/SwaminiLogo.png" alt="Logo">
+                    <div class="header-info">
+                        <div class="logo-area">स्वामिनी ज्योतिष कार्यालय</div>
+                        <div class="contact-details">
+                            <strong>ज्योतिष: योगेश उंबरकर</strong><br>
+                            <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
+                        </div>
                     </div>
                 </div>
-                <div class="header-title">
-                    <h1 class="main-heading">फलश्रुती &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+                <div class="header-right">
+                    <h1 class="main-heading">फलश्रुती</h1>
                 </div>
             </header>
 
             <div class="box" style="padding: 0;">
                 <div id="falaShrutiDisplay" class="editable-textarea" contenteditable="true" spellcheck="false" data-placeholder="येथे फलश्रुती टाईप करा (Click here to type)..."></div>
             </div>
+            
             <footer class="page-footer">
-Made with ❤️ by <a href="https://orconix.vercel.app/"><img src="./assets/Logos/OrconixLogo.png" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>            </footer>
+                Made with ❤️ by <a href="https://orconix.vercel.app/" style="text-decoration:none;"><img src="./assets/Logos/OrconixLogo.png" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>
+            </footer>
         </div>
 
     </main>
