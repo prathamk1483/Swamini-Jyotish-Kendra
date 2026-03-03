@@ -48,7 +48,7 @@
         .header-left { display: flex; align-items: center; gap: 15px; }
         .logo { height: 75px; width: auto; object-fit: contain; }
         .header-info { display: flex; flex-direction: column; }
-        .logo-area { font-size: 22px; font-weight: 700; color: var(--primary-blue); margin-bottom: 2px; }
+        .logo-area { font-size: 22px; font-weight: 700; color: rgb(255, 136, 0); margin-bottom: 2px; }
         .contact-details { font-size: 15px; color: var(--text-dark); line-height: 1.4; }
         .contact-details strong { color: var(--primary-blue); }
         .header-right { text-align: right; }
@@ -79,7 +79,7 @@
         .main-content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 15px; background-color: #fafbfc; }
         
         .chart-container { display: flex; align-items: center; justify-content: center; height: 100%; }
-        .svg-chart { width: 100%; height: auto; max-width: 310px; display: block; }
+        .svg-chart { width: 100%; height: auto; max-width: 372px; display: block; }
         .chart-lines { stroke: #a0aab5; stroke-width: 1; fill: none; }
         .chart-num { font-size: 11px; fill: #6C757D; font-weight: bold; }
         .chart-planet { font-size: 13px; fill: var(--primary-blue); font-weight: 600; }
@@ -239,9 +239,9 @@
 
         <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">इष्टकाल (Ishtakaal)</h2>
         <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>Yrs</label><input type="number" id="ishtYInput" value="8" min="0"></div>
-            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>Months</label><input type="number" id="ishtMInput" value="7" min="0"></div>
-            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>Days</label><input type="number" id="ishtDInput" value="5" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>घटी/Hrs (y)</label><input type="number" id="ishtYInput" value="8" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>पळे/Min (m)</label><input type="number" id="ishtMInput" value="7" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>विपळे/Sec (d)</label><input type="number" id="ishtDInput" value="5" min="0"></div>
         </div>
 
         <div id="dynamicControls"></div>
@@ -345,7 +345,7 @@
                         <tr><td>नक्षत्र, पद</td><td data-bind="NakshatraPada">रेवती 2 दो</td></tr>
                         <tr><td>योग</td><td data-bind="Yog">विष्कुम्भ</td></tr>
                         <tr><td>करण</td><td data-bind="Karan">विष्टि भद्र</td></tr>
-                        <tr><td>इष्टकाल</td><td><span id="ishtYDisplay">08</span>y <span id="ishtMDisplay">07</span>m <span id="ishtDDisplay">05</span>d</td></tr>
+                        <tr><td>इष्टकाल</td><td><span id="ishtYDisplay">08</span>:<span id="ishtMDisplay">07</span>:<span id="ishtDDisplay">05</span></td></tr>
                         <tr><td>सूर्योदय</td><td data-bind="Suryoday">05:54</td></tr>
                         <tr><td></td><td><span data-bind="PanchangDay">शनिवार</span>, <span data-bind="PanchangMonth">चैत्र</span>, <span data-bind="PanchangYear">2055</span> विक्रम संवत</td></tr>
                     </table>
@@ -360,8 +360,9 @@
                         <line x1="300" y1="0" x2="0" y2="300" class="chart-lines"/>
                         <polygon points="150,0 300,150 150,300 0,150" class="chart-lines"/>
                         
-                        <text x="150" y="25" text-anchor="middle" class="chart-num">3</text>  <text x="65" y="25" text-anchor="middle" class="chart-num">4</text>   <text x="25" y="65" text-anchor="middle" class="chart-num">5</text>   <text x="40" y="155" text-anchor="middle" class="chart-num">6</text>  <text x="25" y="245" text-anchor="middle" class="chart-num">7</text>  <text x="65" y="285" text-anchor="middle" class="chart-num">8</text>  <text x="150" y="285" text-anchor="middle" class="chart-num">9</text> <text x="235" y="285" text-anchor="middle" class="chart-num">10</text> <text x="275" y="245" text-anchor="middle" class="chart-num">11</text> <text x="260" y="155" text-anchor="middle" class="chart-num">12</text> <text x="275" y="65" text-anchor="middle" class="chart-num">1</text>  <text x="235" y="25" text-anchor="middle" class="chart-num">2</text>  <g id="chart-planets-container">
-                            </g>
+                        <text x="150" y="25" text-anchor="middle" class="chart-num">3</text>  <text x="65" y="25" text-anchor="middle" class="chart-num">4</text>   <text x="25" y="65" text-anchor="middle" class="chart-num">5</text>   <text x="40" y="155" text-anchor="middle" class="chart-num">6</text>  <text x="25" y="245" text-anchor="middle" class="chart-num">7</text>  <text x="65" y="285" text-anchor="middle" class="chart-num">8</text>  <text x="150" y="285" text-anchor="middle" class="chart-num">9</text> <text x="235" y="285" text-anchor="middle" class="chart-num">10</text> <text x="275" y="245" text-anchor="middle" class="chart-num">11</text> <text x="260" y="155" text-anchor="middle" class="chart-num">12</text> <text x="275" y="65" text-anchor="middle" class="chart-num">1</text>  <text x="235" y="25" text-anchor="middle" class="chart-num">2</text>  
+                        
+                        <g id="chart-planets-container"></g>
                     </svg>
                 </div>
 
@@ -378,13 +379,12 @@
                         <tr><td><span class="planet-dot dot-sat"></span> शनि<span class="planet-suffix" data-suffix="शनि"></span></td><td data-bind="Rashi_शनि">♈ मेष</td><td data-bind="Deg_शनि">00° 00'</td></tr>
                         <tr><td><span class="planet-dot dot-node">☊</span> राहू<span class="planet-suffix" data-suffix="राहू"></span></td><td data-bind="Rashi_राहू">♌ सिंह</td><td data-bind="Deg_राहू">00° 00'</td></tr>
                         <tr><td><span class="planet-dot dot-node">☋</span> केतु<span class="planet-suffix" data-suffix="केतु"></span></td><td data-bind="Rashi_केतु">♒ कुम्भ</td><td data-bind="Deg_केतु">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-node">♅</span> हर्शल<span class="planet-suffix" data-suffix="हर्शल"></span></td><td data-bind="Rashi_हर्शल">♒ कुम्भ</td><td data-bind="Deg_हर्शल">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-node">♆</span> नेपच्यून<span class="planet-suffix" data-suffix="नेपच्यून"></span></td><td data-bind="Rashi_नेपच्यून">♑ मकर</td><td data-bind="Deg_नेपच्यून">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-node">♇</span> प्लूटो<span class="planet-suffix" data-suffix="प्लूटो"></span></td><td data-bind="Rashi_प्लूटो">♐ धनु</td><td data-bind="Deg_प्लूटो">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-node">♅</span> अरुण<span class="planet-suffix" data-suffix="अरुण"></span></td><td data-bind="Rashi_अरुण">♒ कुम्भ</td><td data-bind="Deg_अरुण">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-node">♆</span> वरुण<span class="planet-suffix" data-suffix="वरुण"></span></td><td data-bind="Rashi_वरुण">♑ मकर</td><td data-bind="Deg_वरुण">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-node">♇</span> यम<span class="planet-suffix" data-suffix="यम"></span></td><td data-bind="Rashi_यम">♐ धनु</td><td data-bind="Deg_यम">00° 00'</td></tr>
                     </table>
                 </div>
             </div>
-            
             <footer class="page-footer">
                 Made with ❤️ by <a href="https://orconix.vercel.app/" style="text-decoration:none;"><img src="./assets/Logos/OrconixLogo.png" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>
             </footer>
@@ -489,7 +489,7 @@
             { id: "सूर्य", default: "♈ मेष" }, { id: "चन्द्र", default: "♓ मीन" }, { id: "मंगल", default: "♈ मेष" },
             { id: "बुध", default: "♓ मीन" }, { id: "गुरु", default: "♒ कुम्भ" }, { id: "शुक्र", default: "♒ कुम्भ" },
             { id: "शनि", default: "♈ मेष" }, { id: "राहू", default: "♌ सिंह" }, { id: "केतु", default: "♒ कुम्भ" },
-            { id: "हर्शल", default: "♒ कुम्भ" }, { id: "नेपच्यून", default: "♑ मकर" }, { id: "प्लूटो", default: "♐ धनु" }
+            { id: "अरुण", default: "♒ कुम्भ" }, { id: "वरुण", default: "♑ मकर" }, { id: "यम", default: "♐ धनु" }
         ];
         const houseCoords = {
             1: {x: 150, y: 75}, 2: {x: 75, y: 45}, 3: {x: 45, y: 95}, 4: {x: 80, y: 155},
@@ -545,23 +545,40 @@
             
             for(let h=1; h<=12; h++) {
                 if(houses[h].length > 0) {
-                    // Group planets by 2 per line for neatness
-                    let lines = [];
-                    for(let i=0; i<houses[h].length; i+=2) {
-                        lines.push(houses[h].slice(i, i+2).join(' '));
+                    
+                    // Smart Scaling Logic for crowded houses
+                    let itemsPerLine = 2;
+                    let fontSize = 13;
+                    let lineHeight = 14;
+
+                    if (houses[h].length > 8) {
+                        itemsPerLine = 3;
+                        fontSize = 9;
+                        lineHeight = 11;
+                    } else if (houses[h].length > 4) {
+                        itemsPerLine = 3;
+                        fontSize = 11;
+                        lineHeight = 13;
                     }
+
+                    let lines = [];
+                    for(let i=0; i<houses[h].length; i+=itemsPerLine) {
+                        lines.push(houses[h].slice(i, i+itemsPerLine).join(' '));
+                    }
+                    
+                    let yOffset = ((lines.length - 1) * (lineHeight / 2));
                     
                     let textEl = document.createElementNS("http://www.w3.org/2000/svg", "text");
                     textEl.setAttribute("x", houseCoords[h].x);
-                    // Shift starting Y up slightly if there are multiple lines
-                    textEl.setAttribute("y", houseCoords[h].y - ((lines.length - 1) * 6)); 
+                    textEl.setAttribute("y", houseCoords[h].y - yOffset); 
                     textEl.setAttribute("text-anchor", "middle");
                     textEl.setAttribute("class", "chart-planet");
+                    textEl.style.fontSize = fontSize + "px";
                     
                     lines.forEach((line, index) => {
                         let tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
                         tspan.setAttribute("x", houseCoords[h].x);
-                        if(index > 0) tspan.setAttribute("dy", "14"); // Line spacing
+                        if(index > 0) tspan.setAttribute("dy", lineHeight); // Line spacing
                         tspan.textContent = line;
                         textEl.appendChild(tspan);
                     });
