@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jyotish Karyalay - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0A2E4B;
+            --accent-green: #187A22;
+            --accent-orange: #F47A20;
+            --bg-color: #F8F9FA;
+            --text-dark: #212529;
+            --border-color: #D3D9DE;
+        }
+
+        body { 
+            font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif; 
+            background-color: #e9ecef; 
+            color: var(--text-dark); 
+            margin: 0; 
+            padding: 40px 20px; 
+            display: flex; 
+            justify-content: center; 
+        }
+
+        .dashboard-container { 
+            width: 100%; 
+            max-width: 1000px; 
+            background: white; 
+            padding: 30px 40px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            border-radius: 8px; 
+        }
+        
+        /* --- HEADER --- */
+        .dashboard-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 2px solid var(--primary-blue); 
+            padding-bottom: 20px; 
+            margin-bottom: 25px; 
+        }
+        .header-title { 
+            font-size: 28px; 
+            color: var(--primary-blue); 
+            margin: 0; 
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+        .btn-create { 
+            background-color: var(--accent-green); 
+            color: white; 
+            padding: 12px 20px; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .btn-create:hover { background-color: #146c1c; }
+
+        /* --- TABLE --- */
+        .record-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 16px; 
+        }
+        .record-table th, .record-table td { 
+            padding: 15px; 
+            text-align: left; 
+            border-bottom: 1px solid var(--border-color); 
+        }
+        .record-table th { 
+            background-color: #fafbfc; 
+            color: var(--primary-blue); 
+            font-weight: 600; 
+            font-family: 'Poppins', sans-serif;
+        }
+        .record-table tr:hover { background-color: #f8f9fa; }
+        
+        .client-name { font-weight: 700; font-size: 18px; color: var(--text-dark); }
+        
+        .status-badge { 
+            padding: 4px 10px; 
+            border-radius: 20px; 
+            font-size: 13px; 
+            font-weight: 600; 
+        }
+        .status-draft { background-color: #fff3cd; color: var(--accent-orange); border: 1px solid #ffeeba; }
+        .status-completed { background-color: #d4edda; color: var(--accent-green); border: 1px solid #c3e6cb; }
+
+        /* --- ACTION BUTTONS --- */
+        .actions { display: flex; gap: 10px; }
+        .btn-edit { 
+            background-color: var(--primary-blue); 
+            color: white; 
+            padding: 6px 14px; 
+            text-decoration: none; 
+            border-radius: 4px; 
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+        .btn-edit:hover { opacity: 0.9; }
+        
+        .btn-delete { 
+            background-color: #dc3545; 
+            color: white; 
+            padding: 6px 14px; 
+            text-decoration: none; 
+            border-radius: 4px; 
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+        .btn-delete:hover { opacity: 0.9; }
+
+        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); font-size: 18px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="header-title">Kundali Dashboard</h1>
+            <a href="{% url 'new_kundali' %}" class="btn-create">+ Create New Kundali</a>
+        </div>
+
+        <table class="record-table">
+            <thead>
+                <tr>
+                    <th>Client Name (ग्राहक)</th>
+                    <th>Status</th>
+                    <th>Last Updated (शेवटचा बदल)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr>
+                    <td colspan="4" class="empty-state">
+                        Loading Kundali records...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchRecords();
+        });
+
+        function fetchRecords() {
+            // Call the new API endpoint
+            fetch('/api/loadAll/')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('tableBody');
+                    tbody.innerHTML = ''; // Clear the loading message
+
+                    if (data.status === 'success') {
+                        if (data.records.length === 0) {
+                            tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No clients found in the database. Click "Create New Kundali" to start.</td></tr>`;
+                            return;
+                        }
+
+                        // Loop through records and generate HTML rows
+                        data.records.forEach(record => {
+                            const statusClass = record.Status === 'Completed' ? 'status-completed' : 'status-draft';
+                            const statusText = record.Status || 'Draft';
+                            
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td><span class="client-name">${record.Client_Name}</span></td>
+                                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                                <td style="color: var(--text-muted); font-size: 14px;">${record.Last_Updated}</td>
+                                <td class="actions">
+                                    <a href="/editor/${record.Record_ID}/" class="btn-edit">Open / Edit</a>
+                                    <a href="/delete/${record.Record_ID}/" class="btn-delete" onclick="return confirm('Are you sure you want to delete this Kundali?');">Delete</a>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    } else {
+                        tbody.innerHTML = `<tr><td colspan="4" class="empty-state" style="color: #dc3545;">Error loading records: ${data.message}</td></tr>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('tableBody').innerHTML = `<tr><td colspan="4" class="empty-state" style="color: #dc3545;">Network error occurred while fetching data.</td></tr>`;
+                });
+        }
+    </script>
+</body>
+</html>

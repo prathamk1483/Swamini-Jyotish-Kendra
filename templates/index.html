@@ -900,6 +900,205 @@
 
         falaSidebarInput.addEventListener('input', (e) => { falaDisplay.innerText = e.target.value; });
         falaDisplay.addEventListener('input', (e) => { falaSidebarInput.value = e.target.innerText; });
+
+
+        // =========================================================
+        // --- AUTO-SAVE AND LOAD ENGINE (DJANGO + GOOGLE SHEETS) ---
+        // =========================================================
+
+        // 1. Get the Record ID from Django Template Context
+        // If it's a new form, this will be empty. If editing, it will have the ID.
+        let currentRecordId = "{{ record_id|default_if_none:'' }}";
+        let saveTimeout;
+
+        // Helper: Get CSRF token for secure Django POST requests
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // 2. Gather every single input on the page into a JSON Object
+        function gatherFormData() {
+            const data = {
+                clientName: document.getElementById('clientNameInput').value,
+                clientPlace: document.getElementById('clientPlaceInput').value,
+                clientLat: document.getElementById('clientLatInput').value,
+                clientLon: document.getElementById('clientLonInput').value,
+                bhogyaPlanet: document.getElementById('bhogyaPlanetInput').value,
+                bhogyaY: document.getElementById('bhogyaYInput').value,
+                bhogyaM: document.getElementById('bhogyaMInput').value,
+                bhogyaD: document.getElementById('bhogyaDInput').value,
+                mangalDosh: document.getElementById('mangalDoshInput').checked,
+                clientDate: document.getElementById('clientDateInput').value,
+                clientTime: document.getElementById('clientTimeInput').value,
+                ishtY: document.getElementById('ishtYInput').value,
+                ishtM: document.getElementById('ishtMInput').value,
+                ishtD: document.getElementById('ishtDInput').value,
+                falaShruti: document.getElementById('falaShrutiSidebarInput').value,
+                dynamicControls: {},
+                vakri: [],
+                asta: [],
+                dashas: [], // Note: Dasha logic is dynamic, so we just save the HTML rows
+                poojas: [],
+                mantras: []
+            };
+
+            // Grab all standard dropdowns and inputs
+            document.querySelectorAll('[data-control]').forEach(el => {
+                data.dynamicControls[el.dataset.control] = el.value;
+            });
+
+            // Grab Vakri/Asta checkboxes
+            document.querySelectorAll('input[data-vakri]:checked').forEach(el => data.vakri.push(el.dataset.vakri));
+            document.querySelectorAll('input[data-asta]:checked').forEach(el => data.asta.push(el.dataset.asta));
+
+            // Grab Poojas & Mantras
+            document.querySelectorAll('#poojaChecklist input:checked').forEach(el => data.poojas.push(el.value));
+            document.querySelectorAll('#mantraChecklist input:checked').forEach(el => data.mantras.push(el.value));
+
+            // Grab Dashas (We save the raw row data to rebuild it later)
+            document.querySelectorAll('#dashaTableBody .dasha-row').forEach(row => {
+                data.dashas.push({
+                    planet: row.cells[0].innerText,
+                    dates: row.cells[1].innerText
+                });
+            });
+
+            return data;
+        }
+
+        // 3. The Debouncer: Waits 2.5 seconds after typing stops, then saves
+        function autoSave() {
+            clearTimeout(saveTimeout);
+            
+            // Change document title to show it is saving (Optional UX)
+            document.title = "Saving... | Jyotish Karyalay";
+
+            saveTimeout = setTimeout(() => {
+                const formData = gatherFormData();
+                
+                // This is the structure expected by the Django view we wrote
+                const payload = {
+                    record_id: currentRecordId,
+                    client_name: formData.clientName || 'नवीन ग्राहक (New Client)',
+                    status: 'Draft',
+                    form_data: formData
+                };
+
+                fetch('/api/save/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(response => {
+                    document.title = "Saved ✓ | Jyotish Karyalay";
+                    
+                    // If this was a NEW record, update the URL silently!
+                    if (response.status === 'success' && !currentRecordId) {
+                        currentRecordId = response.record_id;
+                        window.history.pushState({}, '', `/editor/${currentRecordId}/`);
+                    }
+                })
+                .catch(err => {
+                    console.error("Auto-save failed", err);
+                    document.title = "Save Failed ❌ | Jyotish Karyalay";
+                });
+                
+            }, 2500); // 2500 milliseconds = 2.5 seconds
+        }
+
+        // 4. Trigger AutoSave whenever ANYTHING on the form changes
+        document.body.addEventListener('input', autoSave);
+        document.body.addEventListener('change', autoSave);
+
+
+        // 5. ON PAGE LOAD: If a record_id exists, fetch and populate the form
+        window.addEventListener('DOMContentLoaded', () => {
+            if (currentRecordId) {
+                fetch(`/api/load/${currentRecordId}/`)
+                .then(res => res.json())
+                .then(response => {
+                    if (response.status === 'success' && response.form_data) {
+                        populateFormData(response.form_data);
+                    }
+                })
+                .catch(err => console.error("Failed to load data", err));
+            }
+        });
+
+        // 6. The Populator: Restores the form state from JSON
+        function populateFormData(data) {
+            // Restore basic inputs
+            if(data.clientName) document.getElementById('clientNameInput').value = data.clientName;
+            if(data.clientPlace) document.getElementById('clientPlaceInput').value = data.clientPlace;
+            if(data.clientLat) document.getElementById('clientLatInput').value = data.clientLat;
+            if(data.clientLon) document.getElementById('clientLonInput').value = data.clientLon;
+            if(data.bhogyaPlanet) document.getElementById('bhogyaPlanetInput').value = data.bhogyaPlanet;
+            if(data.bhogyaY) document.getElementById('bhogyaYInput').value = data.bhogyaY;
+            if(data.bhogyaM) document.getElementById('bhogyaMInput').value = data.bhogyaM;
+            if(data.bhogyaD) document.getElementById('bhogyaDInput').value = data.bhogyaD;
+            if(data.mangalDosh) document.getElementById('mangalDoshInput').checked = data.mangalDosh;
+            if(data.clientDate) document.getElementById('clientDateInput').value = data.clientDate;
+            if(data.clientTime) document.getElementById('clientTimeInput').value = data.clientTime;
+            if(data.ishtY) document.getElementById('ishtYInput').value = data.ishtY;
+            if(data.ishtM) document.getElementById('ishtMInput').value = data.ishtM;
+            if(data.ishtD) document.getElementById('ishtDInput').value = data.ishtD;
+            if(data.falaShruti) {
+                document.getElementById('falaShrutiSidebarInput').value = data.falaShruti;
+                document.getElementById('falaShrutiDisplay').innerText = data.falaShruti;
+            }
+
+            // Restore dynamic selects
+            if(data.dynamicControls) {
+                for (const [key, value] of Object.entries(data.dynamicControls)) {
+                    const el = document.querySelector(`[data-control="${key}"]`);
+                    if (el) el.value = value;
+                }
+            }
+
+            // Restore Checkboxes (Vakri/Asta/Poojas/Mantras)
+            if(data.vakri) data.vakri.forEach(val => { const el = document.querySelector(`input[data-vakri="${val}"]`); if(el) el.checked = true; });
+            if(data.asta) data.asta.forEach(val => { const el = document.querySelector(`input[data-asta="${val}"]`); if(el) el.checked = true; });
+            if(data.poojas) data.poojas.forEach(val => { const el = document.querySelector(`#poojaChecklist input[value="${val}"]`); if(el) el.checked = true; });
+            if(data.mantras) data.mantras.forEach(val => { const el = document.querySelector(`#mantraChecklist input[value="${val}"]`); if(el) el.checked = true; });
+
+            // Restore Dashas
+            const dashaBody = document.getElementById('dashaTableBody');
+            dashaBody.innerHTML = "";
+            if(data.dashas) {
+                data.dashas.forEach(d => {
+                    dashaBody.insertAdjacentHTML('beforeend', `
+                        <tr class="dasha-row">
+                            <td>${d.planet}</td>
+                            <td>${d.dates}</td>
+                        </tr>
+                    `);
+                });
+            }
+
+            // Finally, trigger the input events so bindings, charts, and tables update visually
+            document.querySelectorAll('input, select').forEach(el => el.dispatchEvent(new Event('input', { bubbles: true })));
+            document.querySelectorAll('input[type="checkbox"]').forEach(el => el.dispatchEvent(new Event('change', { bubbles: true })));
+            
+            // Re-render manual tables
+            renderPoojaTable();
+            renderMantraTable();
+            updateIshtakaal();
+        }
     </script>
 </body>
 </html>
