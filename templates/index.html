@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="mr">
 <head>
@@ -60,7 +61,7 @@
         .info-row-1 strong { color: var(--primary-blue); }
         .info-row-2 { font-size: 18px; color: var(--primary-blue); }
 
-        .summary-box { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; background-color: #fafbfc; }
+        .summary-box { display: flex; justify-content: space-between; align-items: center; padding: 5px 30px; background-color: #fafbfc; }
         .summary-item { text-align: center; }
         .rashi-title { font-size: 20px; font-weight: bold; color: var(--accent-green); }
         .lagna-title { font-size: 16px; color: var(--accent-green); margin-top: 5px; }
@@ -116,7 +117,7 @@
 
         /* --- FOOTER STYLES --- */
         .page-footer {
-            margin-top: auto; 
+            margin-top: 0; 
             padding-top: 5px;
             border-top: 1px solid var(--border-color);
             text-align: center;
@@ -290,7 +291,7 @@
         <div class="page-container">
             <header class="page-header">
                 <div class="header-left">
-                    <img class="logo" src="./assets/Logos/SwaminiLogo.png" alt="Logo">
+                    <img class="logo" src="{% static 'assets/Logos/SwaminiLogo.png' %}" alt="Logo">
                     <div class="header-info">
                         <div class="logo-area">स्वामिनी ज्योतिष कार्यालय</div>
                         <div class="contact-details">
@@ -387,14 +388,14 @@
                 </div>
             </div>
             <footer class="page-footer">
-                Made with ❤️ by <a href="https://orconix.vercel.app/" style="text-decoration:none;"><img src="./assets/Logos/OrconixLogo.png" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>
+                Made with ❤️ by <a href="https://orconix.vercel.app/" style="text-decoration:none;"><img src="{% static 'assets/Logos/OrconixLogo.png' %}" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>
             </footer>
         </div>
 
         <div class="page-container page-2">
             <header class="page-header">
                 <div class="header-left">
-                    <img class="logo" src="./assets/Logos/SwaminiLogo.png" alt="Logo">
+                    <img class="logo" src="{% static 'assets/Logos/SwaminiLogo.png' %}" alt="Logo">
                     <div class="header-info">
                         <div class="logo-area">स्वामिनी ज्योतिष कार्यालय</div>
                         <div class="contact-details">
@@ -444,14 +445,14 @@
             </div>
             
             <footer class="page-footer">
-                Made with ❤️ by <a href="https://orconix.vercel.app/" style="text-decoration:none;"><img src="./assets/Logos/OrconixLogo.png" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>
+                Made with ❤️ by <a href="https://orconix.vercel.app/" style="text-decoration:none;"><img src="{% static 'assets/Logos/OrconixLogo.png' %}" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>
             </footer>
         </div>
 
         <div class="page-container page-3">
             <header class="page-header">
                 <div class="header-left">
-                    <img class="logo" src="./assets/Logos/SwaminiLogo.png" alt="Logo">
+                    <img class="logo" src="{% static 'assets/Logos/SwaminiLogo.png' %}" alt="Logo">
                     <div class="header-info">
                         <div class="logo-area">स्वामिनी ज्योतिष कार्यालय</div>
                         <div class="contact-details">
@@ -470,7 +471,7 @@
             </div>
             
             <footer class="page-footer">
-                Made with ❤️ by <a href="https://orconix.vercel.app/" style="text-decoration:none;"><img src="./assets/Logos/OrconixLogo.png" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>
+                Made with ❤️ by <a href="https://orconix.vercel.app/" style="text-decoration:none;"><img src="{% static 'assets/Logos/OrconixLogo.png' %}" alt="Orconix Logo" class="footer-logo"> <span class="orconix-text">Orconix</span></a>
             </footer>
         </div>
 
