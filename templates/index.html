@@ -535,6 +535,16 @@
             "पूर्वा भाद्रपदा": "मनुष्य", "उत्तरा भाद्रपदा": "मनुष्य", "रेवती": "देव"
         };
 
+        // --- Auto Naadi Mapping Data ---
+        const nakshatraNaadiMap = {
+            "अश्विनी": "आद्य (वात)", "आर्द्रा": "आद्य (वात)", "पुनर्वसु": "आद्य (वात)", "उत्तरा फाल्गुनी": "आद्य (वात)",
+            "हस्त": "आद्य (वात)", "ज्येष्ठा": "आद्य (वात)", "मूळ": "आद्य (वात)", "शततारका": "आद्य (वात)", "पूर्वा भाद्रपदा": "आद्य (वात)",
+            "भरणी": "मध्य (पित्त)", "मृगशीर्ष": "मध्य (पित्त)", "पुष्य": "मध्य (पित्त)", "पूर्वा फाल्गुनी": "मध्य (पित्त)",
+            "चित्रा": "मध्य (पित्त)", "अनुराधा": "मध्य (पित्त)", "पूर्वाषाढा": "मध्य (पित्त)", "धनिष्ठा": "मध्य (पित्त)", "उत्तरा भाद्रपदा": "मध्य (पित्त)",
+            "कृत्तिका": "अन्त्य (कफ)", "रोहिणी": "अन्त्य (कफ)", "आश्लेषा": "अन्त्य (कफ)", "मघा": "अन्त्य (कफ)",
+            "स्वाती": "अन्त्य (कफ)", "विशाखा": "अन्त्य (कफ)", "उत्तराषाढा": "अन्त्य (कफ)", "श्रवण": "अन्त्य (कफ)", "रेवती": "अन्त्य (कफ)"
+        };
+
         // --- Core Application Data ---
         const rashiMap = {"मेष": 1, "वृषभ": 2, "मिथुन": 3, "कर्क": 4, "सिंह": 5, "कन्या": 6, "तुला": 7, "वृश्चिक": 8, "धनु": 9, "मकर": 10, "कुंभ": 11, "मीन": 12};
         const rashiSymbols = ["♈ मेष", "♉ वृषभ", "♊ मिथुन", "♋ कर्क", "♌ सिंह", "♍ कन्या", "♎ तुला", "♏ वृश्चिक", "♐ धनु", "♑ मकर", "♒ कुंभ", "♓ मीन"];
@@ -711,12 +721,11 @@
         const jyotishData = {
             Lagna: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
             Rashi: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
-            // REMOVED RashiSwami, NakshatraSwami, NakshtraPaya, Yoni, and Gan from manual controls here
-            Naadi: ["आद्य (वात)", "मध्य (पित्त)", "अन्त्य (कफ)"],
+            // REMOVED RashiSwami, NakshatraSwami, NakshtraPaya, Yoni, Gan, and Naadi from manual controls here
             Varna: ["ब्राह्मण", "क्षत्रिय", "वैश्य", "शूद्र"],
             Tithi: ["प्रतिपदा", "द्वितीया", "तृतीया", "चतुर्थी", "पंचमी", "षष्ठी", "सप्तमी", "अष्टमी", "नवमी", "दशमी", "एकादशी", "द्वादशी", "त्रयोदशी", "चतुर्दशी", "पौर्णिमा", "अमावास्या"].flatMap(t=>[t+', शुक्ल', t+', कृष्ण']),
             NakshatraPada: [
-                ["अश्विनी", ["चू", "चे", "चo", "ला"]], ["भरणी", ["ली", "लू", "ले", "लो"]], ["कृत्तिका", ["अ", "ई", "ऊ", "ए"]],
+                ["अश्विनी", ["चू", "चे", "चो", "ला"]], ["भरणी", ["ली", "लू", "ले", "लो"]], ["कृत्तिका", ["अ", "ई", "ऊ", "ए"]],
                 ["रोहिणी", ["ओ", "वा", "वी", "वू"]], ["मृगशीर्ष", ["वे", "वो", "का", "की"]], ["आर्द्रा", ["कू", "घ", "ङ", "छ"]],
                 ["पुनर्वसु", ["के", "को", "हा", "ही"]], ["पुष्य", ["हू", "हे", "हो", "डा"]], ["आश्लेषा", ["डी", "डू", "डे", "डो"]],
                 ["मघा", ["मा", "मी", "मू", "मे"]], ["पूर्वा फाल्गुनी", ["मो", "टा", "टी", "टू"]], ["उत्तरा फाल्गुनी", ["टे", "टो", "पा", "पी"]],
@@ -834,7 +843,7 @@
                 const val = e.target.value;
                 document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
                 
-                // --- AUTO NAKSHATRA SWAMI, PAYA, YONI, GANA & NAAM AKSHAR LOGIC ---
+                // --- AUTO NAKSHATRA SWAMI, PAYA, YONI, GANA, NAADI & NAAM AKSHAR LOGIC ---
                 if(e.target.dataset.control === 'NakshatraPada') {
                     // Update Naam Akshar
                     const match = val.match(/\(([^)]+)\)/);
@@ -865,6 +874,12 @@
                     const mappedGan = nakshatraGanMap[baseNakshatra];
                     if (mappedGan) {
                         document.querySelectorAll(`[data-bind="Gan"]`).forEach(el => el.textContent = mappedGan);
+                    }
+
+                    // Update Naadi
+                    const mappedNaadi = nakshatraNaadiMap[baseNakshatra];
+                    if (mappedNaadi) {
+                        document.querySelectorAll(`[data-bind="Naadi"]`).forEach(el => el.textContent = mappedNaadi);
                     }
                 }
                 
@@ -1038,7 +1053,7 @@
                 mantras: []
             };
 
-            // Grab all standard dropdowns and inputs (RashiSwami, NakshatraSwami, NakshtraPaya, Yoni, Gan are excluded naturally now)
+            // Grab all standard dropdowns and inputs (RashiSwami, NakshatraSwami, NakshtraPaya, Yoni, Gan, Naadi are excluded naturally now)
             document.querySelectorAll('[data-control]').forEach(el => {
                 data.dynamicControls[el.dataset.control] = el.value;
             });
