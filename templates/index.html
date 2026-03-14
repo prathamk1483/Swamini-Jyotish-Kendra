@@ -437,7 +437,7 @@
             <div class="box" id="mantraBox" style="padding: 0; overflow: hidden; margin-top: 15px; display: none;">
                 <h3 class="page-2-header" style="background-color: #187A22;">मंत्र उपासना</h3>
                 <div style="padding: 8px 15px; font-size: 12px; color: var(--text-dark); background: #fdfdfd; border-bottom: 1px solid var(--border-color); line-height: 1.4;">
-                    <strong style="color: var(--primary-blue);">टिप :</strong> खाली दिलेले मंत्र हे कोणत्याही महिन्याच्या अमावश्ये नंतर त्या त्या ग्रहाच्या ठराविक दिवसा पासून सुरु करू शकता, त्याकरिता रुद्राक्ष जपमाळ, तांब्याचा दिवा त्या मध्ये शुद्ध गायचे तूप इत्यादी साहित्य आवश्यक आहे.
+                    <strong style="color: var(--primary-blue);">टिप :</strong> खाली दिलेले मंत्र हे कोणत्याही महिन्याच्या अमावश्ये नंतर त्या त्या ग्रहाच्या ठराविक दिवसा पासून सुरु करू शकता, त्याकरिता रुद्राक्ष जपमाळ, तांब्याचा दिवा त्या मध्ये शुद्ध गायचे तूप इत्यादी साहित्य आवश्यक মিলিটারি आहे.
                 </div>
                 <table style="width: 100%; border-collapse: collapse;">
                     <tbody id="mantraTableBody"></tbody>
@@ -511,6 +511,17 @@
             "अनुराधा": "सुवर्ण", "ज्येष्ठा": "रजत", "मूळ": "ताम्र", "पूर्वाषाढा": "लोह",
             "उत्तराषाढा": "सुवर्ण", "श्रवण": "रजत", "धनिष्ठा": "ताम्र", "शततारका": "लोह",
             "पूर्वा भाद्रपदा": "सुवर्ण", "उत्तरा भाद्रपदा": "रजत", "रेवती": "ताम्र"
+        };
+
+        // --- Auto Yoni Mapping Data ---
+        const nakshatraYoniMap = {
+            "अश्विनी": "अश्व", "भरणी": "गज", "कृत्तिका": "मेष", "रोहिणी": "सर्प",
+            "मृगशीर्ष": "सर्प", "आर्द्रा": "श्वान", "पुनर्वसु": "मार्जार", "पुष्य": "मेष",
+            "आश्लेषा": "मार्जार", "मघा": "मूषक", "पूर्वा फाल्गुनी": "मूषक", "उत्तरा फाल्गुनी": "गौ",
+            "हस्त": "महिष", "चित्रा": "व्याघ्र", "स्वाती": "महिष", "विशाखा": "व्याघ्र",
+            "अनुराधा": "मृग", "ज्येष्ठा": "मृग", "मूळ": "श्वान", "पूर्वाषाढा": "वानर",
+            "उत्तराषाढा": "नकुल", "श्रवण": "वानर", "धनिष्ठा": "सिंह", "शततारका": "अश्व",
+            "पूर्वा भाद्रपदा": "सिंह", "उत्तरा भाद्रपदा": "गौ", "रेवती": "गज"
         };
 
         // --- Core Application Data ---
@@ -689,8 +700,7 @@
         const jyotishData = {
             Lagna: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
             Rashi: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
-            // REMOVED RashiSwami, NakshatraSwami, and NakshtraPaya from manual controls here
-            Yoni: ["अश्व", "गज", "मेष", "सर्प", "श्वान", "मार्जार", "मूषक", "गौ", "महिष", "व्याघ्र", "मृग", "वानर", "नकुल", "सिंह"],
+            // REMOVED RashiSwami, NakshatraSwami, NakshtraPaya, and Yoni from manual controls here
             Gan: ["देव", "मनुष्य", "राक्षस"],
             Naadi: ["आद्य (वात)", "मध्य (पित्त)", "अन्त्य (कफ)"],
             Varna: ["ब्राह्मण", "क्षत्रिय", "वैश्य", "शूद्र"],
@@ -814,7 +824,7 @@
                 const val = e.target.value;
                 document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
                 
-                // --- AUTO NAKSHATRA SWAMI, PAYA & NAAM AKSHAR LOGIC ---
+                // --- AUTO NAKSHATRA SWAMI, PAYA, YONI & NAAM AKSHAR LOGIC ---
                 if(e.target.dataset.control === 'NakshatraPada') {
                     // Update Naam Akshar
                     const match = val.match(/\(([^)]+)\)/);
@@ -833,6 +843,12 @@
                     const mappedNakshatraPaya = nakshatraPayaMap[baseNakshatra];
                     if (mappedNakshatraPaya) {
                         document.querySelectorAll(`[data-bind="NakshtraPaya"]`).forEach(el => el.textContent = mappedNakshatraPaya);
+                    }
+
+                    // Update Yoni
+                    const mappedYoni = nakshatraYoniMap[baseNakshatra];
+                    if (mappedYoni) {
+                        document.querySelectorAll(`[data-bind="Yoni"]`).forEach(el => el.textContent = mappedYoni);
                     }
                 }
                 
@@ -1006,7 +1022,7 @@
                 mantras: []
             };
 
-            // Grab all standard dropdowns and inputs (RashiSwami, NakshatraSwami, and NakshtraPaya are excluded naturally now)
+            // Grab all standard dropdowns and inputs (RashiSwami, NakshatraSwami, NakshtraPaya, Yoni are excluded naturally now)
             document.querySelectorAll('[data-control]').forEach(el => {
                 data.dynamicControls[el.dataset.control] = el.value;
             });
