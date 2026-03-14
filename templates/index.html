@@ -216,7 +216,7 @@
             <div class="form-group" style="margin-bottom: 0; flex: 1.2;">
                 <label>वार</label>
                 <select data-control="PanchangDay">
-                    <option value="रविवार">रविवार</option><option value="सोमवार">सोमवार</option>
+                    <option value=" রবিবার">रविवार</option><option value="सोमवार">सोमवार</option>
                     <option value="मंगळवार">मंगळवार</option><option value="बुधवार">बुधवार</option>
                     <option value="गुरुवार">गुरुवार</option><option value="शुक्रवार">शुक्रवार</option>
                     <option value="शनिवार" selected>शनिवार</option>
@@ -491,6 +491,13 @@
             "धनु": "गुरु", "मकर": "शनि", "कुंभ": "शनि", "मीन": "गुरु"
         };
 
+        // --- Auto Varna Mapping Data ---
+        const rashiVarnaMap = {
+            "मेष": "क्षत्रिय", "वृषभ": "वैश्य", "मिथुन": "शूद्र", "कर्क": "ब्राह्मण",
+            "सिंह": "क्षत्रिय", "कन्या": "वैश्य", "तुला": "शूद्र", "वृश्चिक": "ब्राह्मण",
+            "धनु": "क्षत्रिय", "मकर": "वैश्य", "कुंभ": "शूद्र", "मीन": "ब्राह्मण"
+        };
+
         // --- Auto Nakshatra Swami Mapping Data ---
         const nakshatraSwamiMap = {
             "अश्विनी": "केतु", "भरणी": "शुक्र", "कृत्तिका": "सूर्य", "रोहिणी": "चंद्र",
@@ -721,8 +728,7 @@
         const jyotishData = {
             Lagna: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
             Rashi: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
-            // REMOVED RashiSwami, NakshatraSwami, NakshtraPaya, Yoni, Gan, and Naadi from manual controls here
-            Varna: ["ब्राह्मण", "क्षत्रिय", "वैश्य", "शूद्र"],
+            // REMOVED RashiSwami, Varna, NakshatraSwami, NakshtraPaya, Yoni, Gan, Naadi from manual controls here
             Tithi: ["प्रतिपदा", "द्वितीया", "तृतीया", "चतुर्थी", "पंचमी", "षष्ठी", "सप्तमी", "अष्टमी", "नवमी", "दशमी", "एकादशी", "द्वादशी", "त्रयोदशी", "चतुर्दशी", "पौर्णिमा", "अमावास्या"].flatMap(t=>[t+', शुक्ल', t+', कृष्ण']),
             NakshatraPada: [
                 ["अश्विनी", ["चू", "चे", "चो", "ला"]], ["भरणी", ["ली", "लू", "ले", "लो"]], ["कृत्तिका", ["अ", "ई", "ऊ", "ए"]],
@@ -883,11 +889,18 @@
                     }
                 }
                 
-                // --- AUTO RASHI SWAMI LOGIC ---
+                // --- AUTO RASHI SWAMI & VARNA LOGIC ---
                 if (e.target.dataset.control === 'Rashi') {
+                    // Update Rashi Swami
                     const mappedSwami = rashiSwamiMap[val];
                     if (mappedSwami) {
                         document.querySelectorAll(`[data-bind="RashiSwami"]`).forEach(el => el.textContent = mappedSwami);
+                    }
+                    
+                    // Update Varna
+                    const mappedVarna = rashiVarnaMap[val];
+                    if (mappedVarna) {
+                        document.querySelectorAll(`[data-bind="Varna"]`).forEach(el => el.textContent = mappedVarna);
                     }
                 }
 
@@ -1053,7 +1066,7 @@
                 mantras: []
             };
 
-            // Grab all standard dropdowns and inputs (RashiSwami, NakshatraSwami, NakshtraPaya, Yoni, Gan, Naadi are excluded naturally now)
+            // Grab all standard dropdowns and inputs (RashiSwami, Varna, NakshatraSwami, NakshtraPaya, Yoni, Gan, Naadi are excluded naturally now)
             document.querySelectorAll('[data-control]').forEach(el => {
                 data.dynamicControls[el.dataset.control] = el.value;
             });
