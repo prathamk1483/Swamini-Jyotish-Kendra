@@ -191,18 +191,12 @@
         <div class="form-group"><label>जन्म वेळ</label><input type="time" id="clientTimeInput" value="09:09"></div>
 
         <div class="form-group" style="margin-bottom: 8px;">
-            <label>दशा भोग्य ग्रह व काळ</label>
-            <select id="bhogyaPlanetInput" style="margin-bottom: 10px;">
-                <option value="सूर्य">सूर्य</option><option value="चन्द्र">चन्द्र</option><option value="मंगल">मंगल</option>
-                <option value="बुध" selected>बुध</option><option value="गुरु">गुरु</option><option value="शुक्र">शुक्र</option>
-                <option value="शनि">शनि</option><option value="राहू">राहू</option><option value="केतु">केतु</option>
-            </select>
+            <label>दशा भोग्य काळ (वर्षे, महिने, दिवस)</label>
         </div>
-
         <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>वर्षे (y)</label><input type="number" id="bhogyaYInput" value="10" min="0"></div>
-            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>महिने (m)</label><input type="number" id="bhogyaMInput" value="3" min="0"></div>
-            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>दिवस (d)</label><input type="number" id="bhogyaDInput" value="13" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>y</label><input type="number" id="bhogyaYInput" value="10" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>m</label><input type="number" id="bhogyaMInput" value="3" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>d</label><input type="number" id="bhogyaDInput" value="13" min="0"></div>
         </div>
         
         <div class="form-group" style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #455A64;">
@@ -216,7 +210,7 @@
             <div class="form-group" style="margin-bottom: 0; flex: 1.2;">
                 <label>वार</label>
                 <select data-control="PanchangDay">
-                    <option value=" রবিবার">रविवार</option><option value="सोमवार">सोमवार</option>
+                    <option value="रविवार">रविवार</option><option value="सोमवार">सोमवार</option>
                     <option value="मंगळवार">मंगळवार</option><option value="बुधवार">बुधवार</option>
                     <option value="गुरुवार">गुरुवार</option><option value="शुक्रवार">शुक्रवार</option>
                     <option value="शनिवार" selected>शनिवार</option>
@@ -689,7 +683,6 @@
         updateDateTime();
 
         // --- Dasha Bhogya & Mangal Dosh Logic ---
-        document.getElementById('bhogyaPlanetInput').addEventListener('input', e => document.getElementById('bhogyaPlanetDisplay').textContent = e.target.value);
         document.getElementById('bhogyaYInput').addEventListener('input', e => document.getElementById('bhogyaYDisplay').textContent = e.target.value || '0');
         document.getElementById('bhogyaMInput').addEventListener('input', e => document.getElementById('bhogyaMDisplay').textContent = e.target.value || '0');
         document.getElementById('bhogyaDInput').addEventListener('input', e => document.getElementById('bhogyaDDisplay').textContent = e.target.value || '0');
@@ -858,10 +851,12 @@
                     // Extract base Nakshatra
                     const baseNakshatra = val.split(',')[0].trim();
                     
-                    // Update Swami
+                    // Update Swami (and sync Bhogya Planet)
                     const mappedNakshatraSwami = nakshatraSwamiMap[baseNakshatra];
                     if (mappedNakshatraSwami) {
                         document.querySelectorAll(`[data-bind="NakshatraSwami"]`).forEach(el => el.textContent = mappedNakshatraSwami);
+                        // Sync Bhogya Graha automatically
+                        document.getElementById('bhogyaPlanetDisplay').textContent = mappedNakshatraSwami;
                     }
 
                     // Update Paya
@@ -1047,7 +1042,7 @@
                 clientPlace: document.getElementById('clientPlaceInput').value,
                 clientLat: document.getElementById('clientLatInput').value,
                 clientLon: document.getElementById('clientLonInput').value,
-                bhogyaPlanet: document.getElementById('bhogyaPlanetInput').value,
+                bhogyaPlanet: document.getElementById('bhogyaPlanetDisplay').textContent, // Reads from derived text
                 bhogyaY: document.getElementById('bhogyaYInput').value,
                 bhogyaM: document.getElementById('bhogyaMInput').value,
                 bhogyaD: document.getElementById('bhogyaDInput').value,
@@ -1160,7 +1155,6 @@
             if(data.clientPlace) document.getElementById('clientPlaceInput').value = data.clientPlace;
             if(data.clientLat) document.getElementById('clientLatInput').value = data.clientLat;
             if(data.clientLon) document.getElementById('clientLonInput').value = data.clientLon;
-            if(data.bhogyaPlanet) document.getElementById('bhogyaPlanetInput').value = data.bhogyaPlanet;
             if(data.bhogyaY) document.getElementById('bhogyaYInput').value = data.bhogyaY;
             if(data.bhogyaM) document.getElementById('bhogyaMInput').value = data.bhogyaM;
             if(data.bhogyaD) document.getElementById('bhogyaDInput').value = data.bhogyaD;
