@@ -484,6 +484,23 @@
             return str.replace(/[०-९]/g, m => map[m]);
         };
 
+        // --- Auto Rashi Swami Mapping Data ---
+        // This maps the selected Rashi directly to its corresponding planet based on the provided image
+        const rashiSwamiMap = {
+            "मेष": "मंगळ",
+            "वृषभ": "शुक्र",
+            "मिथुन": "बुध",
+            "कर्क": "चंद्र",
+            "सिंह": "सूर्य",
+            "कन्या": "बुध",
+            "तुला": "शुक्र",
+            "वृश्चिक": "मंगळ",
+            "धनु": "गुरु",
+            "मकर": "शनि",
+            "कुंभ": "शनि",
+            "मीन": "गुरु"
+        };
+
         // --- Core Application Data ---
         const rashiMap = {"मेष": 1, "वृषभ": 2, "मिथुन": 3, "कर्क": 4, "सिंह": 5, "कन्या": 6, "तुला": 7, "वृश्चिक": 8, "धनु": 9, "मकर": 10, "कुंभ": 11, "मीन": 12};
         const rashiSymbols = ["♈ मेष", "♉ वृषभ", "♊ मिथुन", "♋ कर्क", "♌ सिंह", "♍ कन्या", "♎ तुला", "♏ वृश्चिक", "♐ धनु", "♑ मकर", "♒ कुंभ", "♓ मीन"];
@@ -660,7 +677,7 @@
         const jyotishData = {
             Lagna: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
             Rashi: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
-            RashiSwami: ["सूर्य", "चंद्र", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि", "राहू", "केतू"],
+            // REMOVED RashiSwami from manual controls here
             NakshatraSwami: ["सूर्य", "चंद्र", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि", "राहू", "केतू"],
             NakshtraPaya: ["सुवर्ण", "रजत", "ताम्र", "लोह"],
             Yoni: ["अश्व", "गज", "मेष", "सर्प", "श्वान", "मार्जार", "मूषक", "गौ", "महिष", "व्याघ्र", "मृग", "वानर", "नकुल", "सिंह"],
@@ -792,6 +809,14 @@
                     if (match && match[1]) document.getElementById('naamAksharDisplay').textContent = match[1] + "..";
                 }
                 
+                // --- NEW: AUTO RASHI SWAMI LOGIC ---
+                if (e.target.dataset.control === 'Rashi') {
+                    const mappedSwami = rashiSwamiMap[val];
+                    if (mappedSwami) {
+                        document.querySelectorAll(`[data-bind="RashiSwami"]`).forEach(el => el.textContent = mappedSwami);
+                    }
+                }
+
                 // Triggers the chart rotation on Lagna or Rashi changes
                 if(e.target.dataset.control === 'Lagna' || e.target.dataset.control.startsWith('Rashi_')) {
                     updateChart();
@@ -954,7 +979,7 @@
                 mantras: []
             };
 
-            // Grab all standard dropdowns and inputs
+            // Grab all standard dropdowns and inputs (RashiSwami is excluded naturally now)
             document.querySelectorAll('[data-control]').forEach(el => {
                 data.dynamicControls[el.dataset.control] = el.value;
             });
