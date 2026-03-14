@@ -485,20 +485,21 @@
         };
 
         // --- Auto Rashi Swami Mapping Data ---
-        // This maps the selected Rashi directly to its corresponding planet based on the provided image
         const rashiSwamiMap = {
-            "मेष": "मंगळ",
-            "वृषभ": "शुक्र",
-            "मिथुन": "बुध",
-            "कर्क": "चंद्र",
-            "सिंह": "सूर्य",
-            "कन्या": "बुध",
-            "तुला": "शुक्र",
-            "वृश्चिक": "मंगळ",
-            "धनु": "गुरु",
-            "मकर": "शनि",
-            "कुंभ": "शनि",
-            "मीन": "गुरु"
+            "मेष": "मंगळ", "वृषभ": "शुक्र", "मिथुन": "बुध", "कर्क": "चंद्र",
+            "सिंह": "सूर्य", "कन्या": "बुध", "तुला": "शुक्र", "वृश्चिक": "मंगळ",
+            "धनु": "गुरु", "मकर": "शनि", "कुंभ": "शनि", "मीन": "गुरु"
+        };
+
+        // --- Auto Nakshatra Swami Mapping Data ---
+        const nakshatraSwamiMap = {
+            "अश्विनी": "केतु", "भरणी": "शुक्र", "कृत्तिका": "सूर्य", "रोहिणी": "चंद्र",
+            "मृगशीर्ष": "मंगळ", "आर्द्रा": "राहू", "पुनर्वसु": "गुरु", "पुष्य": "शनि",
+            "आश्लेषा": "बुध", "मघा": "केतु", "पूर्वा फाल्गुनी": "शुक्र", "उत्तरा फाल्गुनी": "सूर्य",
+            "हस्त": "चंद्र", "चित्रा": "मंगळ", "स्वाती": "राहू", "विशाखा": "गुरु",
+            "अनुराधा": "शनि", "ज्येष्ठा": "बुध", "मूळ": "केतु", "पूर्वाषाढा": "शुक्र",
+            "उत्तराषाढा": "सूर्य", "श्रवण": "चंद्र", "धनिष्ठा": "मंगळ", "शततारका": "राहू",
+            "पूर्वा भाद्रपदा": "गुरु", "उत्तरा भाद्रपदा": "शनि", "रेवती": "बुध"
         };
 
         // --- Core Application Data ---
@@ -677,8 +678,7 @@
         const jyotishData = {
             Lagna: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
             Rashi: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
-            // REMOVED RashiSwami from manual controls here
-            NakshatraSwami: ["सूर्य", "चंद्र", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि", "राहू", "केतू"],
+            // REMOVED RashiSwami and NakshatraSwami from manual controls here
             NakshtraPaya: ["सुवर्ण", "रजत", "ताम्र", "लोह"],
             Yoni: ["अश्व", "गज", "मेष", "सर्प", "श्वान", "मार्जार", "मूषक", "गौ", "महिष", "व्याघ्र", "मृग", "वानर", "नकुल", "सिंह"],
             Gan: ["देव", "मनुष्य", "राक्षस"],
@@ -804,12 +804,21 @@
                 const val = e.target.value;
                 document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
                 
+                // --- AUTO NAKSHATRA SWAMI & NAAM AKSHAR LOGIC ---
                 if(e.target.dataset.control === 'NakshatraPada') {
+                    // Update Naam Akshar
                     const match = val.match(/\(([^)]+)\)/);
                     if (match && match[1]) document.getElementById('naamAksharDisplay').textContent = match[1] + "..";
+                    
+                    // Extract base Nakshatra and Update Swami
+                    const baseNakshatra = val.split(',')[0].trim();
+                    const mappedNakshatraSwami = nakshatraSwamiMap[baseNakshatra];
+                    if (mappedNakshatraSwami) {
+                        document.querySelectorAll(`[data-bind="NakshatraSwami"]`).forEach(el => el.textContent = mappedNakshatraSwami);
+                    }
                 }
                 
-                // --- NEW: AUTO RASHI SWAMI LOGIC ---
+                // --- AUTO RASHI SWAMI LOGIC ---
                 if (e.target.dataset.control === 'Rashi') {
                     const mappedSwami = rashiSwamiMap[val];
                     if (mappedSwami) {
@@ -979,7 +988,7 @@
                 mantras: []
             };
 
-            // Grab all standard dropdowns and inputs (RashiSwami is excluded naturally now)
+            // Grab all standard dropdowns and inputs (RashiSwami and NakshatraSwami are excluded naturally now)
             document.querySelectorAll('[data-control]').forEach(el => {
                 data.dynamicControls[el.dataset.control] = el.value;
             });
