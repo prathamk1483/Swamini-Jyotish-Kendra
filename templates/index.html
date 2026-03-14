@@ -502,6 +502,17 @@
             "पूर्वा भाद्रपदा": "गुरु", "उत्तरा भाद्रपदा": "शनि", "रेवती": "बुध"
         };
 
+        // --- Auto Nakshatra Paya Mapping Data ---
+        const nakshatraPayaMap = {
+            "अश्विनी": "सुवर्ण", "भरणी": "रजत", "कृत्तिका": "ताम्र", "रोहिणी": "लोह",
+            "मृगशीर्ष": "सुवर्ण", "आर्द्रा": "रजत", "पुनर्वसु": "ताम्र", "पुष्य": "लोह",
+            "आश्लेषा": "सुवर्ण", "मघा": "रजत", "पूर्वा फाल्गुनी": "ताम्र", "उत्तरा फाल्गुनी": "लोह",
+            "हस्त": "सुवर्ण", "चित्रा": "रजत", "स्वाती": "ताम्र", "विशाखा": "लोह",
+            "अनुराधा": "सुवर्ण", "ज्येष्ठा": "रजत", "मूळ": "ताम्र", "पूर्वाषाढा": "लोह",
+            "उत्तराषाढा": "सुवर्ण", "श्रवण": "रजत", "धनिष्ठा": "ताम्र", "शततारका": "लोह",
+            "पूर्वा भाद्रपदा": "सुवर्ण", "उत्तरा भाद्रपदा": "रजत", "रेवती": "ताम्र"
+        };
+
         // --- Core Application Data ---
         const rashiMap = {"मेष": 1, "वृषभ": 2, "मिथुन": 3, "कर्क": 4, "सिंह": 5, "कन्या": 6, "तुला": 7, "वृश्चिक": 8, "धनु": 9, "मकर": 10, "कुंभ": 11, "मीन": 12};
         const rashiSymbols = ["♈ मेष", "♉ वृषभ", "♊ मिथुन", "♋ कर्क", "♌ सिंह", "♍ कन्या", "♎ तुला", "♏ वृश्चिक", "♐ धनु", "♑ मकर", "♒ कुंभ", "♓ मीन"];
@@ -678,15 +689,14 @@
         const jyotishData = {
             Lagna: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
             Rashi: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
-            // REMOVED RashiSwami and NakshatraSwami from manual controls here
-            NakshtraPaya: ["सुवर्ण", "रजत", "ताम्र", "लोह"],
+            // REMOVED RashiSwami, NakshatraSwami, and NakshtraPaya from manual controls here
             Yoni: ["अश्व", "गज", "मेष", "सर्प", "श्वान", "मार्जार", "मूषक", "गौ", "महिष", "व्याघ्र", "मृग", "वानर", "नकुल", "सिंह"],
             Gan: ["देव", "मनुष्य", "राक्षस"],
             Naadi: ["आद्य (वात)", "मध्य (पित्त)", "अन्त्य (कफ)"],
             Varna: ["ब्राह्मण", "क्षत्रिय", "वैश्य", "शूद्र"],
             Tithi: ["प्रतिपदा", "द्वितीया", "तृतीया", "चतुर्थी", "पंचमी", "षष्ठी", "सप्तमी", "अष्टमी", "नवमी", "दशमी", "एकादशी", "द्वादशी", "त्रयोदशी", "चतुर्दशी", "पौर्णिमा", "अमावास्या"].flatMap(t=>[t+', शुक्ल', t+', कृष्ण']),
             NakshatraPada: [
-                ["अश्विनी", ["चू", "चे", "चो", "ला"]], ["भरणी", ["ली", "लू", "ले", "लो"]], ["कृत्तिका", ["अ", "ई", "ऊ", "ए"]],
+                ["अश्विनी", ["चू", "चे", "चo", "ला"]], ["भरणी", ["ली", "लू", "ले", "लो"]], ["कृत्तिका", ["अ", "ई", "ऊ", "ए"]],
                 ["रोहिणी", ["ओ", "वा", "वी", "वू"]], ["मृगशीर्ष", ["वे", "वो", "का", "की"]], ["आर्द्रा", ["कू", "घ", "ङ", "छ"]],
                 ["पुनर्वसु", ["के", "को", "हा", "ही"]], ["पुष्य", ["हू", "हे", "हो", "डा"]], ["आश्लेषा", ["डी", "डू", "डे", "डो"]],
                 ["मघा", ["मा", "मी", "मू", "मे"]], ["पूर्वा फाल्गुनी", ["मो", "टा", "टी", "टू"]], ["उत्तरा फाल्गुनी", ["टे", "टो", "पा", "पी"]],
@@ -804,17 +814,25 @@
                 const val = e.target.value;
                 document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
                 
-                // --- AUTO NAKSHATRA SWAMI & NAAM AKSHAR LOGIC ---
+                // --- AUTO NAKSHATRA SWAMI, PAYA & NAAM AKSHAR LOGIC ---
                 if(e.target.dataset.control === 'NakshatraPada') {
                     // Update Naam Akshar
                     const match = val.match(/\(([^)]+)\)/);
                     if (match && match[1]) document.getElementById('naamAksharDisplay').textContent = match[1] + "..";
                     
-                    // Extract base Nakshatra and Update Swami
+                    // Extract base Nakshatra
                     const baseNakshatra = val.split(',')[0].trim();
+                    
+                    // Update Swami
                     const mappedNakshatraSwami = nakshatraSwamiMap[baseNakshatra];
                     if (mappedNakshatraSwami) {
                         document.querySelectorAll(`[data-bind="NakshatraSwami"]`).forEach(el => el.textContent = mappedNakshatraSwami);
+                    }
+
+                    // Update Paya
+                    const mappedNakshatraPaya = nakshatraPayaMap[baseNakshatra];
+                    if (mappedNakshatraPaya) {
+                        document.querySelectorAll(`[data-bind="NakshtraPaya"]`).forEach(el => el.textContent = mappedNakshatraPaya);
                     }
                 }
                 
@@ -988,7 +1006,7 @@
                 mantras: []
             };
 
-            // Grab all standard dropdowns and inputs (RashiSwami and NakshatraSwami are excluded naturally now)
+            // Grab all standard dropdowns and inputs (RashiSwami, NakshatraSwami, and NakshtraPaya are excluded naturally now)
             document.querySelectorAll('[data-control]').forEach(el => {
                 data.dynamicControls[el.dataset.control] = el.value;
             });
