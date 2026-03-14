@@ -207,6 +207,17 @@
         </div>
 
         <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">पंचांग तपशील</h2>
+        
+        <div class="form-group">
+            <label>नक्षत्र पाया (Nakshatra Paya)</label>
+            <select data-control="NakshtraPaya">
+                <option value="सुवर्ण">सुवर्ण</option>
+                <option value="रजत">रजत</option>
+                <option value="ताम्र">ताम्र</option>
+                <option value="लोह">लोह</option>
+            </select>
+        </div>
+        
         <div style="display: flex; gap: 10px; margin-bottom: 15px;">
             <div class="form-group" style="margin-bottom: 0; flex: 1.2;">
                 <label>वार</label>
@@ -495,16 +506,6 @@
             "अनुराधा": "शनि", "ज्येष्ठा": "बुध", "मूळ": "केतु", "पूर्वाषाढा": "शुक्र",
             "उत्तराषाढा": "सूर्य", "श्रवण": "चन्द्र", "धनिष्ठा": "मंगळ", "शततारका": "राहू",
             "पूर्वा भाद्रपदा": "गुरु", "उत्तरा भाद्रपदा": "शनि", "रेवती": "बुध"
-        };
-
-        const nakshatraPayaMap = {
-            "अश्विनी": "सुवर्ण", "भरणी": "रजत", "कृत्तिका": "ताम्र", "रोहिणी": "लोह",
-            "मृगशीर्ष": "सुवर्ण", "आर्द्रा": "रजत", "पुनर्वसु": "ताम्र", "पुष्य": "लोह",
-            "आश्लेषा": "सुवर्ण", "मघा": "रजत", "पूर्वा फाल्गुनी": "ताम्र", "उत्तरा फाल्गुनी": "लोह",
-            "हस्त": "सुवर्ण", "चित्रा": "रजत", "स्वाती": "ताम्र", "विशाखा": "लोह",
-            "अनुराधा": "सुवर्ण", "ज्येष्ठा": "रजत", "मूळ": "ताम्र", "पूर्वाषाढा": "लोह",
-            "उत्तराषाढा": "सुवर्ण", "श्रवण": "रजत", "धनिष्ठा": "ताम्र", "शततारका": "लोह",
-            "पूर्वा भाद्रपदा": "सुवर्ण", "उत्तरा भाद्रपदा": "रजत", "रेवती": "ताम्र"
         };
 
         const nakshatraYoniMap = {
@@ -826,9 +827,6 @@
                         // Auto-Sync Bhogya Graha
                         document.getElementById('bhogyaPlanetDisplay').textContent = mappedNakshatraSwami;
                     }
-
-                    const mappedNakshatraPaya = nakshatraPayaMap[baseNakshatra];
-                    if (mappedNakshatraPaya) document.querySelectorAll(`[data-bind="NakshtraPaya"]`).forEach(el => el.textContent = mappedNakshatraPaya);
 
                     const mappedYoni = nakshatraYoniMap[baseNakshatra];
                     if (mappedYoni) document.querySelectorAll(`[data-bind="Yoni"]`).forEach(el => el.textContent = mappedYoni);
