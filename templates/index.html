@@ -29,10 +29,6 @@
         .form-group input[type="time"]::-webkit-calendar-picker-indicator, .form-group input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 
         .print-btn { margin-top: 15px; margin-bottom: 20px; background-color: #F47A20; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; width: 100%; }
-        
-        .btn-add { background-color: #28a745; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 5px; }
-        .btn-undo { background-color: #ffc107; color: #212529; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 5px; }
-        .btn-clear { background-color: #dc3545; color: white; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 20px; }
 
         /* --- SIMPLE CHECKLIST STYLES --- */
         .checkbox-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px; }
@@ -41,7 +37,6 @@
 
         /* --- WORKSPACE & GLOBAL PAGE STYLES --- */
         .main-workspace { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 40px;}
-        /* Updated page-container to flex column to push footer to bottom if content is short */
         .page-container { width: 850px; background: white; padding: 30px 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; flex-shrink: 0; display: flex; flex-direction: column; }
         
         /* --- PROPER HEADER STYLES --- */
@@ -103,6 +98,11 @@
         .dasha-row td { padding: 8px 12px; font-size: 15px; }
         .dasha-row td:first-child { font-weight: bold; color: var(--accent-green); width: 30%; border-right: 1px solid #eaedf0; background: #fafbfc;}
         .dasha-row td:last-child { text-align: center; color: var(--text-dark); font-weight: 600; }
+
+        /* Editable Dasha Cell Styles */
+        .editable-date { cursor: text; outline: none; transition: background 0.2s, box-shadow 0.2s; border-radius: 4px; padding: 4px 8px; margin: -4px -8px; }
+        .editable-date:hover { background-color: #f8f9fa; box-shadow: inset 0 0 0 1px #e2e8f0; }
+        .editable-date:focus { background-color: #f0f8ff; box-shadow: inset 0 0 0 2px var(--primary-blue); }
         
         .ratna-box { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 15px; box-sizing: border-box; background: #fffdf5; border: 2px dashed #f1c40f;}
 
@@ -171,6 +171,7 @@
             .detail-table td:first-child { text-align: right !important; }
             #page2Grid { grid-template-columns: 1fr 1fr !important; display: grid !important; }
             .editable-textarea:empty:before { content: ""; }
+            .editable-date { box-shadow: none !important; background: transparent !important; padding: 0 !important; margin: 0 !important; }
         }
     </style>
 </head>
@@ -187,16 +188,16 @@
             <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>रेखांश (Lon)</label><input type="number" step="0.01" id="clientLonInput" value="77.75"></div>
         </div>
 
-        <div class="form-group"><label>जन्म तारीख</label><input type="date" id="clientDateInput" value="1998-04-25"></div>
+        <div class="form-group"><label>जन्म तारीख (DOB)</label><input type="date" id="clientDateInput" value="2003-08-14"></div>
         <div class="form-group"><label>जन्म वेळ</label><input type="time" id="clientTimeInput" value="09:09"></div>
 
         <div class="form-group" style="margin-bottom: 8px;">
             <label>दशा भोग्य काळ (वर्षे, महिने, दिवस)</label>
         </div>
         <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>y</label><input type="number" id="bhogyaYInput" value="10" min="0"></div>
-            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>m</label><input type="number" id="bhogyaMInput" value="3" min="0"></div>
-            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>d</label><input type="number" id="bhogyaDInput" value="13" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>y</label><input type="number" id="bhogyaYInput" value="12" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>m</label><input type="number" id="bhogyaMInput" value="5" min="0"></div>
+            <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>d</label><input type="number" id="bhogyaDInput" value="2" min="0"></div>
         </div>
         
         <div class="form-group" style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #455A64;">
@@ -246,22 +247,6 @@
 
         <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">राशी रत्न (Gemstone)</h2>
         <div id="ratnaControl"></div>
-
-        <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">महादशा (Page 2)</h2>
-        <div class="form-group">
-            <label>ग्रह (Planet)</label>
-            <select id="dashaPlanetInput">
-                <option value="सूर्य">सूर्य</option><option value="चन्द्र">चन्द्र</option><option value="मंगल">मंगल</option>
-                <option value="बुध" selected>बुध</option><option value="गुरु">गुरु</option><option value="शुक्र">शुक्र</option>
-                <option value="शनि">शनि</option><option value="राहू">राहू</option><option value="केतु">केतु</option>
-            </select>
-        </div>
-        <div class="form-group"><label>सुरुवात (Start Date)</label><input type="date" id="dashaStartInput"></div>
-        <div class="form-group"><label>शेवट (End Date)</label><input type="date" id="dashaEndInput"></div>
-        
-        <button class="btn-add" onclick="addDashaRow()">+ जोडा (Add Dasha)</button>
-        <button class="btn-undo" onclick="removeLastDashaRow()">- शेवटची ओळ काढा</button>
-        <button class="btn-clear" onclick="clearDashaRows()">सर्व काढा</button>
 
         <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">शांती पूजन</h2>
         <div class="checkbox-list" id="poojaChecklist">
@@ -316,7 +301,7 @@
                 </div>
                 <div class="summary-item summary-center">
                     <h3>नाम <span id="naamAksharDisplay">दो..</span></h3>
-                    <p>दशा भोग्य <span id="bhogyaPlanetDisplay">बुध</span> <span id="bhogyaYDisplay">10</span>y <span id="bhogyaMDisplay">3</span>m <span id="bhogyaDDisplay">13</span>d</p>
+                    <p>दशा भोग्य <span id="bhogyaPlanetDisplay">गुरु</span> <span id="bhogyaYDisplay">12</span>y <span id="bhogyaMDisplay">5</span>m <span id="bhogyaDDisplay">2</span>d</p>
                 </div>
                 <div class="summary-item">
                     <span id="mangalDoshDisplay" class="mangal-dosh" style="color: var(--text-dark);">मंगळ दोष नाही</span>
@@ -327,7 +312,7 @@
                 <div class="box detail-card">
                     <table class="detail-table">
                         <tr><td>राशि स्वामी</td><td data-bind="RashiSwami">गुरु</td></tr>
-                        <tr><td>नक्षत्र स्वामी</td><td data-bind="NakshatraSwami">बुध</td></tr>
+                        <tr><td>नक्षत्र स्वामी</td><td data-bind="NakshatraSwami">गुरु</td></tr>
                         <tr><td>नक्षत्र पाया</td><td data-bind="NakshtraPaya">सुवर्ण</td></tr>
                         <tr><td>योनि</td><td data-bind="Yoni">गज</td></tr>
                         <tr><td>गण</td><td data-bind="Gan">देव</td></tr>
@@ -338,7 +323,7 @@
                 <div class="box detail-card">
                     <table class="detail-table">
                         <tr><td>तिथि</td><td data-bind="Tithi">चतुर्दशी, कृष्ण</td></tr>
-                        <tr><td>नक्षत्र, पद</td><td data-bind="NakshatraPada">रेवती 2 दो</td></tr>
+                        <tr><td>नक्षत्र, पद</td><td data-bind="NakshatraPada">पुनर्वसु, पद 1 (के)</td></tr>
                         <tr><td>योग</td><td data-bind="Yog">विष्कुम्भ</td></tr>
                         <tr><td>करण</td><td data-bind="Karan">विष्टि भद्र</td></tr>
                         <tr><td>इष्टकाल</td><td><span id="ishtYDisplay">08</span>:<span id="ishtMDisplay">07</span>:<span id="ishtDDisplay">05</span></td></tr>
@@ -368,7 +353,7 @@
                         <tr><th>ग्रह</th><th>राशि निरायण</th><th>अंश, कला</th></tr>
                         <tr><td><span class="planet-dot dot-sun"></span> सूर्य<span class="planet-suffix" data-suffix="सूर्य"></span></td><td data-bind="Rashi_सूर्य">♈ मेष</td><td data-bind="Deg_सूर्य">00° 00'</td></tr>
                         <tr><td><span class="planet-dot dot-moon"></span> चन्द्र<span class="planet-suffix" data-suffix="चन्द्र"></span></td><td data-bind="Rashi_चन्द्र">♓ मीन</td><td data-bind="Deg_चन्द्र">00° 00'</td></tr>
-                        <tr><td><span class="planet-dot dot-mars"></span> मंगल<span class="planet-suffix" data-suffix="मंगल"></span></td><td data-bind="Rashi_मंगल">♈ मेष</td><td data-bind="Deg_मंगल">00° 00'</td></tr>
+                        <tr><td><span class="planet-dot dot-mars"></span> मंगळ<span class="planet-suffix" data-suffix="मंगळ"></span></td><td data-bind="Rashi_मंगळ">♈ मेष</td><td data-bind="Deg_मंगळ">00° 00'</td></tr>
                         <tr><td><span class="planet-dot dot-merc"></span> बुध<span class="planet-suffix" data-suffix="बुध"></span></td><td data-bind="Rashi_बुध">♓ मीन</td><td data-bind="Deg_बुध">00° 00'</td></tr>
                         <tr><td><span class="planet-dot dot-jup"></span> गुरु<span class="planet-suffix" data-suffix="गुरु"></span></td><td data-bind="Rashi_गुरु">♒ कुम्भ</td><td data-bind="Deg_गुरु">00° 00'</td></tr>
                         <tr><td><span class="planet-dot dot-ven"></span> शुक्र<span class="planet-suffix" data-suffix="शुक्र"></span></td><td data-bind="Rashi_शुक्र">♒ कुम्भ</td><td data-bind="Deg_शुक्र">00° 00'</td></tr>
@@ -408,7 +393,8 @@
                 <div class="box" style="padding: 0; overflow: hidden;">
                     <h3 class="page-2-header">विंशोत्तरी महादशा</h3>
                     <table style="width: 100%; border-collapse: collapse;">
-                        <tbody id="dashaTableBody"></tbody>
+                        <tbody id="dashaTableBody">
+                            </tbody>
                     </table>
                 </div>
 
@@ -478,32 +464,39 @@
             return str.replace(/[०-९]/g, m => map[m]);
         };
 
-        // --- Auto Rashi Swami Mapping Data ---
+        // --- Custom Marathi Date Formatter (matches specific standard of "16 जाने, 2016") ---
+        const mrMonths = ["जाने", "फेब", "मार्च", "एप्रि", "मे", "जून", "जुलै", "ऑग", "सप्टें", "ऑक्टो", "नोव्हें", "डिसें"];
+        function formatDashaDate(dateObj) {
+            if(!dateObj || isNaN(dateObj)) return "";
+            let d = dateObj.getDate();
+            let m = mrMonths[dateObj.getMonth()];
+            let y = dateObj.getFullYear();
+            return `${d} ${m}, ${y}`;
+        }
+
+        // --- Standardized Planet Names mapping ---
         const rashiSwamiMap = {
-            "मेष": "मंगळ", "वृषभ": "शुक्र", "मिथुन": "बुध", "कर्क": "चंद्र",
+            "मेष": "मंगळ", "वृषभ": "शुक्र", "मिथुन": "बुध", "कर्क": "चन्द्र",
             "सिंह": "सूर्य", "कन्या": "बुध", "तुला": "शुक्र", "वृश्चिक": "मंगळ",
             "धनु": "गुरु", "मकर": "शनि", "कुंभ": "शनि", "मीन": "गुरु"
         };
 
-        // --- Auto Varna Mapping Data ---
         const rashiVarnaMap = {
             "मेष": "क्षत्रिय", "वृषभ": "वैश्य", "मिथुन": "शूद्र", "कर्क": "ब्राह्मण",
             "सिंह": "क्षत्रिय", "कन्या": "वैश्य", "तुला": "शूद्र", "वृश्चिक": "ब्राह्मण",
             "धनु": "क्षत्रिय", "मकर": "वैश्य", "कुंभ": "शूद्र", "मीन": "ब्राह्मण"
         };
 
-        // --- Auto Nakshatra Swami Mapping Data ---
         const nakshatraSwamiMap = {
-            "अश्विनी": "केतु", "भरणी": "शुक्र", "कृत्तिका": "सूर्य", "रोहिणी": "चंद्र",
+            "अश्विनी": "केतु", "भरणी": "शुक्र", "कृत्तिका": "सूर्य", "रोहिणी": "चन्द्र",
             "मृगशीर्ष": "मंगळ", "आर्द्रा": "राहू", "पुनर्वसु": "गुरु", "पुष्य": "शनि",
             "आश्लेषा": "बुध", "मघा": "केतु", "पूर्वा फाल्गुनी": "शुक्र", "उत्तरा फाल्गुनी": "सूर्य",
-            "हस्त": "चंद्र", "चित्रा": "मंगळ", "स्वाती": "राहू", "विशाखा": "गुरु",
+            "हस्त": "चन्द्र", "चित्रा": "मंगळ", "स्वाती": "राहू", "विशाखा": "गुरु",
             "अनुराधा": "शनि", "ज्येष्ठा": "बुध", "मूळ": "केतु", "पूर्वाषाढा": "शुक्र",
-            "उत्तराषाढा": "सूर्य", "श्रवण": "चंद्र", "धनिष्ठा": "मंगळ", "शततारका": "राहू",
+            "उत्तराषाढा": "सूर्य", "श्रवण": "चन्द्र", "धनिष्ठा": "मंगळ", "शततारका": "राहू",
             "पूर्वा भाद्रपदा": "गुरु", "उत्तरा भाद्रपदा": "शनि", "रेवती": "बुध"
         };
 
-        // --- Auto Nakshatra Paya Mapping Data ---
         const nakshatraPayaMap = {
             "अश्विनी": "सुवर्ण", "भरणी": "रजत", "कृत्तिका": "ताम्र", "रोहिणी": "लोह",
             "मृगशीर्ष": "सुवर्ण", "आर्द्रा": "रजत", "पुनर्वसु": "ताम्र", "पुष्य": "लोह",
@@ -514,7 +507,6 @@
             "पूर्वा भाद्रपदा": "सुवर्ण", "उत्तरा भाद्रपदा": "रजत", "रेवती": "ताम्र"
         };
 
-        // --- Auto Yoni Mapping Data ---
         const nakshatraYoniMap = {
             "अश्विनी": "अश्व", "भरणी": "गज", "कृत्तिका": "मेष", "रोहिणी": "सर्प",
             "मृगशीर्ष": "सर्प", "आर्द्रा": "श्वान", "पुनर्वसु": "मार्जार", "पुष्य": "मेष",
@@ -525,7 +517,6 @@
             "पूर्वा भाद्रपदा": "सिंह", "उत्तरा भाद्रपदा": "गौ", "रेवती": "गज"
         };
 
-        // --- Auto Gana Mapping Data ---
         const nakshatraGanMap = {
             "अश्विनी": "देव", "भरणी": "मनुष्य", "कृत्तिका": "राक्षस", "रोहिणी": "मनुष्य",
             "मृगशीर्ष": "देव", "आर्द्रा": "मनुष्य", "पुनर्वसु": "देव", "पुष्य": "देव",
@@ -536,7 +527,6 @@
             "पूर्वा भाद्रपदा": "मनुष्य", "उत्तरा भाद्रपदा": "मनुष्य", "रेवती": "देव"
         };
 
-        // --- Auto Naadi Mapping Data ---
         const nakshatraNaadiMap = {
             "अश्विनी": "आद्य (वात)", "आर्द्रा": "आद्य (वात)", "पुनर्वसु": "आद्य (वात)", "उत्तरा फाल्गुनी": "आद्य (वात)",
             "हस्त": "आद्य (वात)", "ज्येष्ठा": "आद्य (वात)", "मूळ": "आद्य (वात)", "शततारका": "आद्य (वात)", "पूर्वा भाद्रपदा": "आद्य (वात)",
@@ -546,11 +536,19 @@
             "स्वाती": "अन्त्य (कफ)", "विशाखा": "अन्त्य (कफ)", "उत्तराषाढा": "अन्त्य (कफ)", "श्रवण": "अन्त्य (कफ)", "रेवती": "अन्त्य (कफ)"
         };
 
+        // --- Vimshottari Mahadasha Data Sequence ---
+        const dashaSequence = ["केतु", "शुक्र", "सूर्य", "चन्द्र", "मंगळ", "राहू", "गुरु", "शनि", "बुध"];
+
+        const dashaDurations = {
+            "केतु": 7, "शुक्र": 20, "सूर्य": 6, "चन्द्र": 10, "मंगळ": 7,
+            "राहू": 18, "गुरु": 16, "शनि": 19, "बुध": 17
+        };
+
         // --- Core Application Data ---
         const rashiMap = {"मेष": 1, "वृषभ": 2, "मिथुन": 3, "कर्क": 4, "सिंह": 5, "कन्या": 6, "तुला": 7, "वृश्चिक": 8, "धनु": 9, "मकर": 10, "कुंभ": 11, "मीन": 12};
         const rashiSymbols = ["♈ मेष", "♉ वृषभ", "♊ मिथुन", "♋ कर्क", "♌ सिंह", "♍ कन्या", "♎ तुला", "♏ वृश्चिक", "♐ धनु", "♑ मकर", "♒ कुंभ", "♓ मीन"];
         const planetsList = [
-            { id: "सूर्य", default: "♈ मेष" }, { id: "चन्द्र", default: "♓ मीन" }, { id: "मंगल", default: "♈ मेष" },
+            { id: "सूर्य", default: "♈ मेष" }, { id: "चन्द्र", default: "♓ मीन" }, { id: "मंगळ", default: "♈ मेष" },
             { id: "बुध", default: "♓ मीन" }, { id: "गुरु", default: "♒ कुम्भ" }, { id: "शुक्र", default: "♒ कुम्भ" },
             { id: "शनि", default: "♈ मेष" }, { id: "राहू", default: "♌ सिंह" }, { id: "केतु", default: "♒ कुम्भ" },
             { id: "अरुण", default: "♒ कुम्भ" }, { id: "वरुण", default: "♑ मकर" }, { id: "यम", default: "♐ धनु" }
@@ -566,7 +564,6 @@
             const lagnaSelect = document.querySelector('[data-control="Lagna"]');
             if(!lagnaSelect) return;
             
-            // 1. Update House Numbers based on Lagna
             let lagnaNum = rashiMap[lagnaSelect.value];
             const numElements = document.querySelectorAll('.chart-num');
             numElements.forEach((el, index) => {
@@ -575,19 +572,15 @@
                 el.textContent = num;
             });
 
-            // 2. Gather Planets based on Rashi & Calculate House
             let houses = { 1:[], 2:[], 3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[], 10:[], 11:[], 12:[] };
-            
-            // Always put 'लग्न' at the top of house 1
             houses[1].push('लग्न');
 
             planetsList.forEach(p => {
                 const rashiSelect = document.querySelector(`[data-control="Rashi_${p.id}"]`);
                 if(!rashiSelect) return;
                 
-                // Extract pure Rashi name without the Symbol (e.g., "♈ मेष" -> "मेष")
                 let pureRashiName = rashiSelect.value.split(" ")[1] || rashiSelect.value;
-                if(pureRashiName === "कुम्भ") pureRashiName = "कुंभ"; // Standardize spelling
+                if(pureRashiName === "कुम्भ") pureRashiName = "कुंभ"; 
                 
                 const rashiNum = rashiMap[pureRashiName];
                 if(!rashiNum) return;
@@ -603,26 +596,19 @@
                 houses[houseNum].push(p.id + suffix);
             });
 
-            // 3. Render Planet Text Elements inside the SVG
             const container = document.getElementById('chart-planets-container');
-            container.innerHTML = ""; // Clear existing planets
+            container.innerHTML = ""; 
             
             for(let h=1; h<=12; h++) {
                 if(houses[h].length > 0) {
-                    
-                    // Smart Scaling Logic for crowded houses
                     let itemsPerLine = 2;
                     let fontSize = 13;
                     let lineHeight = 14;
 
                     if (houses[h].length > 8) {
-                        itemsPerLine = 3;
-                        fontSize = 9;
-                        lineHeight = 11;
+                        itemsPerLine = 3; fontSize = 9; lineHeight = 11;
                     } else if (houses[h].length > 4) {
-                        itemsPerLine = 3;
-                        fontSize = 11;
-                        lineHeight = 13;
+                        itemsPerLine = 3; fontSize = 11; lineHeight = 13;
                     }
 
                     let lines = [];
@@ -642,17 +628,16 @@
                     lines.forEach((line, index) => {
                         let tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
                         tspan.setAttribute("x", houseCoords[h].x);
-                        if(index > 0) tspan.setAttribute("dy", lineHeight); // Line spacing
+                        if(index > 0) tspan.setAttribute("dy", lineHeight); 
                         tspan.textContent = line;
                         textEl.appendChild(tspan);
                     });
-                    
                     container.appendChild(textEl);
                 }
             }
         }
 
-        // --- 1. Header & Basic Info Binding ---
+        // --- Basic Info Binding ---
         document.getElementById('clientNameInput').addEventListener('input', e => {
             const val = e.target.value || '______________';
             document.querySelectorAll('.client-name-bind').forEach(el => el.textContent = val);
@@ -682,7 +667,6 @@
         document.getElementById('clientTimeInput').addEventListener('input', updateDateTime);
         updateDateTime();
 
-        // --- Dasha Bhogya & Mangal Dosh Logic ---
         document.getElementById('bhogyaYInput').addEventListener('input', e => document.getElementById('bhogyaYDisplay').textContent = e.target.value || '0');
         document.getElementById('bhogyaMInput').addEventListener('input', e => document.getElementById('bhogyaMDisplay').textContent = e.target.value || '0');
         document.getElementById('bhogyaDInput').addEventListener('input', e => document.getElementById('bhogyaDDisplay').textContent = e.target.value || '0');
@@ -698,7 +682,6 @@
             }
         });
 
-        // --- NEW: Ishtakaal Manual Entry Event Listeners ---
         const updateIshtakaal = () => {
             const yInput = document.getElementById('ishtYInput').value;
             const mInput = document.getElementById('ishtMInput').value;
@@ -717,11 +700,10 @@
         document.getElementById('ishtDInput').addEventListener('input', updateIshtakaal);
         updateIshtakaal();
 
-        // --- 2. Dynamic Controls Generator ---
+        // --- Setup UI ---
         const jyotishData = {
             Lagna: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
             Rashi: ["मेष", "वृषभ", "मिथुन", "कर्क", "सिंह", "कन्या", "तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"],
-            // REMOVED RashiSwami, Varna, NakshatraSwami, NakshtraPaya, Yoni, Gan, Naadi from manual controls here
             Tithi: ["प्रतिपदा", "द्वितीया", "तृतीया", "चतुर्थी", "पंचमी", "षष्ठी", "सप्तमी", "अष्टमी", "नवमी", "दशमी", "एकादशी", "द्वादशी", "त्रयोदशी", "चतुर्दशी", "पौर्णिमा", "अमावास्या"].flatMap(t=>[t+', शुक्ल', t+', कृष्ण']),
             NakshatraPada: [
                 ["अश्विनी", ["चू", "चे", "चो", "ला"]], ["भरणी", ["ली", "लू", "ले", "लो"]], ["कृत्तिका", ["अ", "ई", "ऊ", "ए"]],
@@ -757,7 +739,7 @@
 
         const mantraData = {
             "सूर्य": { name: "☀️ सूर्य", mantra: "ॐ ह्रां ह्रीं ह्रौं सः सूर्याय नमः", count: "28,000" },
-            "चंद्र": { name: "🌙 चंद्र", mantra: "ॐ श्रां श्रीं श्रौं सः चन्द्राय नमः", count: "44,000" },
+            "चन्द्र": { name: "🌙 चन्द्र", mantra: "ॐ श्रां श्रीं श्रौं सः चन्द्राय नमः", count: "44,000" },
             "मंगळ": { name: "♂️ मंगळ", mantra: "ॐ क्रां क्रीं क्रौं सः भौमाय नमः", count: "40,000" },
             "बुध": { name: "☿️ बुध", mantra: "ॐ ब्रां ब्रीं ब्रौं सः बुधाय नमः", count: "36,000" },
             "गुरु": { name: "♃ गुरु", mantra: "ॐ ग्रां ग्रीं ग्रौं सः गुरवे नमः", count: "76,000" },
@@ -780,7 +762,6 @@
             container.insertAdjacentHTML('beforeend', `<div class="form-group"><label>${attrs.label}</label><input type="${attrs.type}" data-control="${key}" ${stepAttr} value="00:00${attrs.step ? ':00' : ''}"></div>`);
         }
         
-        // COMPACT PLANET & DEGREE GENERATOR WITH VAKRI/ASTA
         const planetContainer = document.getElementById('planetControls');
         planetContainer.insertAdjacentHTML('beforeend', '<h2 style="margin-top: 25px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">ग्रह स्थिती आणि अंश</h2>');
         planetContainer.insertAdjacentHTML('beforeend', `
@@ -793,25 +774,17 @@
         
         planetsList.forEach(p => {
             let html = `<div style="margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #3e4f5e;">`;
-            
-            // Row 1: Planet, Rashi Select, Degree Input
             html += `<div style="display: flex; gap: 8px; align-items: center; margin-bottom: 5px;">`;
             html += `<div style="width: 55px; font-size: 14px;">${p.id}</div>`;
-            
             html += `<select data-control="Rashi_${p.id}" style="flex: 1; padding: 6px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 14px;">`;
             rashiSymbols.forEach(opt => html += `<option value="${opt}" ${opt === p.default ? 'selected' : ''}>${opt}</option>`);
             html += `</select>`;
-            
             html += `<input type="text" data-control="Deg_${p.id}" value="00° 00'" placeholder="00° 00'" style="width: 65px; padding: 6px; border: 1px solid #455A64; border-radius: 4px; background-color: #34495E; color: white; font-size: 14px; text-align: center;">`;
             html += `</div>`;
-            
-            // Row 2: Vakri & Asta Checkboxes
             html += `<div style="display: flex; gap: 15px; margin-left: 63px;">`;
             html += `<label class="checkbox-item" style="font-size: 12px; margin:0;"><input type="checkbox" data-vakri="${p.id}"> वक्रि (*)</label>`;
             html += `<label class="checkbox-item" style="font-size: 12px; margin:0;"><input type="checkbox" data-asta="${p.id}"> अस्त (^)</label>`;
-            html += `</div>`;
-            
-            html += `</div>`;
+            html += `</div></div>`;
             planetContainer.insertAdjacentHTML('beforeend', html);
         });
 
@@ -837,154 +810,155 @@
 
         // Global Event Listeners
         document.body.addEventListener('input', (e) => {
-            // Text and Select inputs
             if(e.target.dataset.control) {
                 const val = e.target.value;
                 document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
                 
-                // --- AUTO NAKSHATRA SWAMI, PAYA, YONI, GANA, NAADI & NAAM AKSHAR LOGIC ---
                 if(e.target.dataset.control === 'NakshatraPada') {
-                    // Update Naam Akshar
                     const match = val.match(/\(([^)]+)\)/);
                     if (match && match[1]) document.getElementById('naamAksharDisplay').textContent = match[1] + "..";
                     
-                    // Extract base Nakshatra
                     const baseNakshatra = val.split(',')[0].trim();
                     
-                    // Update Swami (and sync Bhogya Planet)
                     const mappedNakshatraSwami = nakshatraSwamiMap[baseNakshatra];
                     if (mappedNakshatraSwami) {
                         document.querySelectorAll(`[data-bind="NakshatraSwami"]`).forEach(el => el.textContent = mappedNakshatraSwami);
-                        // Sync Bhogya Graha automatically
+                        // Auto-Sync Bhogya Graha
                         document.getElementById('bhogyaPlanetDisplay').textContent = mappedNakshatraSwami;
                     }
 
-                    // Update Paya
                     const mappedNakshatraPaya = nakshatraPayaMap[baseNakshatra];
-                    if (mappedNakshatraPaya) {
-                        document.querySelectorAll(`[data-bind="NakshtraPaya"]`).forEach(el => el.textContent = mappedNakshatraPaya);
-                    }
+                    if (mappedNakshatraPaya) document.querySelectorAll(`[data-bind="NakshtraPaya"]`).forEach(el => el.textContent = mappedNakshatraPaya);
 
-                    // Update Yoni
                     const mappedYoni = nakshatraYoniMap[baseNakshatra];
-                    if (mappedYoni) {
-                        document.querySelectorAll(`[data-bind="Yoni"]`).forEach(el => el.textContent = mappedYoni);
-                    }
+                    if (mappedYoni) document.querySelectorAll(`[data-bind="Yoni"]`).forEach(el => el.textContent = mappedYoni);
 
-                    // Update Gana
                     const mappedGan = nakshatraGanMap[baseNakshatra];
-                    if (mappedGan) {
-                        document.querySelectorAll(`[data-bind="Gan"]`).forEach(el => el.textContent = mappedGan);
-                    }
+                    if (mappedGan) document.querySelectorAll(`[data-bind="Gan"]`).forEach(el => el.textContent = mappedGan);
 
-                    // Update Naadi
                     const mappedNaadi = nakshatraNaadiMap[baseNakshatra];
-                    if (mappedNaadi) {
-                        document.querySelectorAll(`[data-bind="Naadi"]`).forEach(el => el.textContent = mappedNaadi);
-                    }
+                    if (mappedNaadi) document.querySelectorAll(`[data-bind="Naadi"]`).forEach(el => el.textContent = mappedNaadi);
                 }
                 
-                // --- AUTO RASHI SWAMI & VARNA LOGIC ---
                 if (e.target.dataset.control === 'Rashi') {
-                    // Update Rashi Swami
                     const mappedSwami = rashiSwamiMap[val];
-                    if (mappedSwami) {
-                        document.querySelectorAll(`[data-bind="RashiSwami"]`).forEach(el => el.textContent = mappedSwami);
-                    }
-                    
-                    // Update Varna
+                    if (mappedSwami) document.querySelectorAll(`[data-bind="RashiSwami"]`).forEach(el => el.textContent = mappedSwami);
                     const mappedVarna = rashiVarnaMap[val];
-                    if (mappedVarna) {
-                        document.querySelectorAll(`[data-bind="Varna"]`).forEach(el => el.textContent = mappedVarna);
-                    }
+                    if (mappedVarna) document.querySelectorAll(`[data-bind="Varna"]`).forEach(el => el.textContent = mappedVarna);
                 }
 
-                // Triggers the chart rotation on Lagna or Rashi changes
                 if(e.target.dataset.control === 'Lagna' || e.target.dataset.control.startsWith('Rashi_')) {
                     updateChart();
                 }
             }
+            
+            // Re-generate Dasha table ONLY when the specific dependencies change
+            // This prevents manual overrides from being erased when editing unrelated inputs
+            const dashaTriggers = ['clientDateInput', 'bhogyaYInput', 'bhogyaMInput', 'bhogyaDInput'];
+            if (dashaTriggers.includes(e.target.id) || e.target.dataset.control === 'NakshatraPada') {
+                updateDashaTable();
+            }
         });
 
-        // Global Change Listener specifically for Vakri/Asta checkboxes
         document.body.addEventListener('change', (e) => {
             if(e.target.dataset.vakri || e.target.dataset.asta) {
                 const pId = e.target.dataset.vakri || e.target.dataset.asta;
                 const isVakri = document.querySelector(`input[data-vakri="${pId}"]`).checked;
                 const isAsta = document.querySelector(`input[data-asta="${pId}"]`).checked;
-                
                 let suffix = "";
                 if(isVakri) suffix += "*";
                 if(isAsta) suffix += "^";
-                
                 document.querySelectorAll(`[data-suffix="${pId}"]`).forEach(el => el.textContent = suffix);
-                
-                // Trigger chart update so the * or ^ shows up in the SVG too!
                 updateChart();
             }
         });
 
+        // ---------------------------------------------------------
+        // --- 3. AUTO DASHA GENERATOR ENGINE ---
+        // ---------------------------------------------------------
+        function updateDashaTable() {
+            const dobInput = document.getElementById('clientDateInput').value;
+            const bhogyaPlanet = document.getElementById('bhogyaPlanetDisplay').textContent.trim();
+            const y = parseInt(document.getElementById('bhogyaYInput').value || 0);
+            const m = parseInt(document.getElementById('bhogyaMInput').value || 0);
+            const d = parseInt(document.getElementById('bhogyaDInput').value || 0);
+
+            const tbody = document.getElementById('dashaTableBody');
+            tbody.innerHTML = ""; // Clear existing
+
+            if (!dobInput || !bhogyaPlanet) return;
+
+            let startIndex = dashaSequence.indexOf(bhogyaPlanet);
+            if (startIndex === -1) return;
+
+            let dobDate = new Date(dobInput);
+            if (isNaN(dobDate)) return;
+
+            // 1. Calculate the exact End Date of the Bhogya (First Planet)
+            let bhogyaEndDate = new Date(dobDate);
+            bhogyaEndDate.setFullYear(bhogyaEndDate.getFullYear() + y);
+            bhogyaEndDate.setMonth(bhogyaEndDate.getMonth() + m);
+            bhogyaEndDate.setDate(bhogyaEndDate.getDate() + d);
+
+            // Get the timestamp in milliseconds
+            let currentTimestamp = bhogyaEndDate.getTime();
+
+            for (let i = 0; i < 9; i++) {
+                let planet = dashaSequence[(startIndex + i) % 9];
+                let startDateStr, endDateStr;
+
+                if (i === 0) {
+                    // First row: DOB to Bhogya End Date
+                    startDateStr = formatDashaDate(dobDate);
+                    endDateStr = formatDashaDate(new Date(currentTimestamp));
+                } else {
+                    // Subsequent rows: Start exactly where the last one ended
+                    startDateStr = formatDashaDate(new Date(currentTimestamp));
+
+                    // Astrological Math: Add exactly (duration * 365.25) days
+                    let durationYears = dashaDurations[planet];
+                    currentTimestamp += durationYears * 365.25 * 24 * 60 * 60 * 1000;
+                    
+                    endDateStr = formatDashaDate(new Date(currentTimestamp));
+                }
+
+                // Make the cell explicitly contenteditable so user can type on it
+                tbody.insertAdjacentHTML('beforeend', `
+                    <tr class="dasha-row">
+                        <td>${planet}</td>
+                        <td contenteditable="true" class="editable-date" data-dasha-planet="${planet}" spellcheck="false" title="येथे क्लिक करून तारखा बदलू शकता">${startDateStr} - ${endDateStr}</td>
+                    </tr>
+                `);
+            }
+        }
+        
         // Fire initial inputs to populate bindings & trigger rotation
         document.querySelectorAll('[data-control]').forEach(input => input.dispatchEvent(new Event('input', { bubbles: true })));
         
-        // Initial chart draw
+        // Initial renders
         updateChart();
+        updateDashaTable();
 
-        // --- 3. DASHA ROW GENERATOR ---
-        function formatDashaDate(dateString) {
-            if(!dateString) return "";
-            let formatted = new Intl.DateTimeFormat('mr-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(dateString));
-            return toEnglishDigits(formatted);
-        }
-
-        function addDashaRow() {
-            const planet = document.getElementById('dashaPlanetInput').value;
-            const startDate = document.getElementById('dashaStartInput').value;
-            const endDate = document.getElementById('dashaEndInput').value;
-            if(!startDate || !endDate) { alert("कृपया सुरुवात आणि शेवटची तारीख निवडा"); return; }
-
-            const tbody = document.getElementById('dashaTableBody');
-            tbody.insertAdjacentHTML('beforeend', `
-                <tr class="dasha-row">
-                    <td>${planet}</td>
-                    <td>${formatDashaDate(startDate)} - ${formatDashaDate(endDate)}</td>
-                </tr>
-            `);
-        }
-        function removeLastDashaRow() {
-            const tbody = document.getElementById('dashaTableBody');
-            if (tbody.lastElementChild) tbody.removeChild(tbody.lastElementChild);
-        }
-        function clearDashaRows() { document.getElementById('dashaTableBody').innerHTML = ""; }
-
-        // --- 4. POOJA CHECKLIST RENDERER ---
         function renderPoojaTable() {
             const poojaGrid = document.getElementById('poojaGrid');
             const poojaBox = document.getElementById('poojaBox');
             poojaGrid.innerHTML = "";
             const checkedBoxes = poojaChecklistContainer.querySelectorAll('input:checked');
-            
             if(checkedBoxes.length === 0) {
                 poojaBox.style.display = "none";
             } else {
                 poojaBox.style.display = "block";
                 checkedBoxes.forEach(cb => {
-                    poojaGrid.insertAdjacentHTML('beforeend', `
-                        <div style="font-size: 14px; font-weight: 600; color: var(--text-dark); padding: 4px 0; border-bottom: 1px dashed #D3D9DE;">
-                            ${cb.value}
-                        </div>
-                    `);
+                    poojaGrid.insertAdjacentHTML('beforeend', `<div style="font-size: 14px; font-weight: 600; color: var(--text-dark); padding: 4px 0; border-bottom: 1px dashed #D3D9DE;">${cb.value}</div>`);
                 });
             }
         }
 
-        // --- 5. MANTRA CHECKLIST RENDERER ---
         function renderMantraTable() {
             const tbody = document.getElementById('mantraTableBody');
             const mantraBox = document.getElementById('mantraBox');
             tbody.innerHTML = "";
             const checkedBoxes = mantraChecklistContainer.querySelectorAll('input:checked');
-
             if(checkedBoxes.length === 0) {
                 mantraBox.style.display = "none";
             } else {
@@ -1002,10 +976,8 @@
             }
         }
 
-        // --- 6. FALA SHRUTI BIDIRECTIONAL SYNC ---
         const falaSidebarInput = document.getElementById('falaShrutiSidebarInput');
         const falaDisplay = document.getElementById('falaShrutiDisplay');
-
         falaSidebarInput.addEventListener('input', (e) => { falaDisplay.innerText = e.target.value; });
         falaDisplay.addEventListener('input', (e) => { falaSidebarInput.value = e.target.innerText; });
 
@@ -1013,13 +985,9 @@
         // =========================================================
         // --- AUTO-SAVE AND LOAD ENGINE (DJANGO + GOOGLE SHEETS) ---
         // =========================================================
-
-        // 1. Get the Record ID from Django Template Context
-        // If it's a new form, this will be empty. If editing, it will have the ID.
         let currentRecordId = "{{ record_id|default_if_none:'' }}";
         let saveTimeout;
 
-        // Helper: Get CSRF token for secure Django POST requests
         function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -1035,14 +1003,19 @@
             return cookieValue;
         }
 
-        // 2. Gather every single input on the page into a JSON Object
         function gatherFormData() {
+            // Capture any manually edited dasha table rows
+            let dashaArr = [];
+            document.querySelectorAll('.editable-date').forEach(el => {
+                dashaArr.push({ planet: el.dataset.dashaPlanet, dates: el.innerText });
+            });
+
             const data = {
                 clientName: document.getElementById('clientNameInput').value,
                 clientPlace: document.getElementById('clientPlaceInput').value,
                 clientLat: document.getElementById('clientLatInput').value,
                 clientLon: document.getElementById('clientLonInput').value,
-                bhogyaPlanet: document.getElementById('bhogyaPlanetDisplay').textContent, // Reads from derived text
+                bhogyaPlanet: document.getElementById('bhogyaPlanetDisplay').textContent.trim(),
                 bhogyaY: document.getElementById('bhogyaYInput').value,
                 bhogyaM: document.getElementById('bhogyaMInput').value,
                 bhogyaD: document.getElementById('bhogyaDInput').value,
@@ -1056,46 +1029,27 @@
                 dynamicControls: {},
                 vakri: [],
                 asta: [],
-                dashas: [], // Note: Dasha logic is dynamic, so we just save the HTML rows
+                dashas: dashaArr, // Automatically stores your manual edits
                 poojas: [],
                 mantras: []
             };
 
-            // Grab all standard dropdowns and inputs (RashiSwami, Varna, NakshatraSwami, NakshtraPaya, Yoni, Gan, Naadi are excluded naturally now)
             document.querySelectorAll('[data-control]').forEach(el => {
                 data.dynamicControls[el.dataset.control] = el.value;
             });
 
-            // Grab Vakri/Asta checkboxes
             document.querySelectorAll('input[data-vakri]:checked').forEach(el => data.vakri.push(el.dataset.vakri));
             document.querySelectorAll('input[data-asta]:checked').forEach(el => data.asta.push(el.dataset.asta));
-
-            // Grab Poojas & Mantras
             document.querySelectorAll('#poojaChecklist input:checked').forEach(el => data.poojas.push(el.value));
             document.querySelectorAll('#mantraChecklist input:checked').forEach(el => data.mantras.push(el.value));
-
-            // Grab Dashas (We save the raw row data to rebuild it later)
-            document.querySelectorAll('#dashaTableBody .dasha-row').forEach(row => {
-                data.dashas.push({
-                    planet: row.cells[0].innerText,
-                    dates: row.cells[1].innerText
-                });
-            });
-
             return data;
         }
 
-        // 3. The Debouncer: Waits 2.5 seconds after typing stops, then saves
         function autoSave() {
             clearTimeout(saveTimeout);
-            
-            // Change document title to show it is saving (Optional UX)
             document.title = "Saving... | Jyotish Karyalay";
-
             saveTimeout = setTimeout(() => {
                 const formData = gatherFormData();
-                
-                // This is the structure expected by the Django view we wrote
                 const payload = {
                     record_id: currentRecordId,
                     client_name: formData.clientName || 'नवीन ग्राहक (New Client)',
@@ -1105,17 +1059,12 @@
 
                 fetch('/api/save/', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
                     body: JSON.stringify(payload)
                 })
                 .then(res => res.json())
                 .then(response => {
                     document.title = "Saved ✓ | Jyotish Karyalay";
-                    
-                    // If this was a NEW record, update the URL silently!
                     if (response.status === 'success' && !currentRecordId) {
                         currentRecordId = response.record_id;
                         window.history.pushState({}, '', `/editor/${currentRecordId}/`);
@@ -1125,16 +1074,12 @@
                     console.error("Auto-save failed", err);
                     document.title = "Save Failed ❌ | Jyotish Karyalay";
                 });
-                
-            }, 2500); // 2500 milliseconds = 2.5 seconds
+            }, 2500); 
         }
 
-        // 4. Trigger AutoSave whenever ANYTHING on the form changes
         document.body.addEventListener('input', autoSave);
         document.body.addEventListener('change', autoSave);
 
-
-        // 5. ON PAGE LOAD: If a record_id exists, fetch and populate the form
         window.addEventListener('DOMContentLoaded', () => {
             if (currentRecordId) {
                 fetch(`/api/load/${currentRecordId}/`)
@@ -1148,9 +1093,7 @@
             }
         });
 
-        // 6. The Populator: Restores the form state from JSON
         function populateFormData(data) {
-            // Restore basic inputs
             if(data.clientName) document.getElementById('clientNameInput').value = data.clientName;
             if(data.clientPlace) document.getElementById('clientPlaceInput').value = data.clientPlace;
             if(data.clientLat) document.getElementById('clientLatInput').value = data.clientLat;
@@ -1169,7 +1112,6 @@
                 document.getElementById('falaShrutiDisplay').innerText = data.falaShruti;
             }
 
-            // Restore dynamic selects
             if(data.dynamicControls) {
                 for (const [key, value] of Object.entries(data.dynamicControls)) {
                     const el = document.querySelector(`[data-control="${key}"]`);
@@ -1177,34 +1119,26 @@
                 }
             }
 
-            // Restore Checkboxes (Vakri/Asta/Poojas/Mantras)
             if(data.vakri) data.vakri.forEach(val => { const el = document.querySelector(`input[data-vakri="${val}"]`); if(el) el.checked = true; });
             if(data.asta) data.asta.forEach(val => { const el = document.querySelector(`input[data-asta="${val}"]`); if(el) el.checked = true; });
             if(data.poojas) data.poojas.forEach(val => { const el = document.querySelector(`#poojaChecklist input[value="${val}"]`); if(el) el.checked = true; });
             if(data.mantras) data.mantras.forEach(val => { const el = document.querySelector(`#mantraChecklist input[value="${val}"]`); if(el) el.checked = true; });
 
-            // Restore Dashas
-            const dashaBody = document.getElementById('dashaTableBody');
-            dashaBody.innerHTML = "";
-            if(data.dashas) {
-                data.dashas.forEach(d => {
-                    dashaBody.insertAdjacentHTML('beforeend', `
-                        <tr class="dasha-row">
-                            <td>${d.planet}</td>
-                            <td>${d.dates}</td>
-                        </tr>
-                    `);
-                });
-            }
-
-            // Finally, trigger the input events so bindings, charts, and tables update visually
+            // Generate inputs to bind basic values
             document.querySelectorAll('input, select').forEach(el => el.dispatchEvent(new Event('input', { bubbles: true })));
             document.querySelectorAll('input[type="checkbox"]').forEach(el => el.dispatchEvent(new Event('change', { bubbles: true })));
             
-            // Re-render manual tables
             renderPoojaTable();
             renderMantraTable();
             updateIshtakaal();
+
+            // Finally, inject manually saved custom dasha dates over the calculated ones
+            if (data.dashas && data.dashas.length > 0) {
+                data.dashas.forEach(d => {
+                    const cell = document.querySelector(`.editable-date[data-dasha-planet="${d.planet}"]`);
+                    if (cell) cell.innerText = d.dates;
+                });
+            }
         }
     </script>
 </body>
