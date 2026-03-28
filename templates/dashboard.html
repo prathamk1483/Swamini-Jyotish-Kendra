@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="mr">
 <head>
@@ -41,7 +42,7 @@
             align-items: center; 
             border-bottom: 2px solid var(--primary-blue); 
             padding-bottom: 20px; 
-            margin-bottom: 25px; 
+            margin-bottom: 20px; 
         }
         .header-title { 
             font-size: 28px; 
@@ -62,6 +63,28 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .btn-create:hover { background-color: #146c1c; }
+
+        /* --- SEARCH BAR --- */
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: #fafbfc;
+            font-family: inherit;
+            transition: all 0.2s ease-in-out;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(10, 46, 75, 0.1);
+        }
 
         /* --- TABLE --- */
         .record-table { 
@@ -129,6 +152,10 @@
             <a href="{% url 'new_kundali' %}" class="btn-create">+ Create New Kundali</a>
         </div>
 
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by Client Name (ग्राहकाचे नाव शोधा)...">
+        </div>
+
         <table class="record-table">
             <thead>
                 <tr>
@@ -149,42 +176,41 @@
     </div>
 
     <script>
+        // Array to hold all fetched records so we can filter them locally
+        let allRecords = [];
+
         document.addEventListener('DOMContentLoaded', function() {
             fetchRecords();
+
+            // Setup search listener
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                
+                if (!searchTerm) {
+                    renderTable(allRecords); // If search is empty, show all
+                    return;
+                }
+
+                // Filter records based on Client_Name matching the search term
+                const filteredRecords = allRecords.filter(record => {
+                    const clientName = record.Client_Name ? record.Client_Name.toLowerCase() : '';
+                    return clientName.includes(searchTerm);
+                });
+
+                renderTable(filteredRecords, searchTerm);
+            });
         });
 
         function fetchRecords() {
-            // Call the new API endpoint
             fetch('/api/loadAll/')
                 .then(response => response.json())
                 .then(data => {
-                    const tbody = document.getElementById('tableBody');
-                    tbody.innerHTML = ''; // Clear the loading message
-
                     if (data.status === 'success') {
-                        if (data.records.length === 0) {
-                            tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No clients found in the database. Click "Create New Kundali" to start.</td></tr>`;
-                            return;
-                        }
-
-                        // Loop through records and generate HTML rows
-                        data.records.forEach(record => {
-                            const statusClass = record.Status === 'Completed' ? 'status-completed' : 'status-draft';
-                            const statusText = record.Status || 'Draft';
-                            
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                <td><span class="client-name">${record.Client_Name}</span></td>
-                                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                                <td style="color: var(--text-muted); font-size: 14px;">${record.Last_Updated}</td>
-                                <td class="actions">
-                                    <a href="/editor/${record.Record_ID}/" class="btn-edit">Open / Edit</a>
-                                    <a href="/delete/${record.Record_ID}/" class="btn-delete" onclick="return confirm('Are you sure you want to delete this Kundali?');">Delete</a>
-                                </td>
-                            `;
-                            tbody.appendChild(tr);
-                        });
+                        allRecords = data.records || [];
+                        renderTable(allRecords);
                     } else {
+                        const tbody = document.getElementById('tableBody');
                         tbody.innerHTML = `<tr><td colspan="4" class="empty-state" style="color: #dc3545;">Error loading records: ${data.message}</td></tr>`;
                     }
                 })
@@ -192,6 +218,38 @@
                     console.error('Error:', error);
                     document.getElementById('tableBody').innerHTML = `<tr><td colspan="4" class="empty-state" style="color: #dc3545;">Network error occurred while fetching data.</td></tr>`;
                 });
+        }
+
+        // Function to render the table given an array of records
+        function renderTable(records, currentSearch = '') {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = ''; // Clear current rows
+
+            if (records.length === 0) {
+                if (currentSearch) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No clients found matching "<strong>${currentSearch}</strong>"</td></tr>`;
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No clients found in the database. Click "Create New Kundali" to start.</td></tr>`;
+                }
+                return;
+            }
+
+            records.forEach(record => {
+                const statusClass = record.Status === 'Completed' ? 'status-completed' : 'status-draft';
+                const statusText = record.Status || 'Draft';
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="client-name">${record.Client_Name || 'Unknown Client'}</span></td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td style="color: var(--text-muted); font-size: 14px;">${record.Last_Updated || '-'}</td>
+                    <td class="actions">
+                        <a href="/editor/${record.Record_ID}/" class="btn-edit">Open / Edit</a>
+                        <a href="/delete/${record.Record_ID}/" class="btn-delete" onclick="return confirm('Are you sure you want to delete this Kundali?');">Delete</a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
         }
     </script>
 </body>
