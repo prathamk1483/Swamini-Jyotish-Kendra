@@ -14,6 +14,7 @@
             --bg-color: #F8F9FA;
             --text-dark: #212529;
             --border-color: #D3D9DE;
+            --text-muted: #6C757D;
         }
 
         body { 
@@ -51,10 +52,15 @@
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
         }
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
         .btn-create { 
             background-color: var(--accent-green); 
             color: white; 
-            padding: 12px 20px; 
+            padding: 10px 20px; 
             text-decoration: none; 
             border-radius: 6px; 
             font-weight: 600; 
@@ -63,6 +69,23 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .btn-create:hover { background-color: #146c1c; }
+        
+        .btn-logout {
+            background-color: transparent;
+            color: var(--text-muted);
+            padding: 9px 18px;
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-logout:hover {
+            background-color: #fff5f5;
+            color: #dc3545;
+            border-color: #dc3545;
+        }
 
         /* --- SEARCH BAR --- */
         .search-container {
@@ -149,7 +172,10 @@
     <div class="dashboard-container">
         <div class="dashboard-header">
             <h1 class="header-title">Kundali Dashboard</h1>
-            <a href="{% url 'new_kundali' %}" class="btn-create">+ Create New Kundali</a>
+            <div class="header-actions">
+                <a href="{% url 'new_kundali' %}" class="btn-create">+ Create New Kundali</a>
+                <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+            </div>
         </div>
 
         <div class="search-container">

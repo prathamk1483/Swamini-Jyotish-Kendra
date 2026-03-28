@@ -7,8 +7,68 @@ from google.oauth2.service_account import Credentials
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from functools import wraps
 
-# --- 1. HELPER: CONNECT TO GOOGLE SHEETS SAFELY ---
+# --- 1. COMPLETELY MANUAL AUTH DECORATOR ---
+def manual_login_required(view_func):
+    """Protects views by checking for our custom signed cookie."""
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        # get_signed_cookie automatically verifies the cryptographic signature
+        is_auth = request.get_signed_cookie('jyotish_auth', default=False)
+        
+        if not is_auth:
+            return redirect('login')
+            
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+
+# --- 2. AUTH VIEWS (LOGIN / LOGOUT) ---
+def login_view(request):
+    # If they already have the valid cookie, send them to the dashboard (index)
+    if request.get_signed_cookie('jyotish_auth', default=False):
+        return redirect('/') 
+
+    error = False
+
+    if request.method == 'POST':
+        u = request.POST.get('username')
+        p = request.POST.get('password')
+
+        # Check against your environment variables in settings.py
+        # Fallback to 'admin'/'admin' if not set in settings just to prevent crashes
+        valid_user = getattr(settings, 'APP_USERNAME', 'admin')
+        valid_pass = getattr(settings, 'APP_PASSWORD', 'admin')
+
+        if u == valid_user and p == valid_pass:
+            
+            # Figure out where to redirect them
+            next_url = request.POST.get('next', '/')
+            response = redirect(next_url) 
+            
+            # Set the secure cookie! (Expires in 24 hours = 86400 seconds)
+            response.set_signed_cookie('jyotish_auth', 'authenticated', max_age=86400)
+            
+            return response
+        else:
+            error = True
+
+    return render(request, 'login.html', {'error': error})
+
+
+def logout_view(request):
+    # Prepare redirect back to login
+    response = redirect('login')
+    
+    # Destroy the cookie to log them out
+    response.delete_cookie('jyotish_auth')
+    
+    return response
+
+
+# --- 3. HELPER: CONNECT TO GOOGLE SHEETS SAFELY ---
 def get_worksheet():
     scopes = [
         "https://www.googleapis.com/auth/spreadsheets",
@@ -16,7 +76,6 @@ def get_worksheet():
     ]
     
     # Build the credential dictionary from environment variables
-    # We use .replace('\\n', '\n') because some env parsers escape the newline characters
     google_creds = {
         "type": "service_account",
         "project_id": os.environ.get("GOOGLE_PROJECT_ID"),
@@ -25,27 +84,28 @@ def get_worksheet():
         "token_uri": "https://oauth2.googleapis.com/token",
     }
     
-    # Use from_service_account_info instead of from_service_account_file
     creds = Credentials.from_service_account_info(google_creds, scopes=scopes)
     client = gspread.authorize(creds)
     return client.open("SwaminiJyotishKaryalayBackendData").sheet1
 
 
-# --- 2. PAGE VIEW: DASHBOARD ---
+# --- 4. PAGE VIEW: DASHBOARD ---
+@manual_login_required
 def index(request):
     # We no longer load data here because the frontend JavaScript fetches it via /api/loadAll/
-    # This makes the page load instantly!
     return render(request, 'dashboard.html')
 
 
-# --- 3. PAGE VIEW: KUNDALI EDITOR ---
+# --- 5. PAGE VIEW: KUNDALI EDITOR ---
+@manual_login_required
 def kundali_editor(request, record_id=None):
     # Renders the editor page. If record_id exists, JS will fetch the data.
     return render(request, 'index.html', {'record_id': record_id})
 
 
-# --- 4. API VIEW: SAVE / UPDATE DATA ---
+# --- 6. API VIEW: SAVE / UPDATE DATA ---
 @csrf_exempt
+@manual_login_required
 def api_save_kundali(request):
     if request.method == 'POST':
         try:
@@ -63,7 +123,6 @@ def api_save_kundali(request):
                 # Update existing record
                 try:
                     cell = ws.find(record_id, in_column=1)
-                    # Use standard gspread update syntax
                     ws.update(f'B{cell.row}:E{cell.row}', [[client_name, status, last_updated, form_json]])
                 except gspread.exceptions.CellNotFound:
                     ws.append_row([record_id, client_name, status, last_updated, form_json])
@@ -80,7 +139,8 @@ def api_save_kundali(request):
     return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=400)
 
 
-# --- 5. API VIEW: LOAD DATA ---
+# --- 7. API VIEW: LOAD DATA ---
+@manual_login_required
 def api_load_kundali(request, record_id):
     if request.method == 'GET':
         try:
@@ -101,8 +161,9 @@ def api_load_kundali(request, record_id):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 
-# --- 6. API VIEW: DELETE DATA ---
+# --- 8. API VIEW: DELETE DATA ---
 @csrf_exempt
+@manual_login_required
 def api_delete_kundali(request, record_id):
     try:
         ws = get_worksheet()
@@ -116,14 +177,14 @@ def api_delete_kundali(request, record_id):
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 
-# --- 7. API VIEW: LOAD ALL (BULLETPROOF METHOD) ---
+# --- 9. API VIEW: LOAD ALL (BULLETPROOF METHOD) ---
+@manual_login_required
 def api_load_all(request):
     if request.method == 'GET':
         try:
             ws = get_worksheet()
             
             # get_all_values() returns a raw List of Lists. 
-            # This completely ignores headers, so typos in row 1 won't break the app!
             all_rows = ws.get_all_values() 
             
             records = []
@@ -132,14 +193,14 @@ def api_load_all(request):
                 if not row or str(row[0]).strip() == '':
                     continue
                 
-                # Check if this row looks like a Header row (contains the word "Record") and skip it
+                # Check if this row looks like a Header row and skip it
                 if index == 0 and "record" in str(row[0]).lower():
                     continue
                 
                 # Pad the row with empty strings just in case some columns are blank
                 padded_row = row + [''] * (4 - len(row))
                 
-                # Manually map the columns to the dictionary keys the frontend expects
+                # Manually map the columns
                 records.append({
                     'Record_ID': padded_row[0],
                     'Client_Name': padded_row[1] if padded_row[1] else "Unknown",

@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jyotish Karyalay - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0A2E4B;
+            --accent-green: #187A22;
+            --accent-orange: #F47A20;
+            --bg-color: #F8F9FA;
+            --text-dark: #212529;
+            --text-muted: #6C757D;
+            --border-color: #D3D9DE;
+        }
+
+        body { 
+            font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif; 
+            background-color: #e9ecef; 
+            color: var(--text-dark); 
+            margin: 0; 
+            padding: 20px; 
+            display: flex; 
+            align-items: center;
+            justify-content: center; 
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .login-container {
+            background: white;
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        /* --- HEADER & LOGO --- */
+        .login-header {
+            margin-bottom: 30px;
+        }
+        .login-logo {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .login-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin: 0 0 5px 0;
+            line-height: 1.2;
+        }
+        .login-subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* --- FORM STYLES --- */
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: #fafbfc;
+            font-family: inherit;
+            color: var(--text-dark);
+            box-sizing: border-box;
+            transition: all 0.2s ease-in-out;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(10, 46, 75, 0.1);
+        }
+
+        /* Error message styling (if Django returns a login error) */
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border: 1px solid #f5c6cb;
+            text-align: left;
+        }
+
+        /* --- BUTTONS --- */
+        .btn-login {
+            background-color: var(--accent-orange);
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            font-family: inherit;
+            margin-top: 10px;
+        }
+        .btn-login:hover {
+            background-color: #e06912;
+        }
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        /* --- FOOTER --- */
+        .login-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .login-footer a {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .footer-logo {
+            height: 20px;
+            width: auto;
+        }
+        .orconix-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-header">
+            <img class="login-logo" src="{% static 'assets/Logos/SwaminiLogo.png' %}" alt="Swamini Logo">
+            <h1 class="login-title">स्वामिनी ज्योतिष कार्यालय</h1>
+            <p class="login-subtitle">कृपया सिस्टिम मध्ये प्रवेश करण्यासाठी लॉग इन करा</p>
+        </div>
+
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+            <div class="error-message">
+                युजरनेम किंवा पासवर्ड चुकीचा आहे. कृपया पुन्हा प्रयत्न करा.<br>
+                (Invalid username or password.)
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="id_username">युजरनेम (Username)</label>
+                <input type="text" name="username" id="id_username" class="form-control" placeholder="Enter your username" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="id_password">पासवर्ड (Password)</label>
+                <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="btn-login">लॉग इन करा</button>
+            
+            <input type="hidden" name="next" value="{{ next|default:'/' }}">
+        </form>
+
+        <div class="login-footer">
+            Made with ❤️ by 
+            <a href="https://orconix.vercel.app/" target="_blank">
+                <img src="{% static 'assets/Logos/OrconixLogo.png' %}" alt="Orconix Logo" class="footer-logo"> 
+                <span class="orconix-text">Orconix</span>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
