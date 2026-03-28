@@ -245,6 +245,29 @@
             </div>
         </div>
 
+        <div class="form-group" style="margin-bottom: 15px; padding-top: 5px;">
+            <label class="checkbox-item" style="font-size: 15px;">
+                <input type="checkbox" id="isAdhikCheckbox"> अधिक महिना आहे का?
+            </label>
+        </div>
+
+        <div class="form-group" id="adhikMonthContainer" style="display: none; margin-bottom: 15px;">
+            <label>अधिक महिना निवडा (Select Adhik Maas)</label>
+            <select id="adhikMonthSelect">
+                <option value="अधिक चैत्र">अधिक चैत्र</option>
+                <option value="अधिक वैशाख">अधिक वैशाख</option>
+                <option value="अधिक ज्येष्ठ">अधिक ज्येष्ठ</option>
+                <option value="अधिक आषाढ">अधिक आषाढ</option>
+                <option value="अधिक श्रावण" selected>अधिक श्रावण</option>
+                <option value="अधिक भाद्रपद">अधिक भाद्रपद</option>
+                <option value="अधिक आश्विन">अधिक आश्विन</option>
+                <option value="अधिक कार्तिक">अधिक कार्तिक</option>
+                <option value="अधिक मार्गशीर्ष">अधिक मार्गशीर्ष</option>
+                <option value="अधिक पौष">अधिक पौष</option>
+                <option value="अधिक माघ">अधिक माघ</option>
+                <option value="अधिक फाल्गुन">अधिक फाल्गुन</option>
+            </select>
+        </div>
         <h2 style="margin-top: 15px; border-bottom: 1px solid #455A64; padding-bottom: 10px;">इष्टकाल (Ishtakaal)</h2>
         <div style="display: flex; gap: 10px; margin-bottom: 15px;">
             <div class="form-group" style="margin-bottom: 0; flex: 1;"><label>घटी/Hrs (y)</label><input type="number" id="ishtYInput" value="8" min="0"></div>
@@ -809,11 +832,41 @@
             `);
         });
 
-        // Global Event Listeners
+        // --- Adhik Mahina Listeners ---
+        const isAdhikCheckbox = document.getElementById('isAdhikCheckbox');
+        const adhikMonthContainer = document.getElementById('adhikMonthContainer');
+        const adhikMonthSelect = document.getElementById('adhikMonthSelect');
+
+        isAdhikCheckbox.addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+            adhikMonthContainer.style.display = isChecked ? 'block' : 'none';
+            
+            const normalMonth = document.querySelector('[data-control="PanchangMonth"]').value;
+            const finalMonth = isChecked ? adhikMonthSelect.value : normalMonth;
+            
+            document.querySelectorAll('[data-bind="PanchangMonth"]').forEach(el => el.textContent = finalMonth);
+            autoSave();
+        });
+
+        adhikMonthSelect.addEventListener('input', (e) => {
+            if(isAdhikCheckbox.checked) {
+                document.querySelectorAll('[data-bind="PanchangMonth"]').forEach(el => el.textContent = e.target.value);
+            }
+        });
+
+        // --- Global Event Listeners ---
         document.body.addEventListener('input', (e) => {
             if(e.target.dataset.control) {
                 const val = e.target.value;
-                document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
+                
+                // Special Override for Panchang Month if Adhik is active
+                if (e.target.dataset.control === 'PanchangMonth') {
+                    const isAdhik = isAdhikCheckbox.checked;
+                    const finalMonth = isAdhik ? adhikMonthSelect.value : val;
+                    document.querySelectorAll(`[data-bind="PanchangMonth"]`).forEach(el => el.textContent = finalMonth);
+                } else {
+                    document.querySelectorAll(`[data-bind="${e.target.dataset.control}"]`).forEach(el => el.textContent = val);
+                }
                 
                 if(e.target.dataset.control === 'NakshatraPada') {
                     const match = val.match(/\(([^)]+)\)/);
@@ -1024,6 +1077,11 @@
                 ishtM: document.getElementById('ishtMInput').value,
                 ishtD: document.getElementById('ishtDInput').value,
                 falaShruti: document.getElementById('falaShrutiSidebarInput').value,
+                
+                // NEW: Adhik Mahina save state
+                isAdhik: document.getElementById('isAdhikCheckbox').checked,
+                adhikMonth: document.getElementById('adhikMonthSelect').value,
+                
                 dynamicControls: {},
                 vakri: [],
                 asta: [],
@@ -1110,6 +1168,15 @@
                 document.getElementById('falaShrutiDisplay').innerText = data.falaShruti;
             }
 
+            // Restore Adhik Mahina
+            if(data.isAdhik !== undefined) {
+                document.getElementById('isAdhikCheckbox').checked = data.isAdhik;
+                document.getElementById('adhikMonthContainer').style.display = data.isAdhik ? 'block' : 'none';
+            }
+            if(data.adhikMonth) {
+                document.getElementById('adhikMonthSelect').value = data.adhikMonth;
+            }
+
             if(data.dynamicControls) {
                 for (const [key, value] of Object.entries(data.dynamicControls)) {
                     const el = document.querySelector(`[data-control="${key}"]`);
@@ -1129,6 +1196,10 @@
             renderPoojaTable();
             renderMantraTable();
             updateIshtakaal();
+
+            // Ensure the specific Panchang label gets updated with Adhik status when loading
+            const finalMonth = data.isAdhik ? document.getElementById('adhikMonthSelect').value : document.querySelector('[data-control="PanchangMonth"]').value;
+            document.querySelectorAll('[data-bind="PanchangMonth"]').forEach(el => el.textContent = finalMonth);
 
             // Finally, inject manually saved custom dasha dates over the calculated ones
             if (data.dashas && data.dashas.length > 0) {

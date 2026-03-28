@@ -131,5 +131,3 @@ LOGIN_URL = 'login'
 # Define your custom environment credentials here
 APP_USERNAME = os.environ.get('APP_USERNAME', 'Swamini')
 APP_PASSWORD = os.environ.get('APP_PASSWORD', 'Swamini*1385')
-
-print(APP_PASSWORD, APP_USERNAME)
