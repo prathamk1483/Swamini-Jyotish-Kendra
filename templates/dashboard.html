@@ -57,7 +57,7 @@
         .btn-logout:hover { background-color: #fff5f5; color: #dc3545; border-color: #dc3545; }
 
         .search-container { margin-bottom: 20px; display: flex; }
-        .search-input { width: 100%; padding: 12px 15px; font-size: 16px; border: 1px solid var(--border-color); border-radius: 6px; background-color: #fafbfc; font-family: inherit; }
+        .search-input { width: 100%; padding: 12px 15px; font-size: 16px; border: 1px solid var(--border-color); border-radius: 6px; background-color: #fafbfc; font-family: inherit; transition: all 0.2s ease-in-out; }
         .search-input:focus { outline: none; border-color: var(--primary-blue); background-color: white; box-shadow: 0 0 0 3px rgba(10, 46, 75, 0.1); }
 
         .record-table { width: 100%; border-collapse: collapse; font-size: 16px; }
@@ -85,6 +85,19 @@
         .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: var(--text-dark); }
         .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
         .btn-cancel { padding: 10px 15px; background: white; border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer; font-weight: 600; font-family: inherit;}
+
+        /* --- CUSTOM SEARCHABLE DROPDOWN --- */
+        .custom-dropdown { position: relative; }
+        .dropdown-list { 
+            position: absolute; top: 100%; left: 0; right: 0; 
+            background: white; border: 1px solid var(--primary-blue); 
+            border-radius: 6px; margin-top: 4px; max-height: 200px; 
+            overflow-y: auto; z-index: 1000; display: none; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+        }
+        .dropdown-item { padding: 10px 15px; cursor: pointer; border-bottom: 1px solid #f1f1f1; font-size: 15px; transition: background 0.1s;}
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item:hover { background-color: #f0f8ff; color: var(--primary-blue); font-weight: 600;}
     </style>
 </head>
 <body>
@@ -124,16 +137,20 @@
             
             <div class="form-group">
                 <label>Boy's Kundali (मुलगा):</label>
-                <select id="boySelect" class="search-input">
-                    <option value="">-- Select Kundali --</option>
-                </select>
+                <div class="custom-dropdown">
+                    <input type="text" id="boyInput" class="search-input" placeholder="Search boy's name..." autocomplete="off">
+                    <input type="hidden" id="boyHiddenId">
+                    <div id="boyDropdown" class="dropdown-list"></div>
+                </div>
             </div>
             
             <div class="form-group">
                 <label>Girl's Kundali (मुलगी):</label>
-                <select id="girlSelect" class="search-input">
-                    <option value="">-- Select Kundali --</option>
-                </select>
+                <div class="custom-dropdown">
+                    <input type="text" id="girlInput" class="search-input" placeholder="Search girl's name..." autocomplete="off">
+                    <input type="hidden" id="girlHiddenId">
+                    <div id="girlDropdown" class="dropdown-list"></div>
+                </div>
             </div>
 
             <div class="modal-actions">
@@ -167,7 +184,10 @@
                     if (data.status === 'success') {
                         allRecords = data.records || [];
                         renderTable(allRecords);
-                        populateDropdowns(); // Populate the Match Making dropdowns
+                        
+                        // Setup the custom searchable dropdowns for the modal
+                        setupCustomDropdown('boyInput', 'boyHiddenId', 'boyDropdown');
+                        setupCustomDropdown('girlInput', 'girlHiddenId', 'girlDropdown');
                     } else {
                         document.getElementById('tableBody').innerHTML = `<tr><td colspan="4" class="empty-state" style="color: #dc3545;">Error: ${data.message}</td></tr>`;
                     }
@@ -197,48 +217,83 @@
             });
         }
 
-        // --- Match Making Logic ---
-        function populateDropdowns() {
-            const boySelect = document.getElementById('boySelect');
-            const girlSelect = document.getElementById('girlSelect');
-            
-            // Reset to default option
-            boySelect.innerHTML = '<option value="">-- Select Kundali --</option>';
-            girlSelect.innerHTML = '<option value="">-- Select Kundali --</option>';
-            
-            // Populate actual HTML options
-            allRecords.forEach(record => {
-                const label = `${record.Client_Name} (${record.Last_Updated || 'Draft'})`;
+        // --- Custom Searchable Dropdown Logic ---
+        function setupCustomDropdown(inputId, hiddenId, dropdownId) {
+            const input = document.getElementById(inputId);
+            const hidden = document.getElementById(hiddenId);
+            const dropdown = document.getElementById(dropdownId);
+
+            function renderOptions(filterText = '') {
+                dropdown.innerHTML = '';
+                const filtered = allRecords.filter(r => (r.Client_Name || '').toLowerCase().includes(filterText.toLowerCase()));
                 
-                const boyOpt = document.createElement('option');
-                boyOpt.value = record.Record_ID; // We map the ID directly into the value
-                boyOpt.textContent = label;
-                boySelect.appendChild(boyOpt);
-                
-                const girlOpt = document.createElement('option');
-                girlOpt.value = record.Record_ID; 
-                girlOpt.textContent = label;
-                girlSelect.appendChild(girlOpt);
+                if (filtered.length === 0) {
+                    dropdown.innerHTML = '<div class="dropdown-item" style="color: #999;">No results found</div>';
+                    return;
+                }
+
+                filtered.forEach(record => {
+                    const div = document.createElement('div');
+                    div.className = 'dropdown-item';
+                    div.textContent = `${record.Client_Name} (${record.Last_Updated || 'Draft'})`;
+                    
+                    // When an option is clicked, fill the inputs and hide the dropdown
+                    div.onclick = function() {
+                        input.value = record.Client_Name;
+                        hidden.value = record.Record_ID; // Secretly store the ID!
+                        dropdown.style.display = 'none';
+                    };
+                    dropdown.appendChild(div);
+                });
+            }
+
+            // Show and filter when typing
+            input.addEventListener('input', (e) => {
+                hidden.value = ''; // Clear hidden ID if user starts typing manually
+                renderOptions(e.target.value);
+                dropdown.style.display = 'block';
+            });
+
+            // Show all when focused
+            input.addEventListener('focus', () => {
+                renderOptions(input.value);
+                dropdown.style.display = 'block';
+            });
+
+            // Hide dropdown when clicking anywhere else on the screen
+            document.addEventListener('click', (e) => {
+                if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
             });
         }
 
+        // --- Match Making Modal Functions ---
         function openMatchModal() {
+            // Reset fields every time modal is opened
+            document.getElementById('boyInput').value = '';
+            document.getElementById('boyHiddenId').value = '';
+            document.getElementById('girlInput').value = '';
+            document.getElementById('girlHiddenId').value = '';
+            
             document.getElementById('matchModal').style.display = 'flex';
         }
+        
         function closeMatchModal() {
             document.getElementById('matchModal').style.display = 'none';
         }
 
         function generateMatch() {
-            const boyId = document.getElementById('boySelect').value;
-            const girlId = document.getElementById('girlSelect').value;
+            // Pull the securely stored IDs from the hidden inputs
+            const boyId = document.getElementById('boyHiddenId').value;
+            const girlId = document.getElementById('girlHiddenId').value;
 
             if(!boyId || !girlId) {
-                alert("Please select both a Boy's and Girl's Kundali from the dropdowns.");
+                alert("Please select both a Boy's and Girl's Kundali by clicking on their names in the dropdown lists.");
                 return;
             }
             
-            // Navigate to the new matchmaking page passing the pure IDs
+            // Navigate to the new matchmaking page
             window.location.href = `/matchmaking/?boy=${boyId}&girl=${girlId}`;
         }
     </script>
