@@ -55,9 +55,13 @@
         .editable-cell { background-color: #fdfae8; outline: none; font-weight: bold; color: var(--accent-green); cursor: text; transition: background 0.2s;}
         .editable-cell:focus { background-color: #fff; box-shadow: inset 0 0 0 2px var(--primary-blue); }
         
-        /* Editable Text (Like Vashya) */
-        .editable-text { outline: none; cursor: text; transition: background 0.2s; border-bottom: 1px dashed var(--border-color); }
-        .editable-text:focus { background-color: #fff; box-shadow: inset 0 0 0 2px var(--primary-blue); border-radius: 4px;}
+        /* Dropdown Styling */
+        .editable-select {
+            width: 100%; border: none; border-bottom: 1px dashed var(--border-color);
+            background: transparent; font-size: 15px; font-weight: bold; font-family: inherit;
+            text-align: center; text-align-last: center; outline: none; cursor: pointer; color: var(--text-dark);
+        }
+        .editable-select:focus { background-color: #fff; box-shadow: inset 0 0 0 2px var(--primary-blue); border-radius: 4px; }
 
         .total-score-box { background-color: #f8f9fa; padding: 15px; font-size: 18px; font-weight: bold; border: 1px solid var(--border-color); margin-bottom: 30px; }
         .total-score-input { border: none; background: transparent; font-size: 18px; font-weight: bold; color: var(--accent-green); outline: none; width: 60px; border-bottom: 1px dashed var(--primary-blue);}
@@ -71,7 +75,8 @@
             @page { size: A4 portrait; margin: 10mm; }
             body { background: white; padding: 0; }
             .page-container { box-shadow: none; padding: 0; width: 100%; }
-            .editable-cell, .total-score-input, .editable-text { background: transparent; border-bottom: none; }
+            .editable-cell, .total-score-input { background: transparent; border-bottom: none; }
+            .editable-select { -webkit-appearance: none; -moz-appearance: none; appearance: none; border: none; background: transparent; }
             .print-btn { display: none; }
         }
         
@@ -172,8 +177,26 @@
                 </tr>
                 <tr>
                     <td>वश्य</td>
-                    <td id="bVashya" contenteditable="true" class="editable-text" title="Click to edit"></td>
-                    <td id="gVashya" contenteditable="true" class="editable-text" title="Click to edit"></td>
+                    <td>
+                        <select id="bVashya" class="editable-select" onchange="recalcVashyaScore()">
+                            <option value="-">-</option>
+                            <option value="मानव">मानव</option>
+                            <option value="चतुष्पाद">चतुष्पाद</option>
+                            <option value="जलचर">जलचर</option>
+                            <option value="वनचर">वनचर</option>
+                            <option value="कीट">कीट</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="gVashya" class="editable-select" onchange="recalcVashyaScore()">
+                            <option value="-">-</option>
+                            <option value="मानव">मानव</option>
+                            <option value="चतुष्पाद">चतुष्पाद</option>
+                            <option value="जलचर">जलचर</option>
+                            <option value="वनचर">वनचर</option>
+                            <option value="कीट">कीट</option>
+                        </select>
+                    </td>
                     <td>2</td>
                     <td contenteditable="true" class="editable-cell score-val" id="scoreVashya" oninput="updateTotalScore()">0</td><td>आधिपत्य</td>
                 </tr>
@@ -355,17 +378,9 @@
             // 2. VASHYA
             let bVashya = rashiVashyaMap[bRashi] || "-";
             let gVashya = rashiVashyaMap[gRashi] || "-";
-            document.getElementById('bVashya').textContent = bVashya;
-            document.getElementById('gVashya').textContent = gVashya;
-            const vashyaMatrix = {
-                "मानव": {"मानव": 2, "चतुष्पाद": 2, "जलचर": 1, "वनचर": 0, "कीट": 0.5},
-                "चतुष्पाद": {"मानव": 2, "चतुष्पाद": 2, "जलचर": 1, "वनचर": 0, "कीट": 1},
-                "जलचर": {"मानव": 1, "चतुष्पाद": 1, "जलचर": 2, "वनचर": 1, "कीट": 1},
-                "वनचर": {"मानव": 0, "चतुष्पाद": 0, "जलचर": 1, "वनचर": 2, "कीट": 0},
-                "कीट": {"मानव": 0.5, "चतुष्पाद": 1, "जलचर": 1, "वनचर": 0, "कीट": 2}
-            };
-            let vs = (vashyaMatrix[bVashya] && vashyaMatrix[bVashya][gVashya]) !== undefined ? vashyaMatrix[bVashya][gVashya] : 0;
-            document.getElementById('scoreVashya').textContent = vs;
+            document.getElementById('bVashya').value = bVashya;
+            document.getElementById('gVashya').value = gVashya;
+            recalcVashyaScore();
 
             // 3. TARA
             if (bNak !== "-" && gNak !== "-") {
@@ -469,6 +484,22 @@
             document.getElementById('scoreNaadi').textContent = ns;
 
             // FINALLY: Total sum
+            updateTotalScore();
+        }
+
+        // Live Vashya Re-calculator
+        function recalcVashyaScore() {
+            const bVashya = document.getElementById('bVashya').value;
+            const gVashya = document.getElementById('gVashya').value;
+            const vashyaMatrix = {
+                "मानव": {"मानव": 2, "चतुष्पाद": 2, "जलचर": 1, "वनचर": 0, "कीट": 0.5},
+                "चतुष्पाद": {"मानव": 2, "चतुष्पाद": 2, "जलचर": 1, "वनचर": 0, "कीट": 1},
+                "जलचर": {"मानव": 1, "चतुष्पाद": 1, "जलचर": 2, "वनचर": 1, "कीट": 1},
+                "वनचर": {"मानव": 0, "चतुष्पाद": 0, "जलचर": 1, "वनचर": 2, "कीट": 0},
+                "कीट": {"मानव": 0.5, "चतुष्पाद": 1, "जलचर": 1, "वनचर": 0, "कीट": 2}
+            };
+            let vs = (vashyaMatrix[bVashya] && vashyaMatrix[bVashya][gVashya]) !== undefined ? vashyaMatrix[bVashya][gVashya] : 0;
+            document.getElementById('scoreVashya').textContent = vs;
             updateTotalScore();
         }
 
