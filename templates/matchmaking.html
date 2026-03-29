@@ -48,16 +48,16 @@
         /* ASHTAKOOT TABLE */
         .section-title { font-size: 20px; color: var(--primary-blue); margin-bottom: 10px; font-weight: bold; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; page-break-before: always;}
         .ashtakoot-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid var(--border-color); }
-        .ashtakoot-table th, .ashtakoot-table td { border: 1px solid var(--border-color); padding: 6px 10px; font-size: 15px; text-align: center; }
+        .ashtakoot-table th, .ashtakoot-table td { border: 1px solid var(--border-color); padding: 10px 12px; font-size: 15px; text-align: center; }
         .ashtakoot-table th { background-color: #fafbfc; color: var(--text-dark); }
         
+        /* Editable Scores */
         .editable-cell { background-color: #fdfae8; outline: none; font-weight: bold; color: var(--accent-green); cursor: text; transition: background 0.2s;}
         .editable-cell:focus { background-color: #fff; box-shadow: inset 0 0 0 2px var(--primary-blue); }
-
-        /* CALCULATION NOTE ROW */
-        .calc-note { font-size: 13px; color: #505c66; background-color: #f8f9fa; border-top: none !important; text-align: left !important; font-style: italic; padding-top: 2px !important; padding-bottom: 8px !important;}
-        .ashtakoot-table tr.main-row td { border-bottom: none; }
-        .ashtakoot-table tr.note-row td { border-bottom: 2px solid var(--border-color); }
+        
+        /* Editable Text (Like Vashya) */
+        .editable-text { outline: none; cursor: text; transition: background 0.2s; border-bottom: 1px dashed var(--border-color); }
+        .editable-text:focus { background-color: #fff; box-shadow: inset 0 0 0 2px var(--primary-blue); border-radius: 4px;}
 
         .total-score-box { background-color: #f8f9fa; padding: 15px; font-size: 18px; font-weight: bold; border: 1px solid var(--border-color); margin-bottom: 30px; }
         .total-score-input { border: none; background: transparent; font-size: 18px; font-weight: bold; color: var(--accent-green); outline: none; width: 60px; border-bottom: 1px dashed var(--primary-blue);}
@@ -71,7 +71,7 @@
             @page { size: A4 portrait; margin: 10mm; }
             body { background: white; padding: 0; }
             .page-container { box-shadow: none; padding: 0; width: 100%; }
-            .editable-cell, .total-score-input { background: transparent; border-bottom: none; }
+            .editable-cell, .total-score-input, .editable-text { background: transparent; border-bottom: none; }
             .print-btn { display: none; }
         }
         
@@ -166,53 +166,41 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="main-row">
+                <tr>
                     <td>वर्ण</td><td id="bVarna"></td><td id="gVarna"></td><td>1</td>
                     <td contenteditable="true" class="editable-cell score-val" id="scoreVarna" oninput="updateTotalScore()">0</td><td>कार्यक्षेत्र</td>
                 </tr>
-                <tr class="note-row"><td colspan="6" class="calc-note" id="calcVarna"></td></tr>
-
-                <tr class="main-row">
-                    <td>वश्य</td><td id="bVashya"></td><td id="gVashya"></td><td>2</td>
+                <tr>
+                    <td>वश्य</td>
+                    <td id="bVashya" contenteditable="true" class="editable-text" title="Click to edit"></td>
+                    <td id="gVashya" contenteditable="true" class="editable-text" title="Click to edit"></td>
+                    <td>2</td>
                     <td contenteditable="true" class="editable-cell score-val" id="scoreVashya" oninput="updateTotalScore()">0</td><td>आधिपत्य</td>
                 </tr>
-                <tr class="note-row"><td colspan="6" class="calc-note" id="calcVashya"></td></tr>
-
-                <tr class="main-row">
+                <tr>
                     <td>तारा</td><td id="bTara"></td><td id="gTara"></td><td>3</td>
                     <td contenteditable="true" class="editable-cell score-val" id="scoreTara" oninput="updateTotalScore()">0</td><td>भाग्य</td>
                 </tr>
-                <tr class="note-row"><td colspan="6" class="calc-note" id="calcTara"></td></tr>
-
-                <tr class="main-row">
+                <tr>
                     <td>योनी</td><td id="bYoni"></td><td id="gYoni"></td><td>4</td>
                     <td contenteditable="true" class="editable-cell score-val" id="scoreYoni" oninput="updateTotalScore()">0</td><td>मानसिकता</td>
                 </tr>
-                <tr class="note-row"><td colspan="6" class="calc-note" id="calcYoni"></td></tr>
-
-                <tr class="main-row">
+                <tr>
                     <td>मैत्री</td><td id="bMaitri"></td><td id="gMaitri"></td><td>5</td>
                     <td contenteditable="true" class="editable-cell score-val" id="scoreMaitri" oninput="updateTotalScore()">0</td><td>सामंजस्य</td>
                 </tr>
-                <tr class="note-row"><td colspan="6" class="calc-note" id="calcMaitri"></td></tr>
-
-                <tr class="main-row">
+                <tr>
                     <td>गण</td><td id="bGan"></td><td id="gGan"></td><td>6</td>
                     <td contenteditable="true" class="editable-cell score-val" id="scoreGan" oninput="updateTotalScore()">0</td><td>गुण</td>
                 </tr>
-                <tr class="note-row"><td colspan="6" class="calc-note" id="calcGan"></td></tr>
-
-                <tr class="main-row">
+                <tr>
                     <td>भकूट</td><td id="bBhakut"></td><td id="gBhakut"></td><td>7</td>
                     <td contenteditable="true" class="editable-cell score-val" id="scoreBhakut" oninput="updateTotalScore()">0</td><td>प्रेम</td>
                 </tr>
-                <tr class="note-row"><td colspan="6" class="calc-note" id="calcBhakut"></td></tr>
-
-                <tr class="main-row">
+                <tr>
                     <td>नाड़ी</td><td id="bNaadi"></td><td id="gNaadi"></td><td>8</td>
                     <td contenteditable="true" class="editable-cell score-val" id="scoreNaadi" oninput="updateTotalScore()">0</td><td>स्वास्थ्य</td>
                 </tr>
-                <tr class="note-row"><td colspan="6" class="calc-note" id="calcNaadi"></td></tr>
             </tbody>
         </table>
 
@@ -360,10 +348,8 @@
             let vRankG = varnaRank[gVarna] || 0;
             if (vRankB >= vRankG && vRankB !== 0) {
                 document.getElementById('scoreVarna').textContent = "1";
-                document.getElementById('calcVarna').textContent = "↳ मुलाचा वर्ण मुलीपेक्षा श्रेष्ठ किंवा समान असल्याने १ गुण प्राप्त.";
             } else {
                 document.getElementById('scoreVarna').textContent = "0";
-                document.getElementById('calcVarna').textContent = "↳ मुलाचा वर्ण मुलीपेक्षा कनिष्ठ असल्याने ० गुण प्राप्त.";
             }
 
             // 2. VASHYA
@@ -371,7 +357,6 @@
             let gVashya = rashiVashyaMap[gRashi] || "-";
             document.getElementById('bVashya').textContent = bVashya;
             document.getElementById('gVashya').textContent = gVashya;
-            // Simple Vashya Rule Matrix
             const vashyaMatrix = {
                 "मानव": {"मानव": 2, "चतुष्पाद": 2, "जलचर": 1, "वनचर": 0, "कीट": 0.5},
                 "चतुष्पाद": {"मानव": 2, "चतुष्पाद": 2, "जलचर": 1, "वनचर": 0, "कीट": 1},
@@ -381,9 +366,6 @@
             };
             let vs = (vashyaMatrix[bVashya] && vashyaMatrix[bVashya][gVashya]) !== undefined ? vashyaMatrix[bVashya][gVashya] : 0;
             document.getElementById('scoreVashya').textContent = vs;
-            if (vs == 2) document.getElementById('calcVashya').textContent = "↳ समान वश्य किंवा एकमेकांवर नियंत्रण असणारे अनुकूल वश्य.";
-            else if (vs > 0) document.getElementById('calcVashya').textContent = "↳ साधारण अनुकूल वश्य संबंध.";
-            else document.getElementById('calcVashya').textContent = "↳ परस्परांचे शत्रू वश्य असल्याने ० गुण.";
 
             // 3. TARA
             if (bNak !== "-" && gNak !== "-") {
@@ -396,14 +378,13 @@
                 document.getElementById('bTara').textContent = bTaraName || "-";
                 document.getElementById('gTara').textContent = gTaraName || "-";
                 
-                // Shubh check: 1,2,4,6,8,9
                 const isShubh = (idx) => [1,2,4,6,8,0].includes((idx+1)%9===0 ? 9 : (idx+1)%9);
                 let bShubh = isShubh(bTaraIdx);
                 let gShubh = isShubh(gTaraIdx);
                 
-                if (bShubh && gShubh) { document.getElementById('scoreTara').textContent = "3"; document.getElementById('calcTara').textContent = "↳ दोघांची तारा शुभ असल्याने पूर्ण ३ गुण."; }
-                else if (bShubh || gShubh) { document.getElementById('scoreTara').textContent = "1.5"; document.getElementById('calcTara').textContent = "↳ एकाची तारा शुभ आणि एकाची अशुभ असल्याने दीड (१.५) गुण."; }
-                else { document.getElementById('scoreTara').textContent = "0"; document.getElementById('calcTara').textContent = "↳ दोघांचीही तारा अशुभ असल्याने ० गुण."; }
+                if (bShubh && gShubh) { document.getElementById('scoreTara').textContent = "3"; }
+                else if (bShubh || gShubh) { document.getElementById('scoreTara').textContent = "1.5"; }
+                else { document.getElementById('scoreTara').textContent = "0"; }
             }
 
             // 4. YONI
@@ -411,7 +392,7 @@
             let gYoni = nakshatraYoniMap[gNak] || "-";
             document.getElementById('bYoni').textContent = bYoni;
             document.getElementById('gYoni').textContent = gYoni;
-            let ys = 2; // Default for Sam/Mitra
+            let ys = 2; // Default
             const yoniEnemies = [["अश्व", "महिष"], ["गज", "सिंह"], ["मेष", "वानर"], ["सर्प", "नकुल"], ["श्वान", "मृग"], ["मार्जार", "मूषक"], ["गौ", "व्याघ्र"]];
             if (bYoni === gYoni && bYoni !== "-") ys = 4;
             else {
@@ -420,9 +401,6 @@
                 }
             }
             document.getElementById('scoreYoni').textContent = ys;
-            if(ys==4) document.getElementById('calcYoni').textContent = "↳ समान योनी असल्याने पूर्ण ४ गुण.";
-            else if(ys==0) document.getElementById('calcYoni').textContent = "↳ परस्पर घोर शत्रू योनी असल्याने ० गुण (उदा. सर्प-नकुल).";
-            else document.getElementById('calcYoni').textContent = "↳ साधारण मित्र/सम योनी.";
 
             // 5. MAITRI
             let bMaitri = rashiSwamiMap[bRashi] || "-";
@@ -439,60 +417,56 @@
             let r1 = getRelation(bMaitri, gMaitri);
             let r2 = getRelation(gMaitri, bMaitri);
             let rels = [r1, r2].sort().join('');
-            let ms = 0; let mTxt = "";
-            if(rels==="MM") { ms=5; mTxt="दोन्ही ग्रह परस्परांचे मित्र आहेत.";}
-            else if(rels==="MS") { ms=4; mTxt="एक मित्र आणि दुसरा सम आहे.";}
-            else if(rels==="SS") { ms=3; mTxt="दोन्ही ग्रह परस्परांचे सम (Neutral) आहेत.";}
-            else if(rels==="EM") { ms=1; mTxt="एक मित्र आणि दुसरा शत्रू आहे.";}
-            else if(rels==="ES") { ms=0.5; mTxt="एक सम आणि दुसरा शत्रू आहे.";}
-            else { ms=0; mTxt="दोन्ही ग्रह परस्परांचे नैसर्गिक शत्रू आहेत.";}
+            let ms = 0;
+            if(rels==="MM") ms=5;
+            else if(rels==="MS") ms=4;
+            else if(rels==="SS") ms=3;
+            else if(rels==="EM") ms=1;
+            else if(rels==="ES") ms=0.5;
+            else ms=0;
             
             document.getElementById('scoreMaitri').textContent = ms;
-            document.getElementById('calcMaitri').textContent = `↳ ${mTxt}`;
 
             // 6. GAN
             let bGan = nakshatraGanMap[bNak] || "-";
             let gGan = nakshatraGanMap[gNak] || "-";
             document.getElementById('bGan').textContent = bGan;
             document.getElementById('gGan').textContent = gGan;
-            let gs = 0; let gTxt = "";
-            if (bGan === gGan) { gs = 6; gTxt = "दोघांचाही समान गण आहे."; }
-            else if (bGan === "देव" && gGan === "मनुष्य") { gs = 6; gTxt = "मुलगा देव आणि मुलगी मनुष्य गण."; }
-            else if (bGan === "मनुष्य" && gGan === "देव") { gs = 5; gTxt = "मुलगा मनुष्य आणि मुलगी देव गण."; }
-            else if ((bGan === "देव" && gGan === "राक्षस") || (bGan === "राक्षस" && gGan === "देव")) { gs = 1; gTxt = "देव आणि राक्षस गण."; }
-            else { gs = 0; gTxt = "मनुष्य आणि राक्षस गण (गण दोष)."; }
+            let gs = 0; 
+            if (bGan === gGan) { gs = 6; }
+            else if (bGan === "देव" && gGan === "मनुष्य") { gs = 6; }
+            else if (bGan === "मनुष्य" && gGan === "देव") { gs = 5; }
+            else if ((bGan === "देव" && gGan === "राक्षस") || (bGan === "राक्षस" && gGan === "देव")) { gs = 1; }
+            else { gs = 0; }
             document.getElementById('scoreGan').textContent = gs;
-            document.getElementById('calcGan').textContent = `↳ ${gTxt}`;
 
             // 7. BHAKUT
             document.getElementById('bBhakut').textContent = bRashi || "-";
             document.getElementById('gBhakut').textContent = gRashi || "-";
             let bRNum = rashiMap[bRashi];
             let gRNum = rashiMap[gRashi];
-            let bhs = 0; let bhTxt = "";
+            let bhs = 0;
             if(bRNum && gRNum) {
                 let dist1 = (gRNum - bRNum + 12) % 12; let d1 = dist1 === 0 ? 1 : dist1 + 1;
                 let dist2 = (bRNum - gRNum + 12) % 12; let d2 = dist2 === 0 ? 1 : dist2 + 1;
                 let pair = `${Math.min(d1, d2)}-${Math.max(d1, d2)}`;
-                if (["1-1", "1-7", "3-11", "4-10"].includes(pair)) { bhs=7; bhTxt = "शुभ भकूट योग (उदा. समसप्तक, लाभ योग)."; }
-                else { bhs=0; bhTxt = "अशुभ भकूट योग (२-१२, ५-९ किंवा ६-८ षडाष्टक दोष)."; }
+                if (["1-1", "1-7", "3-11", "4-10"].includes(pair)) { bhs=7; }
+                else { bhs=0; }
             }
             document.getElementById('scoreBhakut').textContent = bhs;
-            document.getElementById('calcBhakut').textContent = `↳ ${bhTxt}`;
 
             // 8. NAADI
             let bNaadiFull = nakshatraNaadiMap[bNak] || "-";
             let gNaadiFull = nakshatraNaadiMap[gNak] || "-";
             document.getElementById('bNaadi').textContent = bNaadiFull;
             document.getElementById('gNaadi').textContent = gNaadiFull;
-            let ns = 0; let nTxt = "";
+            let ns = 0;
             if(bNaadiFull !== "-" && gNaadiFull !== "-") {
                 let bN = bNaadiFull.split(" ")[0]; let gN = gNaadiFull.split(" ")[0];
-                if (bN === gN) { ns=0; nTxt="दोघांची समान नाडी असल्याने ० गुण (नाडी दोष)."; }
-                else { ns=8; nTxt="भिन्न नाडी असल्याने पूर्ण ८ गुण प्राप्त."; }
+                if (bN === gN) { ns=0; }
+                else { ns=8; }
             }
             document.getElementById('scoreNaadi').textContent = ns;
-            document.getElementById('calcNaadi').textContent = `↳ ${nTxt}`;
 
             // FINALLY: Total sum
             updateTotalScore();
