@@ -149,7 +149,7 @@
             </div>
         </div>
 
-        <div class="section-title">अष्टकूट अंक तालिका</div>
+        <div class="section-title">गुण मिळण कोष्टक</div>
         <table class="ashtakoot-table">
             <thead>
                 <tr>
@@ -162,19 +162,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td>वर्ण</td><td id="bVarna"></td><td id="gVarna"></td><td>1</td><td contenteditable="true" class="editable-cell">1</td><td>कार्यक्षेत्र</td></tr>
-                <tr><td>वश्य</td><td contenteditable="true">जलचर</td><td contenteditable="true">जलचर</td><td>2</td><td contenteditable="true" class="editable-cell">2</td><td>आधिपत्य</td></tr>
-                <tr><td>तारा</td><td contenteditable="true">अतिमित्र</td><td contenteditable="true">क्षेम</td><td>3</td><td contenteditable="true" class="editable-cell">1.5</td><td>भाग्य</td></tr>
-                <tr><td>योनी</td><td id="bYoni"></td><td id="gYoni"></td><td>4</td><td contenteditable="true" class="editable-cell">3</td><td>मानसिकता</td></tr>
-                <tr><td>मैत्री</td><td id="bMaitri"></td><td id="gMaitri"></td><td>5</td><td contenteditable="true" class="editable-cell">4</td><td>सामंजस्य</td></tr>
-                <tr><td>गण</td><td id="bGan"></td><td id="gGan"></td><td>6</td><td contenteditable="true" class="editable-cell">6</td><td>गुण</td></tr>
+                <tr><td>वर्ण</td><td id="bVarna"></td><td id="gVarna"></td><td>1</td><td contenteditable="true" class="editable-cell">0</td><td>कार्यक्षेत्र</td></tr>
+                <tr><td>वश्य</td><td id="bVashya"></td><td id="gVashya"></td><td>2</td><td contenteditable="true" class="editable-cell">0</td><td>आधिपत्य</td></tr>
+                <tr><td>तारा</td><td id="bTara"></td><td id="gTara"></td><td>3</td><td contenteditable="true" class="editable-cell">0</td><td>भाग्य</td></tr>
+                <tr><td>योनी</td><td id="bYoni"></td><td id="gYoni"></td><td>4</td><td contenteditable="true" class="editable-cell">0</td><td>मानसिकता</td></tr>
+                <tr><td>मैत्री</td><td id="bMaitri"></td><td id="gMaitri"></td><td>5</td><td contenteditable="true" class="editable-cell">0</td><td>सामंजस्य</td></tr>
+                <tr><td>गण</td><td id="bGan"></td><td id="gGan"></td><td>6</td><td contenteditable="true" class="editable-cell">0</td><td>गुण</td></tr>
                 <tr><td>भकूट</td><td id="bBhakut"></td><td id="gBhakut"></td><td>7</td><td contenteditable="true" class="editable-cell">0</td><td>प्रेम</td></tr>
-                <tr><td>नाड़ी</td><td id="bNaadi"></td><td id="gNaadi"></td><td>8</td><td contenteditable="true" class="editable-cell">8</td><td>स्वास्थ्य</td></tr>
+                <tr><td>नाड़ी</td><td id="bNaadi"></td><td id="gNaadi"></td><td>8</td><td contenteditable="true" class="editable-cell">0</td><td>स्वास्थ्य</td></tr>
             </tbody>
         </table>
 
         <div class="total-score-box">
-            कुल प्राप्त अंक: 36 में से <input type="text" class="total-score-input" value="25.5">
+            कुल प्राप्त अंक: 36 में से <input type="text" class="total-score-input" value="0.0">
         </div>
 
         <h3 style="font-size: 18px; color: var(--primary-blue); margin-bottom: 5px;">मंगळ दोष या कुज दोष</h3>
@@ -195,6 +195,23 @@
         const numCoords = [{x: 275, y: 65}, {x: 235, y: 25}, {x: 150, y: 25}, {x: 65, y: 25}, {x: 25, y: 65}, {x: 40, y: 155}, {x: 25, y: 245}, {x: 65, y: 285}, {x: 150, y: 285}, {x: 235, y: 285}, {x: 275, y: 245}, {x: 260, y: 155}];
         const houseCoords = { 1: {x: 150, y: 75}, 2: {x: 75, y: 45}, 3: {x: 45, y: 95}, 4: {x: 80, y: 155}, 5: {x: 45, y: 215}, 6: {x: 75, y: 265}, 7: {x: 150, y: 230}, 8: {x: 225, y: 265}, 9: {x: 255, y: 215}, 10: {x: 220, y: 155}, 11: {x: 255, y: 95}, 12: {x: 225, y: 45} };
 
+        // --- ASTROLOGICAL LOOKUP TABLES FOR MATCHMAKING ---
+        const rashiVashyaMap = {
+            "मेष": "चतुष्पाद", "वृषभ": "चतुष्पाद", "मिथुन": "मानव", "कर्क": "जलचर",
+            "सिंह": "वनचर", "कन्या": "मानव", "तुला": "मानव", "वृश्चिक": "कीट",
+            "धनु": "चतुष्पाद", "मकर": "जलचर", "कुंभ": "मानव", "मीन": "जलचर"
+        };
+
+        const nakshatraList = [
+            "अश्विनी", "भरणी", "कृत्तिका", "रोहिणी", "मृगशीर्ष", "आर्द्रा",
+            "पुनर्वसु", "पुष्य", "आश्लेषा", "मघा", "पूर्वा फाल्गुनी", "उत्तरा फाल्गुनी",
+            "हस्त", "चित्रा", "स्वाती", "विशाखा", "अनुराधा", "ज्येष्ठा",
+            "मूळ", "पूर्वाषाढा", "उत्तराषाढा", "श्रवण", "धनिष्ठा", "शततारका",
+            "पूर्वा भाद्रपदा", "उत्तरा भाद्रपदा", "रेवती"
+        ];
+
+        const taraNames = ["अतिमित्र", "जन्म", "संपत", "विपत", "क्षेम", "प्रत्यरी", "साधक", "वध", "मित्र", "अतिमित्र"];
+
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const boyId = urlParams.get('boy');
@@ -206,15 +223,19 @@
                     fetch(`/api/load/${girlId}/`).then(r => r.json())
                 ]).then(([boyRes, girlRes]) => {
                     if(boyRes.status === 'success' && girlRes.status === 'success') {
+                        // 1. Populate standard table & charts
                         populateData(boyRes.form_data, 'boy');
                         populateData(girlRes.form_data, 'girl');
                         
                         generateChart(boyRes.form_data, 'boy');
                         generateChart(girlRes.form_data, 'girl');
 
-                        // Auto-generate Mangal Dosh text
-                        const bName = boyRes.form_data.clientName.split(" ")[0].toUpperCase();
-                        const gName = girlRes.form_data.clientName.split(" ")[0].toUpperCase();
+                        // 2. Calculate dynamic matching properties (Vashya & Tara)
+                        calculateMatchProperties(boyRes.form_data, girlRes.form_data);
+
+                        // 3. Auto-generate Mangal Dosh text
+                        const bName = boyRes.form_data.clientName ? boyRes.form_data.clientName.split(" ")[0].toUpperCase() : "BOY";
+                        const gName = girlRes.form_data.clientName ? girlRes.form_data.clientName.split(" ")[0].toUpperCase() : "GIRL";
                         const bMangal = boyRes.form_data.mangalDosh ? "मांगलिक आहे" : "मांगलिक नाही";
                         const gMangal = girlRes.form_data.mangalDosh ? "मांगलिक आहे" : "मांगलिक नाही";
                         document.getElementById('mangalConclusion').value = `श्री ${bName} ${bMangal} आणि सुकन्या ${gName} ${gMangal} आहे.`;
@@ -259,13 +280,52 @@
             mangalEl.textContent = isMangal ? "होय (Yes)" : "नाही (No)";
             mangalEl.style.color = isMangal ? "#dc3545" : "inherit";
 
-            // Ashtakoot Mapping
+            // Map Direct Ashtakoot Database Properties
             document.getElementById(`${prefix.charAt(0)}Varna`).textContent = extractVal(data, 'Varna');
             document.getElementById(`${prefix.charAt(0)}Yoni`).textContent = extractVal(data, 'Yoni');
             document.getElementById(`${prefix.charAt(0)}Gan`).textContent = extractVal(data, 'Gan');
             document.getElementById(`${prefix.charAt(0)}Naadi`).textContent = extractVal(data, 'Naadi');
             document.getElementById(`${prefix.charAt(0)}Bhakut`).textContent = cleanRashi(extractVal(data, 'Rashi'));
             document.getElementById(`${prefix.charAt(0)}Maitri`).textContent = extractVal(data, 'RashiSwami');
+        }
+
+        function calculateMatchProperties(boyData, girlData) {
+            // 1. Calculate Vashya (Based on Rashi)
+            const bRashi = cleanRashi(extractVal(boyData, 'Rashi'));
+            const gRashi = cleanRashi(extractVal(girlData, 'Rashi'));
+            
+            document.getElementById('bVashya').textContent = rashiVashyaMap[bRashi] || "-";
+            document.getElementById('gVashya').textContent = rashiVashyaMap[gRashi] || "-";
+
+            // 2. Calculate Tara (Based on Nakshatra Distance)
+            const bNakFull = extractVal(boyData, 'NakshatraPada');
+            const gNakFull = extractVal(girlData, 'NakshatraPada');
+            
+            if (bNakFull !== "-" && gNakFull !== "-") {
+                const bNak = bNakFull.split(',')[0].trim();
+                const gNak = gNakFull.split(',')[0].trim();
+
+                const bIdx = nakshatraList.indexOf(bNak) + 1; // 1-based index
+                const gIdx = nakshatraList.indexOf(gNak) + 1; // 1-based index
+
+                if (bIdx > 0 && gIdx > 0) {
+                    // Boy's Tara (count from Boy to Girl)
+                    let boyTaraIdx = (gIdx - bIdx) % 9;
+                    if (boyTaraIdx < 0) boyTaraIdx += 9;
+                    boyTaraIdx += 1;
+
+                    // Girl's Tara (count from Girl to Boy)
+                    let girlTaraIdx = (bIdx - gIdx) % 9;
+                    if (girlTaraIdx < 0) girlTaraIdx += 9;
+                    girlTaraIdx += 1;
+
+                    document.getElementById('bTara').textContent = taraNames[boyTaraIdx];
+                    document.getElementById('gTara').textContent = taraNames[girlTaraIdx];
+                } else {
+                    document.getElementById('bTara').textContent = "-";
+                    document.getElementById('gTara').textContent = "-";
+                }
+            }
         }
 
         function generateChart(data, prefix) {
@@ -277,7 +337,6 @@
             for(let i=0; i<12; i++) {
                 let num = lagnaNum + i;
                 if(num > 12) num -= 12;
-                // Determine target coordinate index (1st house is idx 2, goes anti-clockwise)
                 let posIdx = (2 - i + 12) % 12;
                 let t = document.createElementNS("http://www.w3.org/2000/svg", "text");
                 t.setAttribute("x", numCoords[posIdx].x);
