@@ -20,6 +20,12 @@
         
         .page-container { width: 850px; background: white; padding: 40px 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; }
         
+        /* Master Print Wrapper Table to force repeating headers and footers */
+        .print-wrapper { width: 100%; border-collapse: collapse; border: none; }
+        .print-wrapper > thead > tr > td, 
+        .print-wrapper > tbody > tr > td, 
+        .print-wrapper > tfoot > tr > td { padding: 0; border: none; }
+
         /* HEADER */
         .page-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary-blue); padding-bottom: 15px; margin-bottom: 20px; }
         .header-left { display: flex; align-items: center; gap: 15px; }
@@ -70,20 +76,29 @@
         .text-box-container { border: 1px solid var(--border-color); padding: 15px; margin-bottom: 20px; }
         .editable-textarea { width: 100%; min-height: 60px; font-size: 16px; border: none; outline: none; font-family: inherit; resize: vertical; line-height: 1.5;}
 
-        /* PRINT STYLES - WITH PADDING FIX */
+        /* FOOTER */
+        .page-footer { margin-top: 15px; padding-top: 15px; border-top: 2px solid var(--primary-blue); text-align: center; font-size: 14px; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .footer-logo { height: 22px; width: auto; vertical-align: middle; }
+        .orconix-text { font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--primary-blue); }
+
+        /* PRINT STYLES - WITH PADDING AND REPEATING LOGIC */
         @media print {
             @page { 
                 size: A4 portrait; 
-                margin: 15mm 25mm; /* Adds ~1 inch padding to the Left and Right */
+                margin: 15mm 20mm; /* Adds proper padding to the Left, Right, Top, and Bottom */
             }
-            body { background: white; padding: 0 20px; margin: 0;}
+            body { background: white; padding: 0 45px; margin: 0;}
             .page-container { box-shadow: none; padding: 0; width: 100%; max-width: 100%; border: none;}
             .editable-cell, .total-score-input, .editable-text { background: transparent; border-bottom: none; }
             .editable-select { -webkit-appearance: none; -moz-appearance: none; appearance: none; border: none; background: transparent; }
             .print-btn { display: none; }
+            
+            /* Forces Chrome/Safari to repeat the header and footer on every printed page */
+            thead { display: table-header-group; }
+            tfoot { display: table-footer-group; }
         }
         
-        .print-btn { position: fixed; bottom: 30px; right: 30px; background-color: black; color: white; border: none; padding: 15px 25px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .print-btn { position: fixed; bottom: 30px; right: 30px; background-color: var(--accent-orange); color: white; border: none; padding: 15px 25px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
@@ -91,159 +106,191 @@
     <button class="print-btn" onclick="window.print()">Print PDF</button>
 
     <div class="page-container">
-        <header class="page-header">
-            <div class="header-left">
-                <img class="logo" src="{% static 'assets/Logos/SwaminiLogo.png' %}" alt="Logo">
-                <div class="header-info">
-                    <div class="logo-area">स्वामिनी ज्योतिष कार्यालय</div>
-                    <div class="contact-details">
-                        <strong>ज्योतिष: योगेश उंबरकर</strong><br>
-                        <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
-                    </div>
-                </div>
-            </div>
-            <div class="header-right">
-                <h1 class="main-heading">गुण मिलान<br>(Match Making)</h1>
-            </div>
-        </header>
-
-        <table class="comparison-table">
+        
+        <table class="print-wrapper">
+            
             <thead>
                 <tr>
-                    <th>तपशील</th>
-                    <th id="boyNameHeader" style="color: var(--primary-blue);">BOY</th>
-                    <th id="girlNameHeader" style="color: #c2185b;">GIRL</th>
+                    <td>
+                        <header class="page-header">
+                            <div class="header-left">
+                                <img class="logo" src="{% static 'assets/Logos/SwaminiLogo.png' %}" alt="Logo">
+                                <div class="header-info">
+                                    <div class="logo-area">स्वामिनी ज्योतिष कार्यालय</div>
+                                    <div class="contact-details">
+                                        <strong>ज्योतिष: योगेश उंबरकर</strong><br>
+                                        <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="header-right">
+                                <h1 class="main-heading">गुण मिलान<br>(Match Making)</h1>
+                            </div>
+                        </header>
+                    </td>
                 </tr>
             </thead>
-            <tbody>
-                <tr><td>जन्मदिवस</td><td id="boyDate"></td><td id="girlDate"></td></tr>
-                <tr><td>जन्मवेळ</td><td id="boyTime"></td><td id="girlTime"></td></tr>
-                <tr><td>जन्मतारीख (वार)</td><td id="boyDay"></td><td id="girlDay"></td></tr>
-                <tr><td>इष्टकाल</td><td id="boyIsht"></td><td id="girlIsht"></td></tr>
-                <tr><td>जन्म स्थान</td><td id="boyPlace"></td><td id="girlPlace"></td></tr>
-                <tr><td>अक्षांश</td><td id="boyLat"></td><td id="girlLat"></td></tr>
-                <tr><td>रेखांश</td><td id="boyLon"></td><td id="girlLon"></td></tr>
-                <tr><td>तिथी</td><td id="boyTithi"></td><td id="girlTithi"></td></tr>
-                <tr><td>हिंदु महिना</td><td id="boyMonth"></td><td id="girlMonth"></td></tr>
-                <tr><td>योग</td><td id="boyYog"></td><td id="girlYog"></td></tr>
-                <tr><td>करण</td><td id="boyKaran"></td><td id="girlKaran"></td></tr>
-                <tr><td>पाया (नक्षत्र आधारित)</td><td id="boyPaya"></td><td id="girlPaya"></td></tr>
-                <tr><td>दशा भोग्य</td><td id="boyDasha"></td><td id="girlDasha"></td></tr>
-                <tr><td>लग्न</td><td id="boyLagna"></td><td id="girlLagna"></td></tr>
-                <tr><td>राशि</td><td id="boyRashi"></td><td id="girlRashi"></td></tr>
-                <tr><td>नक्षत्र - पद</td><td id="boyNakshatra"></td><td id="girlNakshatra"></td></tr>
-                <tr><td>मंगळ दोष</td><td id="boyMangal" style="font-weight: bold;"></td><td id="girlMangal" style="font-weight: bold;"></td></tr>
-            </tbody>
-        </table>
 
-        <div class="charts-container">
-            <div class="chart-box">
-                <h3 id="boyChartTitle">Boy (लग्न कुंडली)</h3>
-                <svg class="svg-chart" viewBox="0 0 300 300">
-                    <rect x="0" y="0" width="300" height="300" class="chart-lines"/>
-                    <line x1="0" y1="0" x2="300" y2="300" class="chart-lines"/>
-                    <line x1="300" y1="0" x2="0" y2="300" class="chart-lines"/>
-                    <polygon points="150,0 300,150 150,300 0,150" class="chart-lines"/>
-                    <g id="boyChartNums"></g>
-                    <g id="boyChartPlanets"></g>
-                </svg>
-            </div>
-            <div class="chart-box">
-                <h3 id="girlChartTitle" style="color:#c2185b;">Girl (लग्न कुंडली)</h3>
-                <svg class="svg-chart" viewBox="0 0 300 300">
-                    <rect x="0" y="0" width="300" height="300" class="chart-lines"/>
-                    <line x1="0" y1="0" x2="300" y2="300" class="chart-lines"/>
-                    <line x1="300" y1="0" x2="0" y2="300" class="chart-lines"/>
-                    <polygon points="150,0 300,150 150,300 0,150" class="chart-lines"/>
-                    <g id="girlChartNums"></g>
-                    <g id="girlChartPlanets"></g>
-                </svg>
-            </div>
-        </div>
-
-        <div class="section-title">गुण मिळण कोष्टक</div>
-        <table class="ashtakoot-table">
-            <thead>
-                <tr>
-                    <th>गुण</th>
-                    <th><span id="boyColName"></span></th>
-                    <th><span id="girlColName"></span></th>
-                    <th>अधिकतम प्राप्त अंक</th>
-                    <th>प्राप्त अंक</th>
-                    <th>जीवन के क्षेत्र</th>
-                </tr>
-            </thead>
             <tbody>
                 <tr>
-                    <td>वर्ण</td><td id="bVarna"></td><td id="gVarna"></td><td>1</td>
-                    <td contenteditable="true" class="editable-cell score-val" id="scoreVarna" oninput="updateTotalScore()">0</td><td>कार्यक्षेत्र</td>
-                </tr>
-                <tr>
-                    <td>वश्य</td>
                     <td>
-                        <select id="bVashya" class="editable-select" onchange="recalcVashyaScore()">
-                            <option value="-">-</option>
-                            <option value="मानव">मानव</option>
-                            <option value="चतुष्पाद">चतुष्पाद</option>
-                            <option value="जलचर">जलचर</option>
-                            <option value="वनचर">वनचर</option>
-                            <option value="कीट">कीट</option>
-                        </select>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>तपशील</th>
+                                    <th id="boyNameHeader" style="color: var(--primary-blue);">BOY</th>
+                                    <th id="girlNameHeader" style="color: #c2185b;">GIRL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>लिंग</td><td>पुरुष</td><td>स्त्री</td></tr>
+                                <tr><td>जन्मदिवस</td><td id="boyDate"></td><td id="girlDate"></td></tr>
+                                <tr><td>जन्मवेळ</td><td id="boyTime"></td><td id="girlTime"></td></tr>
+                                <tr><td>जन्मतारीख (वार)</td><td id="boyDay"></td><td id="girlDay"></td></tr>
+                                <tr><td>इष्टकाल</td><td id="boyIsht"></td><td id="girlIsht"></td></tr>
+                                <tr><td>जन्म स्थान</td><td id="boyPlace"></td><td id="girlPlace"></td></tr>
+                                <tr><td>अक्षांश</td><td id="boyLat"></td><td id="girlLat"></td></tr>
+                                <tr><td>रेखांश</td><td id="boyLon"></td><td id="girlLon"></td></tr>
+                                <tr><td>तिथी</td><td id="boyTithi"></td><td id="girlTithi"></td></tr>
+                                <tr><td>हिंदु महिना</td><td id="boyMonth"></td><td id="girlMonth"></td></tr>
+                                <tr><td>योग</td><td id="boyYog"></td><td id="girlYog"></td></tr>
+                                <tr><td>करण</td><td id="boyKaran"></td><td id="girlKaran"></td></tr>
+                                <tr><td>पाया (नक्षत्र आधारित)</td><td id="boyPaya"></td><td id="girlPaya"></td></tr>
+                                <tr><td>दशा भोग्य</td><td id="boyDasha"></td><td id="girlDasha"></td></tr>
+                                <tr><td>लग्न</td><td id="boyLagna"></td><td id="girlLagna"></td></tr>
+                                <tr><td>राशि</td><td id="boyRashi"></td><td id="girlRashi"></td></tr>
+                                <tr><td>नक्षत्र - पद</td><td id="boyNakshatra"></td><td id="girlNakshatra"></td></tr>
+                                <tr><td>मंगळ दोष</td><td id="boyMangal" style="font-weight: bold;"></td><td id="girlMangal" style="font-weight: bold;"></td></tr>
+                            </tbody>
+                        </table>
+
+                        <div class="charts-container">
+                            <div class="chart-box">
+                                <h3 id="boyChartTitle">Boy (लग्न कुंडली)</h3>
+                                <svg class="svg-chart" viewBox="0 0 300 300">
+                                    <rect x="0" y="0" width="300" height="300" class="chart-lines"/>
+                                    <line x1="0" y1="0" x2="300" y2="300" class="chart-lines"/>
+                                    <line x1="300" y1="0" x2="0" y2="300" class="chart-lines"/>
+                                    <polygon points="150,0 300,150 150,300 0,150" class="chart-lines"/>
+                                    <text x="150" y="45" text-anchor="middle" style="font-size: 13px; fill: black; font-weight: bold;">लग्न</text>
+                                    <g id="boyChartNums"></g>
+                                    <g id="boyChartPlanets"></g>
+                                </svg>
+                            </div>
+                            <div class="chart-box">
+                                <h3 id="girlChartTitle" style="color:#c2185b;">Girl (लग्न कुंडली)</h3>
+                                <svg class="svg-chart" viewBox="0 0 300 300">
+                                    <rect x="0" y="0" width="300" height="300" class="chart-lines"/>
+                                    <line x1="0" y1="0" x2="300" y2="300" class="chart-lines"/>
+                                    <line x1="300" y1="0" x2="0" y2="300" class="chart-lines"/>
+                                    <polygon points="150,0 300,150 150,300 0,150" class="chart-lines"/>
+                                    <text x="150" y="45" text-anchor="middle" style="font-size: 13px; fill: black; font-weight: bold;">लग्न</text>
+                                    <g id="girlChartNums"></g>
+                                    <g id="girlChartPlanets"></g>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="section-title">गुण मिळण कोष्टक</div>
+                        <table class="ashtakoot-table">
+                            <thead>
+                                <tr>
+                                    <th>गुण</th>
+                                    <th><span id="boyColName"></span></th>
+                                    <th><span id="girlColName"></span></th>
+                                    <th>अधिकतम प्राप्त अंक</th>
+                                    <th>प्राप्त अंक</th>
+                                    <th>जीवन के क्षेत्र</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>वर्ण</td><td id="bVarna"></td><td id="gVarna"></td><td>1</td>
+                                    <td contenteditable="true" class="editable-cell score-val" id="scoreVarna" oninput="updateTotalScore()">0</td><td>कार्यक्षेत्र</td>
+                                </tr>
+                                <tr>
+                                    <td>वश्य</td>
+                                    <td>
+                                        <select id="bVashya" class="editable-select" onchange="recalcVashyaScore()">
+                                            <option value="-">-</option>
+                                            <option value="मानव">मानव</option>
+                                            <option value="चतुष्पाद">चतुष्पाद</option>
+                                            <option value="जलचर">जलचर</option>
+                                            <option value="वनचर">वनचर</option>
+                                            <option value="कीट">कीट</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="gVashya" class="editable-select" onchange="recalcVashyaScore()">
+                                            <option value="-">-</option>
+                                            <option value="मानव">मानव</option>
+                                            <option value="चतुष्पाद">चतुष्पाद</option>
+                                            <option value="जलचर">जलचर</option>
+                                            <option value="वनचर">वनचर</option>
+                                            <option value="कीट">कीट</option>
+                                        </select>
+                                    </td>
+                                    <td>2</td>
+                                    <td contenteditable="true" class="editable-cell score-val" id="scoreVashya" oninput="updateTotalScore()">0</td><td>आधिपत्य</td>
+                                </tr>
+                                <tr>
+                                    <td>तारा</td><td id="bTara"></td><td id="gTara"></td><td>3</td>
+                                    <td contenteditable="true" class="editable-cell score-val" id="scoreTara" oninput="updateTotalScore()">0</td><td>भाग्य</td>
+                                </tr>
+                                <tr>
+                                    <td>योनी</td><td id="bYoni"></td><td id="gYoni"></td><td>4</td>
+                                    <td contenteditable="true" class="editable-cell score-val" id="scoreYoni" oninput="updateTotalScore()">0</td><td>मानसिकता</td>
+                                </tr>
+                                <tr>
+                                    <td>मैत्री</td><td id="bMaitri"></td><td id="gMaitri"></td><td>5</td>
+                                    <td contenteditable="true" class="editable-cell score-val" id="scoreMaitri" oninput="updateTotalScore()">0</td><td>सामंजस्य</td>
+                                </tr>
+                                <tr>
+                                    <td>गण</td><td id="bGan"></td><td id="gGan"></td><td>6</td>
+                                    <td contenteditable="true" class="editable-cell score-val" id="scoreGan" oninput="updateTotalScore()">0</td><td>गुण</td>
+                                </tr>
+                                <tr>
+                                    <td>भकूट</td><td id="bBhakut"></td><td id="gBhakut"></td><td>7</td>
+                                    <td contenteditable="true" class="editable-cell score-val" id="scoreBhakut" oninput="updateTotalScore()">0</td><td>प्रेम</td>
+                                </tr>
+                                <tr>
+                                    <td>नाड़ी</td><td id="bNaadi"></td><td id="gNaadi"></td><td>8</td>
+                                    <td contenteditable="true" class="editable-cell score-val" id="scoreNaadi" oninput="updateTotalScore()">0</td><td>स्वास्थ्य</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="total-score-box">
+                            कुल प्राप्त अंक: 36 में से <input type="text" class="total-score-input" id="totalScoreInput" value="0.0">
+                        </div>
+
+                        <h3 style="font-size: 18px; color: var(--primary-blue); margin-bottom: 5px;">मंगळ दोष या कुज दोष</h3>
+                        <div class="text-box-container">
+                            <textarea class="editable-textarea" spellcheck="false" id="mangalConclusion"></textarea>
+                        </div>
+
+                        <h3 style="font-size: 18px; color: var(--primary-blue); margin-bottom: 5px;">निष्कर्ष</h3>
+                        <div class="text-box-container" style="background-color: #fafbfc;">
+                            <textarea class="editable-textarea" style="background-color: transparent; font-weight: bold;" spellcheck="false">अष्टकुट जुळणी यशस्वी झाली तर मंगळ दोषाच्या दोन्ही स्तरावरील सुसंगतेत मोठा फरक आहे. विवाहाचा विचार करण्यापूर्वी एक ज्ञानी ज्योतिष तज्ज्ञाचा सल्ला घ्या.</textarea>
+                        </div>
                     </td>
-                    <td>
-                        <select id="gVashya" class="editable-select" onchange="recalcVashyaScore()">
-                            <option value="-">-</option>
-                            <option value="मानव">मानव</option>
-                            <option value="चतुष्पाद">चतुष्पाद</option>
-                            <option value="जलचर">जलचर</option>
-                            <option value="वनचर">वनचर</option>
-                            <option value="कीट">कीट</option>
-                        </select>
-                    </td>
-                    <td>2</td>
-                    <td contenteditable="true" class="editable-cell score-val" id="scoreVashya" oninput="updateTotalScore()">0</td><td>आधिपत्य</td>
-                </tr>
-                <tr>
-                    <td>तारा</td><td id="bTara"></td><td id="gTara"></td><td>3</td>
-                    <td contenteditable="true" class="editable-cell score-val" id="scoreTara" oninput="updateTotalScore()">0</td><td>भाग्य</td>
-                </tr>
-                <tr>
-                    <td>योनी</td><td id="bYoni"></td><td id="gYoni"></td><td>4</td>
-                    <td contenteditable="true" class="editable-cell score-val" id="scoreYoni" oninput="updateTotalScore()">0</td><td>मानसिकता</td>
-                </tr>
-                <tr>
-                    <td>मैत्री</td><td id="bMaitri"></td><td id="gMaitri"></td><td>5</td>
-                    <td contenteditable="true" class="editable-cell score-val" id="scoreMaitri" oninput="updateTotalScore()">0</td><td>सामंजस्य</td>
-                </tr>
-                <tr>
-                    <td>गण</td><td id="bGan"></td><td id="gGan"></td><td>6</td>
-                    <td contenteditable="true" class="editable-cell score-val" id="scoreGan" oninput="updateTotalScore()">0</td><td>गुण</td>
-                </tr>
-                <tr>
-                    <td>भकूट</td><td id="bBhakut"></td><td id="gBhakut"></td><td>7</td>
-                    <td contenteditable="true" class="editable-cell score-val" id="scoreBhakut" oninput="updateTotalScore()">0</td><td>प्रेम</td>
-                </tr>
-                <tr>
-                    <td>नाड़ी</td><td id="bNaadi"></td><td id="gNaadi"></td><td>8</td>
-                    <td contenteditable="true" class="editable-cell score-val" id="scoreNaadi" oninput="updateTotalScore()">0</td><td>स्वास्थ्य</td>
                 </tr>
             </tbody>
+
+            <tfoot>
+                <tr>
+                    <td>
+                        <footer class="page-footer">
+                            Made with ❤️ by <a href="https://orconix.vercel.app/" style="text-decoration:none; color:inherit;">
+                                <img src="{% static 'assets/Logos/OrconixLogo.png' %}" alt="Orconix Logo" class="footer-logo"> 
+                                <span class="orconix-text">Orconix</span>
+                            </a>
+                        </footer>
+                    </td>
+                </tr>
+            </tfoot>
+
         </table>
-
-        <div class="total-score-box">
-            कुल प्राप्त अंक: 36 में से <input type="text" class="total-score-input" id="totalScoreInput" value="0.0">
-        </div>
-
-        <h3 style="font-size: 18px; color: var(--primary-blue); margin-bottom: 5px;">मंगळ दोष या कुज दोष</h3>
-        <div class="text-box-container">
-            <textarea class="editable-textarea" spellcheck="false" id="mangalConclusion"></textarea>
-        </div>
-
-        <h3 style="font-size: 18px; color: var(--primary-blue); margin-bottom: 5px;">निष्कर्ष</h3>
-        <div class="text-box-container" style="background-color: #fafbfc;">
-            <textarea class="editable-textarea" style="background-color: transparent; font-weight: bold;" spellcheck="false">अष्टकुट जुळणी यशस्वी झाली तर मंगळ दोषाच्या दोन्ही स्तरावरील सुसंगतेत मोठा फरक आहे. विवाहाचा विचार करण्यापूर्वी एक ज्ञानी ज्योतिष तज्ज्ञाचा सल्ला घ्या.</textarea>
-        </div>
-
     </div>
 
     <script>
@@ -273,7 +320,6 @@
             "शुक्र": {M: ["बुध", "शनि"], E: ["सूर्य", "चन्द्र"]},
             "शनि": {M: ["बुध", "शुक्र"], E: ["सूर्य", "चन्द्र", "मंगळ"]}
         };
-
 
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
