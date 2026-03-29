@@ -189,28 +189,12 @@
 
     </div>
 
-    <script>
+<script>
+        // Only the absolute essentials needed to draw the charts
         const rashiMap = {"मेष": 1, "वृषभ": 2, "मिथुन": 3, "कर्क": 4, "सिंह": 5, "कन्या": 6, "तुला": 7, "वृश्चिक": 8, "धनु": 9, "मकर": 10, "कुंभ": 11, "मीन": 12};
         const planetsList = ["सूर्य", "चन्द्र", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि", "राहू", "केतु", "अरुण", "वरुण", "यम"];
         const numCoords = [{x: 275, y: 65}, {x: 235, y: 25}, {x: 150, y: 25}, {x: 65, y: 25}, {x: 25, y: 65}, {x: 40, y: 155}, {x: 25, y: 245}, {x: 65, y: 285}, {x: 150, y: 285}, {x: 235, y: 285}, {x: 275, y: 245}, {x: 260, y: 155}];
         const houseCoords = { 1: {x: 150, y: 75}, 2: {x: 75, y: 45}, 3: {x: 45, y: 95}, 4: {x: 80, y: 155}, 5: {x: 45, y: 215}, 6: {x: 75, y: 265}, 7: {x: 150, y: 230}, 8: {x: 225, y: 265}, 9: {x: 255, y: 215}, 10: {x: 220, y: 155}, 11: {x: 255, y: 95}, 12: {x: 225, y: 45} };
-
-        // --- ASTROLOGICAL LOOKUP TABLES FOR MATCHMAKING ---
-        const rashiVashyaMap = {
-            "मेष": "चतुष्पाद", "वृषभ": "चतुष्पाद", "मिथुन": "मानव", "कर्क": "जलचर",
-            "सिंह": "वनचर", "कन्या": "मानव", "तुला": "मानव", "वृश्चिक": "कीट",
-            "धनु": "चतुष्पाद", "मकर": "जलचर", "कुंभ": "मानव", "मीन": "जलचर"
-        };
-
-        const nakshatraList = [
-            "अश्विनी", "भरणी", "कृत्तिका", "रोहिणी", "मृगशीर्ष", "आर्द्रा",
-            "पुनर्वसु", "पुष्य", "आश्लेषा", "मघा", "पूर्वा फाल्गुनी", "उत्तरा फाल्गुनी",
-            "हस्त", "चित्रा", "स्वाती", "विशाखा", "अनुराधा", "ज्येष्ठा",
-            "मूळ", "पूर्वाषाढा", "उत्तराषाढा", "श्रवण", "धनिष्ठा", "शततारका",
-            "पूर्वा भाद्रपदा", "उत्तरा भाद्रपदा", "रेवती"
-        ];
-
-        const taraNames = ["अतिमित्र", "जन्म", "संपत", "विपत", "क्षेम", "प्रत्यरी", "साधक", "वध", "मित्र", "अतिमित्र"];
 
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -223,17 +207,14 @@
                     fetch(`/api/load/${girlId}/`).then(r => r.json())
                 ]).then(([boyRes, girlRes]) => {
                     if(boyRes.status === 'success' && girlRes.status === 'success') {
-                        // 1. Populate standard table & charts
+                        
                         populateData(boyRes.form_data, 'boy');
                         populateData(girlRes.form_data, 'girl');
                         
                         generateChart(boyRes.form_data, 'boy');
                         generateChart(girlRes.form_data, 'girl');
 
-                        // 2. Calculate dynamic matching properties (Vashya & Tara)
-                        calculateMatchProperties(boyRes.form_data, girlRes.form_data);
-
-                        // 3. Auto-generate Mangal Dosh text
+                        // Auto-generate Mangal Dosh text based on DB flags
                         const bName = boyRes.form_data.clientName ? boyRes.form_data.clientName.split(" ")[0].toUpperCase() : "BOY";
                         const gName = girlRes.form_data.clientName ? girlRes.form_data.clientName.split(" ")[0].toUpperCase() : "GIRL";
                         const bMangal = boyRes.form_data.mangalDosh ? "मांगलिक आहे" : "मांगलिक नाही";
@@ -248,7 +229,16 @@
             }
         });
 
-        function extractVal(data, key) { return data.dynamicControls && data.dynamicControls[key] ? data.dynamicControls[key] : "-"; }
+        // Smart extractor: Checks dynamicControls first, then falls back to root data
+        function extractVal(data, key) { 
+            if (data && data.dynamicControls && data.dynamicControls[key] !== undefined && data.dynamicControls[key] !== "") {
+                return data.dynamicControls[key];
+            }
+            if (data && data[key] !== undefined && data[key] !== "") {
+                return data[key];
+            }
+            return "-"; 
+        }
         function cleanRashi(r) { return (r && r.includes(" ")) ? r.split(" ")[1] : r; }
 
         function populateData(data, prefix) {
@@ -272,7 +262,9 @@
             document.getElementById(`${prefix}Paya`).textContent = extractVal(data, 'NakshtraPaya');
             document.getElementById(`${prefix}Dasha`).textContent = `${data.bhogyaPlanet} ${data.bhogyaY}y ${data.bhogyaM}m ${data.bhogyaD}d`;
             document.getElementById(`${prefix}Lagna`).textContent = extractVal(data, 'Lagna');
-            document.getElementById(`${prefix}Rashi`).textContent = cleanRashi(extractVal(data, 'Rashi'));
+            
+            const rashiRaw = extractVal(data, 'Rashi');
+            document.getElementById(`${prefix}Rashi`).textContent = cleanRashi(rashiRaw);
             document.getElementById(`${prefix}Nakshatra`).textContent = extractVal(data, 'NakshatraPada');
             
             const isMangal = data.mangalDosh;
@@ -280,52 +272,26 @@
             mangalEl.textContent = isMangal ? "होय (Yes)" : "नाही (No)";
             mangalEl.style.color = isMangal ? "#dc3545" : "inherit";
 
-            // Map Direct Ashtakoot Database Properties
-            document.getElementById(`${prefix.charAt(0)}Varna`).textContent = extractVal(data, 'Varna');
-            document.getElementById(`${prefix.charAt(0)}Yoni`).textContent = extractVal(data, 'Yoni');
-            document.getElementById(`${prefix.charAt(0)}Gan`).textContent = extractVal(data, 'Gan');
-            document.getElementById(`${prefix.charAt(0)}Naadi`).textContent = extractVal(data, 'Naadi');
-            document.getElementById(`${prefix.charAt(0)}Bhakut`).textContent = cleanRashi(extractVal(data, 'Rashi'));
-            document.getElementById(`${prefix.charAt(0)}Maitri`).textContent = extractVal(data, 'RashiSwami');
-        }
-
-        function calculateMatchProperties(boyData, girlData) {
-            // 1. Calculate Vashya (Based on Rashi)
-            const bRashi = cleanRashi(extractVal(boyData, 'Rashi'));
-            const gRashi = cleanRashi(extractVal(girlData, 'Rashi'));
+            // --- FETCH PURELY FROM DATABASE ---
+            const p = prefix.charAt(0); // gets 'b' or 'g'
+            document.getElementById(`${p}Varna`).textContent = extractVal(data, 'Varna');
+            document.getElementById(`${p}Vashya`).textContent = extractVal(data, 'Vashya');
+            document.getElementById(`${p}Tara`).textContent = extractVal(data, 'Tara');
+            document.getElementById(`${p}Yoni`).textContent = extractVal(data, 'Yoni');
             
-            document.getElementById('bVashya').textContent = rashiVashyaMap[bRashi] || "-";
-            document.getElementById('gVashya').textContent = rashiVashyaMap[gRashi] || "-";
-
-            // 2. Calculate Tara (Based on Nakshatra Distance)
-            const bNakFull = extractVal(boyData, 'NakshatraPada');
-            const gNakFull = extractVal(girlData, 'NakshatraPada');
+            // Maitri is often saved as RashiSwami in the main editor. Fallback included just in case.
+            let maitriVal = extractVal(data, 'Maitri');
+            if (maitriVal === "-") maitriVal = extractVal(data, 'RashiSwami');
+            document.getElementById(`${p}Maitri`).textContent = maitriVal;
             
-            if (bNakFull !== "-" && gNakFull !== "-") {
-                const bNak = bNakFull.split(',')[0].trim();
-                const gNak = gNakFull.split(',')[0].trim();
-
-                const bIdx = nakshatraList.indexOf(bNak) + 1; // 1-based index
-                const gIdx = nakshatraList.indexOf(gNak) + 1; // 1-based index
-
-                if (bIdx > 0 && gIdx > 0) {
-                    // Boy's Tara (count from Boy to Girl)
-                    let boyTaraIdx = (gIdx - bIdx) % 9;
-                    if (boyTaraIdx < 0) boyTaraIdx += 9;
-                    boyTaraIdx += 1;
-
-                    // Girl's Tara (count from Girl to Boy)
-                    let girlTaraIdx = (bIdx - gIdx) % 9;
-                    if (girlTaraIdx < 0) girlTaraIdx += 9;
-                    girlTaraIdx += 1;
-
-                    document.getElementById('bTara').textContent = taraNames[boyTaraIdx];
-                    document.getElementById('gTara').textContent = taraNames[girlTaraIdx];
-                } else {
-                    document.getElementById('bTara').textContent = "-";
-                    document.getElementById('gTara').textContent = "-";
-                }
-            }
+            document.getElementById(`${p}Gan`).textContent = extractVal(data, 'Gan');
+            
+            // Bhakut is exactly the Rashi value. Fallback included just in case.
+            let bhakutVal = extractVal(data, 'Bhakut');
+            if (bhakutVal === "-") bhakutVal = cleanRashi(rashiRaw);
+            document.getElementById(`${p}Bhakut`).textContent = bhakutVal;
+            
+            document.getElementById(`${p}Naadi`).textContent = extractVal(data, 'Naadi');
         }
 
         function generateChart(data, prefix) {
