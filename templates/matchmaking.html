@@ -1,0 +1,344 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jyotish Karyalay - Match Making</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0A2E4B;
+            --accent-green: #187A22;
+            --border-color: #D3D9DE;
+            --bg-color: #F8F9FA;
+            --text-dark: #212529;
+            --text-muted: #6C757D;
+        }
+
+        body { font-family: 'Mukta', 'Noto Sans Devanagari', sans-serif; margin: 0; padding: 40px; background-color: #e9ecef; color: var(--text-dark); -webkit-print-color-adjust: exact; print-color-adjust: exact; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;}
+        
+        .page-container { width: 850px; background: white; padding: 40px 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 8px; box-sizing: border-box; }
+        
+        /* HEADER */
+        .page-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary-blue); padding-bottom: 15px; margin-bottom: 20px; }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .logo { height: 75px; width: auto; object-fit: contain; }
+        .logo-area { font-size: 22px; font-weight: 700; color: rgb(255, 136, 0); margin-bottom: 2px; }
+        .contact-details { font-size: 15px; line-height: 1.4; }
+        .contact-details strong { color: var(--primary-blue); }
+        .main-heading { font-size: 26px; color: var(--primary-blue); margin: 0; text-align: right;}
+        
+        /* DETAILS TABLE (Side by Side) */
+        .comparison-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; border: 1px solid var(--border-color); }
+        .comparison-table th, .comparison-table td { border: 1px solid var(--border-color); padding: 8px 12px; font-size: 15px; }
+        .comparison-table th { background-color: #fafbfc; color: var(--primary-blue); font-weight: bold; text-align: center; font-size: 18px; text-transform: uppercase;}
+        .comparison-table td:first-child { width: 30%; background-color: #fafbfc; font-weight: 600; color: var(--text-muted); }
+        .comparison-table td:nth-child(2), .comparison-table td:nth-child(3) { width: 35%; text-align: center; font-weight: 600; }
+
+        /* CHARTS SECTION */
+        .charts-container { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 30px; page-break-inside: avoid; }
+        .chart-box { flex: 1; text-align: center; border: 1px solid var(--border-color); padding: 15px; border-radius: 6px; }
+        .chart-box h3 { margin: 0 0 15px 0; color: var(--primary-blue); font-size: 20px;}
+        .svg-chart { width: 100%; height: auto; max-width: 350px; display: inline-block; }
+        .chart-lines { stroke: #a0aab5; stroke-width: 1; fill: none; }
+        .chart-num { font-size: 11px; fill: #6C757D; font-weight: bold; }
+        .chart-planet { font-size: 13px; fill: var(--primary-blue); font-weight: 600; }
+
+        /* ASHTAKOOT TABLE */
+        .section-title { font-size: 20px; color: var(--primary-blue); margin-bottom: 10px; font-weight: bold; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; page-break-before: always;}
+        .ashtakoot-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .ashtakoot-table th, .ashtakoot-table td { border: 1px solid var(--border-color); padding: 8px 12px; font-size: 15px; text-align: center; }
+        .ashtakoot-table th { background-color: #fafbfc; color: var(--text-dark); }
+        
+        .editable-cell { background-color: #fdfae8; outline: none; font-weight: bold; color: var(--accent-green); cursor: text; transition: background 0.2s;}
+        .editable-cell:focus { background-color: #fff; box-shadow: inset 0 0 0 2px var(--primary-blue); }
+
+        .total-score-box { background-color: #f8f9fa; padding: 15px; font-size: 18px; font-weight: bold; border: 1px solid var(--border-color); margin-bottom: 30px; }
+        .total-score-input { border: none; background: transparent; font-size: 18px; font-weight: bold; color: var(--accent-green); outline: none; width: 60px; border-bottom: 1px dashed var(--primary-blue);}
+
+        /* TEXT BOXES */
+        .text-box-container { border: 1px solid var(--border-color); padding: 15px; margin-bottom: 20px; }
+        .editable-textarea { width: 100%; min-height: 60px; font-size: 16px; border: none; outline: none; font-family: inherit; resize: vertical; line-height: 1.5;}
+
+        /* PRINT STYLES */
+        @media print {
+            @page { size: A4 portrait; margin: 10mm; }
+            body { background: white; padding: 0; }
+            .page-container { box-shadow: none; padding: 0; width: 100%; }
+            .editable-cell, .total-score-input { background: transparent; border-bottom: none; }
+            .print-btn { display: none; }
+        }
+        
+        .print-btn { position: fixed; bottom: 30px; right: 30px; background-color: var(--accent-orange); color: white; border: none; padding: 15px 25px; font-size: 18px; font-weight: bold; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+
+    <button class="print-btn" onclick="window.print()">Print PDF</button>
+
+    <div class="page-container">
+        <header class="page-header">
+            <div class="header-left">
+                <img class="logo" src="{% static 'assets/Logos/SwaminiLogo.png' %}" alt="Logo">
+                <div class="header-info">
+                    <div class="logo-area">स्वामिनी ज्योतिष कार्यालय</div>
+                    <div class="contact-details">
+                        <strong>ज्योतिष: योगेश उंबरकर</strong><br>
+                        <strong>मो.:</strong> 9850254914 | <strong>ईमेल:</strong> swaminijyotishkendra@gmail.com
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <h1 class="main-heading">गुण मिलान<br>(Match Making)</h1>
+            </div>
+        </header>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>तपशील</th>
+                    <th id="boyNameHeader" style="color: var(--primary-blue);">YOGESH</th>
+                    <th id="girlNameHeader" style="color: #c2185b;">HEMLATA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>लिंग</td><td>पुरुष</td><td>स्त्री</td></tr>
+                <tr><td>जन्मदिवस</td><td id="boyDate"></td><td id="girlDate"></td></tr>
+                <tr><td>जन्मवेळ</td><td id="boyTime"></td><td id="girlTime"></td></tr>
+                <tr><td>जन्मतारीख (वार)</td><td id="boyDay"></td><td id="girlDay"></td></tr>
+                <tr><td>इष्टकाल</td><td id="boyIsht"></td><td id="girlIsht"></td></tr>
+                <tr><td>जन्म स्थान</td><td id="boyPlace"></td><td id="girlPlace"></td></tr>
+                <tr><td>अक्षांश</td><td id="boyLat"></td><td id="girlLat"></td></tr>
+                <tr><td>रेखांश</td><td id="boyLon"></td><td id="girlLon"></td></tr>
+                <tr><td>तिथी</td><td id="boyTithi"></td><td id="girlTithi"></td></tr>
+                <tr><td>हिंदु महिना</td><td id="boyMonth"></td><td id="girlMonth"></td></tr>
+                <tr><td>योग</td><td id="boyYog"></td><td id="girlYog"></td></tr>
+                <tr><td>करण</td><td id="boyKaran"></td><td id="girlKaran"></td></tr>
+                <tr><td>पाया (नक्षत्र आधारित)</td><td id="boyPaya"></td><td id="girlPaya"></td></tr>
+                <tr><td>दशा भोग्य</td><td id="boyDasha"></td><td id="girlDasha"></td></tr>
+                <tr><td>लग्न</td><td id="boyLagna"></td><td id="girlLagna"></td></tr>
+                <tr><td>राशि</td><td id="boyRashi"></td><td id="girlRashi"></td></tr>
+                <tr><td>नक्षत्र - पद</td><td id="boyNakshatra"></td><td id="girlNakshatra"></td></tr>
+                <tr><td>मंगळ दोष</td><td id="boyMangal" style="font-weight: bold;"></td><td id="girlMangal" style="font-weight: bold;"></td></tr>
+            </tbody>
+        </table>
+
+        <div class="charts-container">
+            <div class="chart-box">
+                <h3 id="boyChartTitle">Yogesh (लग्न कुंडली)</h3>
+                <svg class="svg-chart" viewBox="0 0 300 300">
+                    <rect x="0" y="0" width="300" height="300" class="chart-lines"/>
+                    <line x1="0" y1="0" x2="300" y2="300" class="chart-lines"/>
+                    <line x1="300" y1="0" x2="0" y2="300" class="chart-lines"/>
+                    <polygon points="150,0 300,150 150,300 0,150" class="chart-lines"/>
+                    <g id="boyChartNums"></g>
+                    <g id="boyChartPlanets"></g>
+                </svg>
+            </div>
+            <div class="chart-box">
+                <h3 id="girlChartTitle" style="color:#c2185b;">Hemlata (लग्न कुंडली)</h3>
+                <svg class="svg-chart" viewBox="0 0 300 300">
+                    <rect x="0" y="0" width="300" height="300" class="chart-lines"/>
+                    <line x1="0" y1="0" x2="300" y2="300" class="chart-lines"/>
+                    <line x1="300" y1="0" x2="0" y2="300" class="chart-lines"/>
+                    <polygon points="150,0 300,150 150,300 0,150" class="chart-lines"/>
+                    <g id="girlChartNums"></g>
+                    <g id="girlChartPlanets"></g>
+                </svg>
+            </div>
+        </div>
+
+        <div class="section-title">अष्टकूट अंक तालिका</div>
+        <table class="ashtakoot-table">
+            <thead>
+                <tr>
+                    <th>गुण</th>
+                    <th>लडका (<span id="boyColName"></span>)</th>
+                    <th>लडकी (<span id="girlColName"></span>)</th>
+                    <th>अधिकतम प्राप्त अंक</th>
+                    <th>प्राप्त अंक</th>
+                    <th>जीवन के क्षेत्र</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>वर्ण</td><td id="bVarna"></td><td id="gVarna"></td><td>1</td><td contenteditable="true" class="editable-cell">1</td><td>कार्यक्षेत्र</td></tr>
+                <tr><td>वश्य</td><td contenteditable="true">जलचर</td><td contenteditable="true">जलचर</td><td>2</td><td contenteditable="true" class="editable-cell">2</td><td>आधिपत्य</td></tr>
+                <tr><td>तारा</td><td contenteditable="true">अतिमित्र</td><td contenteditable="true">क्षेम</td><td>3</td><td contenteditable="true" class="editable-cell">1.5</td><td>भाग्य</td></tr>
+                <tr><td>योनी</td><td id="bYoni"></td><td id="gYoni"></td><td>4</td><td contenteditable="true" class="editable-cell">3</td><td>मानसिकता</td></tr>
+                <tr><td>मैत्री</td><td id="bMaitri"></td><td id="gMaitri"></td><td>5</td><td contenteditable="true" class="editable-cell">4</td><td>सामंजस्य</td></tr>
+                <tr><td>गण</td><td id="bGan"></td><td id="gGan"></td><td>6</td><td contenteditable="true" class="editable-cell">6</td><td>गुण</td></tr>
+                <tr><td>भकूट</td><td id="bBhakut"></td><td id="gBhakut"></td><td>7</td><td contenteditable="true" class="editable-cell">0</td><td>प्रेम</td></tr>
+                <tr><td>नाड़ी</td><td id="bNaadi"></td><td id="gNaadi"></td><td>8</td><td contenteditable="true" class="editable-cell">8</td><td>स्वास्थ्य</td></tr>
+            </tbody>
+        </table>
+
+        <div class="total-score-box">
+            कुल प्राप्त अंक: 36 में से <input type="text" class="total-score-input" value="25.5">
+        </div>
+
+        <h3 style="font-size: 18px; color: var(--primary-blue); margin-bottom: 5px;">मंगळ दोष या कुज दोष</h3>
+        <div class="text-box-container">
+            <textarea class="editable-textarea" spellcheck="false" id="mangalConclusion">श्री YOGESH मांगलिक आहे आणि सुकन्या HEMLATA मांगलिक नाही आहे.</textarea>
+        </div>
+
+        <h3 style="font-size: 18px; color: var(--primary-blue); margin-bottom: 5px;">निष्कर्ष</h3>
+        <div class="text-box-container" style="background-color: #fafbfc;">
+            <textarea class="editable-textarea" style="background-color: transparent; font-weight: bold;" spellcheck="false">अष्टकुट जुळणी यशस्वी झाली तर मंगळ दोषाच्या दोन्ही स्तरावरील सुसंगतेत मोठा फरक आहे. विवाहाचा विचार करण्यापूर्वी एक ज्ञानी ज्योतिष तज्ज्ञाचा सल्ला घ्या.</textarea>
+        </div>
+
+    </div>
+
+    <script>
+        const rashiMap = {"मेष": 1, "वृषभ": 2, "मिथुन": 3, "कर्क": 4, "सिंह": 5, "कन्या": 6, "तुला": 7, "वृश्चिक": 8, "धनु": 9, "मकर": 10, "कुंभ": 11, "मीन": 12};
+        const planetsList = ["सूर्य", "चन्द्र", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि", "राहू", "केतु", "अरुण", "वरुण", "यम"];
+        const numCoords = [{x: 275, y: 65}, {x: 235, y: 25}, {x: 150, y: 25}, {x: 65, y: 25}, {x: 25, y: 65}, {x: 40, y: 155}, {x: 25, y: 245}, {x: 65, y: 285}, {x: 150, y: 285}, {x: 235, y: 285}, {x: 275, y: 245}, {x: 260, y: 155}];
+        const houseCoords = { 1: {x: 150, y: 75}, 2: {x: 75, y: 45}, 3: {x: 45, y: 95}, 4: {x: 80, y: 155}, 5: {x: 45, y: 215}, 6: {x: 75, y: 265}, 7: {x: 150, y: 230}, 8: {x: 225, y: 265}, 9: {x: 255, y: 215}, 10: {x: 220, y: 155}, 11: {x: 255, y: 95}, 12: {x: 225, y: 45} };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const boyId = urlParams.get('boy');
+            const girlId = urlParams.get('girl');
+
+            if(boyId && girlId) {
+                Promise.all([
+                    fetch(`/api/load/${boyId}/`).then(r => r.json()),
+                    fetch(`/api/load/${girlId}/`).then(r => r.json())
+                ]).then(([boyRes, girlRes]) => {
+                    if(boyRes.status === 'success' && girlRes.status === 'success') {
+                        populateData(boyRes.form_data, 'boy');
+                        populateData(girlRes.form_data, 'girl');
+                        
+                        generateChart(boyRes.form_data, 'boy');
+                        generateChart(girlRes.form_data, 'girl');
+
+                        // Auto-generate Mangal Dosh text
+                        const bName = boyRes.form_data.clientName.split(" ")[0].toUpperCase();
+                        const gName = girlRes.form_data.clientName.split(" ")[0].toUpperCase();
+                        const bMangal = boyRes.form_data.mangalDosh ? "मांगलिक आहे" : "मांगलिक नाही";
+                        const gMangal = girlRes.form_data.mangalDosh ? "मांगलिक आहे" : "मांगलिक नाही";
+                        document.getElementById('mangalConclusion').value = `श्री ${bName} ${bMangal} आणि सुकन्या ${gName} ${gMangal} आहे.`;
+                    } else {
+                        alert("Error loading Kundali data.");
+                    }
+                });
+            } else {
+                alert("Invalid parameters. Please select Kundalis from Dashboard.");
+            }
+        });
+
+        function extractVal(data, key) { return data.dynamicControls && data.dynamicControls[key] ? data.dynamicControls[key] : "-"; }
+        function cleanRashi(r) { return (r && r.includes(" ")) ? r.split(" ")[1] : r; }
+
+        function populateData(data, prefix) {
+            const name = data.clientName ? data.clientName.split(" ")[0].toUpperCase() : "UNKNOWN";
+            document.getElementById(`${prefix}NameHeader`).textContent = name;
+            document.getElementById(`${prefix}ChartTitle`).textContent = `${name} (लग्न कुंडली)`;
+            if(prefix === 'boy') document.getElementById('boyColName').textContent = name;
+            if(prefix === 'girl') document.getElementById('girlColName').textContent = name;
+
+            document.getElementById(`${prefix}Date`).textContent = data.clientDate || "-";
+            document.getElementById(`${prefix}Time`).textContent = data.clientTime || "-";
+            document.getElementById(`${prefix}Day`).textContent = extractVal(data, 'PanchangDay');
+            document.getElementById(`${prefix}Isht`).textContent = `${data.ishtY}:${data.ishtM}:${data.ishtD}`;
+            document.getElementById(`${prefix}Place`).textContent = data.clientPlace || "-";
+            document.getElementById(`${prefix}Lat`).textContent = data.clientLat || "-";
+            document.getElementById(`${prefix}Lon`).textContent = data.clientLon || "-";
+            document.getElementById(`${prefix}Tithi`).textContent = extractVal(data, 'Tithi');
+            document.getElementById(`${prefix}Month`).textContent = data.isAdhik ? data.adhikMonth : extractVal(data, 'PanchangMonth');
+            document.getElementById(`${prefix}Yog`).textContent = extractVal(data, 'Yog');
+            document.getElementById(`${prefix}Karan`).textContent = extractVal(data, 'Karan');
+            document.getElementById(`${prefix}Paya`).textContent = extractVal(data, 'NakshtraPaya');
+            document.getElementById(`${prefix}Dasha`).textContent = `${data.bhogyaPlanet} ${data.bhogyaY}y ${data.bhogyaM}m ${data.bhogyaD}d`;
+            document.getElementById(`${prefix}Lagna`).textContent = extractVal(data, 'Lagna');
+            document.getElementById(`${prefix}Rashi`).textContent = cleanRashi(extractVal(data, 'Rashi'));
+            document.getElementById(`${prefix}Nakshatra`).textContent = extractVal(data, 'NakshatraPada');
+            
+            const isMangal = data.mangalDosh;
+            const mangalEl = document.getElementById(`${prefix}Mangal`);
+            mangalEl.textContent = isMangal ? "होय (Yes)" : "नाही (No)";
+            mangalEl.style.color = isMangal ? "#dc3545" : "inherit";
+
+            // Ashtakoot Mapping
+            document.getElementById(`${prefix.charAt(0)}Varna`).textContent = extractVal(data, 'Varna');
+            document.getElementById(`${prefix.charAt(0)}Yoni`).textContent = extractVal(data, 'Yoni');
+            document.getElementById(`${prefix.charAt(0)}Gan`).textContent = extractVal(data, 'Gan');
+            document.getElementById(`${prefix.charAt(0)}Naadi`).textContent = extractVal(data, 'Naadi');
+            document.getElementById(`${prefix.charAt(0)}Bhakut`).textContent = cleanRashi(extractVal(data, 'Rashi'));
+            document.getElementById(`${prefix.charAt(0)}Maitri`).textContent = extractVal(data, 'RashiSwami');
+        }
+
+        function generateChart(data, prefix) {
+            const lagnaName = extractVal(data, 'Lagna');
+            let lagnaNum = rashiMap[lagnaName] || 1;
+            
+            const numsGroup = document.getElementById(`${prefix}ChartNums`);
+            numsGroup.innerHTML = "";
+            for(let i=0; i<12; i++) {
+                let num = lagnaNum + i;
+                if(num > 12) num -= 12;
+                // Determine target coordinate index (1st house is idx 2, goes anti-clockwise)
+                let posIdx = (2 - i + 12) % 12;
+                let t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                t.setAttribute("x", numCoords[posIdx].x);
+                t.setAttribute("y", numCoords[posIdx].y);
+                t.setAttribute("text-anchor", "middle");
+                t.setAttribute("class", "chart-num");
+                t.textContent = num;
+                numsGroup.appendChild(t);
+            }
+
+            let houses = { 1:[], 2:[], 3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[], 10:[], 11:[], 12:[] };
+            
+            planetsList.forEach(pId => {
+                let rSelect = extractVal(data, `Rashi_${pId}`);
+                if(rSelect !== "-") {
+                    let pRashi = rSelect.split(" ")[1] || rSelect;
+                    if(pRashi === "कुम्भ") pRashi = "कुंभ";
+                    let pNum = rashiMap[pRashi];
+                    if(pNum) {
+                        let houseNum = (pNum - lagnaNum + 12) % 12 + 1;
+                        let suffix = "";
+                        if(data.vakri && data.vakri.includes(pId)) suffix += "*";
+                        if(data.asta && data.asta.includes(pId)) suffix += "^";
+                        houses[houseNum].push(pId + suffix);
+                    }
+                }
+            });
+
+            const pGroup = document.getElementById(`${prefix}ChartPlanets`);
+            pGroup.innerHTML = "";
+            for(let h=1; h<=12; h++) {
+                if(houses[h].length > 0) {
+                    let itemsPerLine = houses[h].length > 4 ? 3 : 2;
+                    let fontSize = houses[h].length > 4 ? 10 : 12;
+                    let lineHeight = houses[h].length > 4 ? 12 : 14;
+
+                    let lines = [];
+                    for(let i=0; i<houses[h].length; i+=itemsPerLine) {
+                        lines.push(houses[h].slice(i, i+itemsPerLine).join(' '));
+                    }
+                    
+                    let yOffset = ((lines.length - 1) * (lineHeight / 2));
+                    let textEl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    textEl.setAttribute("x", houseCoords[h].x);
+                    textEl.setAttribute("y", houseCoords[h].y - yOffset); 
+                    textEl.setAttribute("text-anchor", "middle");
+                    textEl.setAttribute("class", "chart-planet");
+                    textEl.style.fontSize = fontSize + "px";
+                    if(prefix === 'girl') textEl.style.fill = "#c2185b";
+                    
+                    lines.forEach((line, index) => {
+                        let tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+                        tspan.setAttribute("x", houseCoords[h].x);
+                        if(index > 0) tspan.setAttribute("dy", lineHeight); 
+                        tspan.textContent = line;
+                        textEl.appendChild(tspan);
+                    });
+                    pGroup.appendChild(textEl);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

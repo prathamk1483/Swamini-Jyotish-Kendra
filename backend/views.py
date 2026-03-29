@@ -217,3 +217,8 @@ def api_load_all(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
             
     return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=400)
+
+@manual_login_required
+def matchmaking_view(request):
+    # Renders the matchmaking page. The JS will pull the specific IDs from the URL.
+    return render(request, 'matchmaking.html')

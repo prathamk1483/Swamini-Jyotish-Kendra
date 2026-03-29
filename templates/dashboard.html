@@ -36,7 +36,6 @@
             border-radius: 8px; 
         }
         
-        /* --- HEADER --- */
         .dashboard-header { 
             display: flex; 
             justify-content: space-between; 
@@ -45,126 +44,47 @@
             padding-bottom: 20px; 
             margin-bottom: 20px; 
         }
-        .header-title { 
-            font-size: 28px; 
-            color: var(--primary-blue); 
-            margin: 0; 
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-        }
-        .header-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        .btn-create { 
-            background-color: var(--accent-green); 
-            color: white; 
-            padding: 10px 20px; 
-            text-decoration: none; 
-            border-radius: 6px; 
-            font-weight: 600; 
-            font-family: 'Poppins', sans-serif;
-            transition: background-color 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+        .header-title { font-size: 28px; color: var(--primary-blue); margin: 0; font-weight: 700;}
+        .header-actions { display: flex; gap: 15px; align-items: center; }
+        
+        .btn-create { background-color: var(--accent-green); color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background-color 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;}
         .btn-create:hover { background-color: #146c1c; }
         
-        .btn-logout {
-            background-color: transparent;
-            color: var(--text-muted);
-            padding: 9px 18px;
-            text-decoration: none;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.2s ease-in-out;
-        }
-        .btn-logout:hover {
-            background-color: #fff5f5;
-            color: #dc3545;
-            border-color: #dc3545;
-        }
+        .btn-match { background-color: var(--accent-orange); color: white; padding: 10px 20px; text-decoration: none; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-family: inherit; font-size: 16px;}
+        .btn-match:hover { background-color: #d66415; }
 
-        /* --- SEARCH BAR --- */
-        .search-container {
-            margin-bottom: 20px;
-            display: flex;
-        }
-        .search-input {
-            width: 100%;
-            padding: 12px 15px;
-            font-size: 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background-color: #fafbfc;
-            font-family: inherit;
-            transition: all 0.2s ease-in-out;
-        }
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            background-color: white;
-            box-shadow: 0 0 0 3px rgba(10, 46, 75, 0.1);
-        }
+        .btn-logout { background-color: transparent; color: var(--text-muted); padding: 9px 18px; text-decoration: none; border: 1px solid var(--border-color); border-radius: 6px; font-weight: 600; transition: all 0.2s ease-in-out; }
+        .btn-logout:hover { background-color: #fff5f5; color: #dc3545; border-color: #dc3545; }
 
-        /* --- TABLE --- */
-        .record-table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            font-size: 16px; 
-        }
-        .record-table th, .record-table td { 
-            padding: 15px; 
-            text-align: left; 
-            border-bottom: 1px solid var(--border-color); 
-        }
-        .record-table th { 
-            background-color: #fafbfc; 
-            color: var(--primary-blue); 
-            font-weight: 600; 
-            font-family: 'Poppins', sans-serif;
-        }
+        .search-container { margin-bottom: 20px; display: flex; }
+        .search-input { width: 100%; padding: 12px 15px; font-size: 16px; border: 1px solid var(--border-color); border-radius: 6px; background-color: #fafbfc; font-family: inherit; }
+        .search-input:focus { outline: none; border-color: var(--primary-blue); background-color: white; box-shadow: 0 0 0 3px rgba(10, 46, 75, 0.1); }
+
+        .record-table { width: 100%; border-collapse: collapse; font-size: 16px; }
+        .record-table th, .record-table td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .record-table th { background-color: #fafbfc; color: var(--primary-blue); font-weight: 600; }
         .record-table tr:hover { background-color: #f8f9fa; }
-        
         .client-name { font-weight: 700; font-size: 18px; color: var(--text-dark); }
         
-        .status-badge { 
-            padding: 4px 10px; 
-            border-radius: 20px; 
-            font-size: 13px; 
-            font-weight: 600; 
-        }
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; }
         .status-draft { background-color: #fff3cd; color: var(--accent-orange); border: 1px solid #ffeeba; }
         .status-completed { background-color: #d4edda; color: var(--accent-green); border: 1px solid #c3e6cb; }
 
-        /* --- ACTION BUTTONS --- */
         .actions { display: flex; gap: 10px; }
-        .btn-edit { 
-            background-color: var(--primary-blue); 
-            color: white; 
-            padding: 6px 14px; 
-            text-decoration: none; 
-            border-radius: 4px; 
-            font-size: 14px;
-            transition: opacity 0.2s;
-        }
-        .btn-edit:hover { opacity: 0.9; }
-        
-        .btn-delete { 
-            background-color: #dc3545; 
-            color: white; 
-            padding: 6px 14px; 
-            text-decoration: none; 
-            border-radius: 4px; 
-            font-size: 14px;
-            transition: opacity 0.2s;
-        }
-        .btn-delete:hover { opacity: 0.9; }
-
+        .btn-edit, .btn-delete { color: white; padding: 6px 14px; text-decoration: none; border-radius: 4px; font-size: 14px; transition: opacity 0.2s; }
+        .btn-edit { background-color: var(--primary-blue); }
+        .btn-delete { background-color: #dc3545; }
+        .btn-edit:hover, .btn-delete:hover { opacity: 0.9; }
         .empty-state { text-align: center; padding: 40px; color: var(--text-muted); font-size: 18px; }
 
+        /* --- MODAL STYLES --- */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 100; }
+        .modal-content { background: white; width: 450px; padding: 30px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .modal-title { margin-top: 0; color: var(--primary-blue); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px;}
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: var(--text-dark); }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
+        .btn-cancel { padding: 10px 15px; background: white; border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -173,7 +93,8 @@
         <div class="dashboard-header">
             <h1 class="header-title">Kundali Dashboard</h1>
             <div class="header-actions">
-                <a href="{% url 'new_kundali' %}" class="btn-create">+ Create New Kundali</a>
+                <button class="btn-match" onclick="openMatchModal()">♥ Match Making</button>
+                <a href="{% url 'new_kundali' %}" class="btn-create">+ Create New</a>
                 <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
             </div>
         </div>
@@ -192,38 +113,47 @@
                 </tr>
             </thead>
             <tbody id="tableBody">
-                <tr>
-                    <td colspan="4" class="empty-state">
-                        Loading Kundali records...
-                    </td>
-                </tr>
+                <tr><td colspan="4" class="empty-state">Loading Kundali records...</td></tr>
             </tbody>
         </table>
     </div>
 
+    <div class="modal-overlay" id="matchModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Select Kundalis for Match</h2>
+            
+            <div class="form-group">
+                <label>Boy's Kundali (मुलगा):</label>
+                <input type="text" list="kundaliDatalist" id="boySelect" class="search-input" placeholder="Search and select...">
+            </div>
+            
+            <div class="form-group">
+                <label>Girl's Kundali (मुलगी):</label>
+                <input type="text" list="kundaliDatalist" id="girlSelect" class="search-input" placeholder="Search and select...">
+            </div>
+
+            <datalist id="kundaliDatalist"></datalist>
+
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeMatchModal()">Cancel</button>
+                <button class="btn-match" onclick="generateMatch()">Generate Match</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Array to hold all fetched records so we can filter them locally
         let allRecords = [];
 
         document.addEventListener('DOMContentLoaded', function() {
             fetchRecords();
 
-            // Setup search listener
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('input', function(e) {
+            document.getElementById('searchInput').addEventListener('input', function(e) {
                 const searchTerm = e.target.value.toLowerCase().trim();
-                
                 if (!searchTerm) {
-                    renderTable(allRecords); // If search is empty, show all
+                    renderTable(allRecords);
                     return;
                 }
-
-                // Filter records based on Client_Name matching the search term
-                const filteredRecords = allRecords.filter(record => {
-                    const clientName = record.Client_Name ? record.Client_Name.toLowerCase() : '';
-                    return clientName.includes(searchTerm);
-                });
-
+                const filteredRecords = allRecords.filter(r => (r.Client_Name || '').toLowerCase().includes(searchTerm));
                 renderTable(filteredRecords, searchTerm);
             });
         });
@@ -235,47 +165,73 @@
                     if (data.status === 'success') {
                         allRecords = data.records || [];
                         renderTable(allRecords);
+                        populateDatalist(); // Populate the Match Making dropdowns
                     } else {
-                        const tbody = document.getElementById('tableBody');
-                        tbody.innerHTML = `<tr><td colspan="4" class="empty-state" style="color: #dc3545;">Error loading records: ${data.message}</td></tr>`;
+                        document.getElementById('tableBody').innerHTML = `<tr><td colspan="4" class="empty-state" style="color: #dc3545;">Error: ${data.message}</td></tr>`;
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('tableBody').innerHTML = `<tr><td colspan="4" class="empty-state" style="color: #dc3545;">Network error occurred while fetching data.</td></tr>`;
                 });
         }
 
-        // Function to render the table given an array of records
         function renderTable(records, currentSearch = '') {
             const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = ''; // Clear current rows
-
+            tbody.innerHTML = '';
             if (records.length === 0) {
-                if (currentSearch) {
-                    tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No clients found matching "<strong>${currentSearch}</strong>"</td></tr>`;
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No clients found in the database. Click "Create New Kundali" to start.</td></tr>`;
-                }
+                tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No clients found.</td></tr>`;
                 return;
             }
-
             records.forEach(record => {
                 const statusClass = record.Status === 'Completed' ? 'status-completed' : 'status-draft';
-                const statusText = record.Status || 'Draft';
-                
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><span class="client-name">${record.Client_Name || 'Unknown Client'}</span></td>
-                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td><span class="client-name">${record.Client_Name || 'Unknown'}</span></td>
+                    <td><span class="status-badge ${statusClass}">${record.Status || 'Draft'}</span></td>
                     <td style="color: var(--text-muted); font-size: 14px;">${record.Last_Updated || '-'}</td>
                     <td class="actions">
-                        <a href="/editor/${record.Record_ID}/" class="btn-edit">Open / Edit</a>
-                        <a href="/delete/${record.Record_ID}/" class="btn-delete" onclick="return confirm('Are you sure you want to delete this Kundali?');">Delete</a>
+                        <a href="/editor/${record.Record_ID}/" class="btn-edit">Open</a>
+                        <a href="/delete/${record.Record_ID}/" class="btn-delete" onclick="return confirm('Are you sure?');">Delete</a>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        // --- Match Making Logic ---
+        function populateDatalist() {
+            const datalist = document.getElementById('kundaliDatalist');
+            datalist.innerHTML = '';
+            allRecords.forEach(record => {
+                const option = document.createElement('option');
+                // The value is what goes into the input, we append ID for extraction
+                option.value = `${record.Client_Name} [${record.Record_ID}]`;
+                datalist.appendChild(option);
+            });
+        }
+
+        function openMatchModal() {
+            document.getElementById('matchModal').style.display = 'flex';
+        }
+        function closeMatchModal() {
+            document.getElementById('matchModal').style.display = 'none';
+        }
+
+        function extractId(inputValue) {
+            const match = inputValue.match(/\[(.*?)\]/);
+            return match ? match[1] : null;
+        }
+
+        function generateMatch() {
+            const boyVal = document.getElementById('boySelect').value;
+            const girlVal = document.getElementById('girlSelect').value;
+            
+            const boyId = extractId(boyVal);
+            const girlId = extractId(girlVal);
+
+            if(!boyId || !girlId) {
+                alert("Please select valid Kundalis from the dropdown list.");
+                return;
+            }
+            // Navigate to the new matchmaking page passing IDs via URL
+            window.location.href = `/matchmaking/?boy=${boyId}&girl=${girlId}`;
         }
     </script>
 </body>
