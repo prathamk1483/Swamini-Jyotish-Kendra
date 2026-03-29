@@ -84,7 +84,7 @@
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: var(--text-dark); }
         .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
-        .btn-cancel { padding: 10px 15px; background: white; border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer; font-weight: 600; }
+        .btn-cancel { padding: 10px 15px; background: white; border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer; font-weight: 600; font-family: inherit;}
     </style>
 </head>
 <body>
@@ -124,15 +124,17 @@
             
             <div class="form-group">
                 <label>Boy's Kundali (मुलगा):</label>
-                <input type="text" list="kundaliDatalist" id="boySelect" class="search-input" placeholder="Search and select...">
+                <select id="boySelect" class="search-input">
+                    <option value="">-- Select Kundali --</option>
+                </select>
             </div>
             
             <div class="form-group">
                 <label>Girl's Kundali (मुलगी):</label>
-                <input type="text" list="kundaliDatalist" id="girlSelect" class="search-input" placeholder="Search and select...">
+                <select id="girlSelect" class="search-input">
+                    <option value="">-- Select Kundali --</option>
+                </select>
             </div>
-
-            <datalist id="kundaliDatalist"></datalist>
 
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeMatchModal()">Cancel</button>
@@ -165,7 +167,7 @@
                     if (data.status === 'success') {
                         allRecords = data.records || [];
                         renderTable(allRecords);
-                        populateDatalist(); // Populate the Match Making dropdowns
+                        populateDropdowns(); // Populate the Match Making dropdowns
                     } else {
                         document.getElementById('tableBody').innerHTML = `<tr><td colspan="4" class="empty-state" style="color: #dc3545;">Error: ${data.message}</td></tr>`;
                     }
@@ -196,14 +198,27 @@
         }
 
         // --- Match Making Logic ---
-        function populateDatalist() {
-            const datalist = document.getElementById('kundaliDatalist');
-            datalist.innerHTML = '';
+        function populateDropdowns() {
+            const boySelect = document.getElementById('boySelect');
+            const girlSelect = document.getElementById('girlSelect');
+            
+            // Reset to default option
+            boySelect.innerHTML = '<option value="">-- Select Kundali --</option>';
+            girlSelect.innerHTML = '<option value="">-- Select Kundali --</option>';
+            
+            // Populate actual HTML options
             allRecords.forEach(record => {
-                const option = document.createElement('option');
-                // The value is what goes into the input, we append ID for extraction
-                option.value = `${record.Client_Name} [${record.Record_ID}]`;
-                datalist.appendChild(option);
+                const label = `${record.Client_Name} (${record.Last_Updated || 'Draft'})`;
+                
+                const boyOpt = document.createElement('option');
+                boyOpt.value = record.Record_ID; // We map the ID directly into the value
+                boyOpt.textContent = label;
+                boySelect.appendChild(boyOpt);
+                
+                const girlOpt = document.createElement('option');
+                girlOpt.value = record.Record_ID; 
+                girlOpt.textContent = label;
+                girlSelect.appendChild(girlOpt);
             });
         }
 
@@ -214,23 +229,16 @@
             document.getElementById('matchModal').style.display = 'none';
         }
 
-        function extractId(inputValue) {
-            const match = inputValue.match(/\[(.*?)\]/);
-            return match ? match[1] : null;
-        }
-
         function generateMatch() {
-            const boyVal = document.getElementById('boySelect').value;
-            const girlVal = document.getElementById('girlSelect').value;
-            
-            const boyId = extractId(boyVal);
-            const girlId = extractId(girlVal);
+            const boyId = document.getElementById('boySelect').value;
+            const girlId = document.getElementById('girlSelect').value;
 
             if(!boyId || !girlId) {
-                alert("Please select valid Kundalis from the dropdown list.");
+                alert("Please select both a Boy's and Girl's Kundali from the dropdowns.");
                 return;
             }
-            // Navigate to the new matchmaking page passing IDs via URL
+            
+            // Navigate to the new matchmaking page passing the pure IDs
             window.location.href = `/matchmaking/?boy=${boyId}&girl=${girlId}`;
         }
     </script>
