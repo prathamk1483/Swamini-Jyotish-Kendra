@@ -70,12 +70,15 @@
         .text-box-container { border: 1px solid var(--border-color); padding: 15px; margin-bottom: 20px; }
         .editable-textarea { width: 100%; min-height: 60px; font-size: 16px; border: none; outline: none; font-family: inherit; resize: vertical; line-height: 1.5;}
 
-        /* PRINT STYLES */
+        /* PRINT STYLES - WITH PADDING FIX */
         @media print {
-            @page { size: A4 portrait; margin: 10mm; }
-            body { background: white; padding: 0; }
-            .page-container { box-shadow: none; padding: 0; width: 100%; }
-            .editable-cell, .total-score-input { background: transparent; border-bottom: none; }
+            @page { 
+                size: A4 portrait; 
+                margin: 15mm 25mm; /* Adds ~1 inch padding to the Left and Right */
+            }
+            body { background: white; padding: 0; margin: 0;}
+            .page-container { box-shadow: none; padding: 0; width: 100%; max-width: 100%; border: none;}
+            .editable-cell, .total-score-input, .editable-text { background: transparent; border-bottom: none; }
             .editable-select { -webkit-appearance: none; -moz-appearance: none; appearance: none; border: none; background: transparent; }
             .print-btn { display: none; }
         }
@@ -163,8 +166,8 @@
             <thead>
                 <tr>
                     <th>गुण</th>
-                    <th>लडका (<span id="boyColName"></span>)</th>
-                    <th>लडकी (<span id="girlColName"></span>)</th>
+                    <th><span id="boyColName"></span></th>
+                    <th><span id="girlColName"></span></th>
                     <th>अधिकतम प्राप्त अंक</th>
                     <th>प्राप्त अंक</th>
                     <th>जीवन के क्षेत्र</th>
@@ -380,7 +383,7 @@
             let gVashya = rashiVashyaMap[gRashi] || "-";
             document.getElementById('bVashya').value = bVashya;
             document.getElementById('gVashya').value = gVashya;
-            recalcVashyaScore();
+            recalcVashyaScore(); // Triggers the matrix calculation
 
             // 3. TARA
             if (bNak !== "-" && gNak !== "-") {
